@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.U2D.Animation;
+
 
 namespace Assets.PixelHeroes.Scripts.ExampleScripts
 {
     public class CharacterSwitch : MonoBehaviour
     {
-        public SpriteLibrary Character;
-        public SpriteLibraryAsset[] Characters;
+        public UnityEngine.U2D.Animation.SpriteLibrary Character;
+        public UnityEngine.U2D.Animation.SpriteLibraryAsset[] Characters;
 
         private int _index;
 
@@ -27,7 +27,7 @@ namespace Assets.PixelHeroes.Scripts.ExampleScripts
 
                 if (_index < 0) _index = Characters.Length - 1;
 
-                Character.GetComponentInChildren<SpriteLibrary>().spriteLibraryAsset = Characters[_index];
+                Character.GetComponentInChildren<UnityEngine.U2D.Animation.SpriteLibrary>().spriteLibraryAsset = Characters[_index];
             }
 
             if (Input.GetKeyDown(KeyCode.Equals))
@@ -36,7 +36,7 @@ namespace Assets.PixelHeroes.Scripts.ExampleScripts
 
                 if (_index >= Characters.Length) _index = 0;
 
-                Character.GetComponentInChildren<SpriteLibrary>().spriteLibraryAsset = Characters[_index];
+                Character.GetComponentInChildren<UnityEngine.U2D.Animation.SpriteLibrary>().spriteLibraryAsset = Characters[_index];
             }
         }
     }
