@@ -106,9 +106,11 @@ namespace jslee
 
         public Item[] Inventory;
         public Dictionary<StatType, CharacterStatManager> stats;
+        string characterName;
 
-        public TmpCharacter()
+        public TmpCharacter(string name)
         {
+            characterName = name;
             stats = new Dictionary<StatType, CharacterStatManager>();
             foreach (StatType statType in Enum.GetValues(typeof(StatType)))
             {
@@ -143,10 +145,10 @@ namespace jslee
 
         public override string ToString()
         {
-            string ret = "";
+            string ret = $"name : {characterName}\n";
             foreach (KeyValuePair<StatType, CharacterStatManager> pair in stats)
             {
-                ret += pair.Value.ToString();
+                ret += $"{pair.Value.ToString()}\n";
             }
             return ret;
         }

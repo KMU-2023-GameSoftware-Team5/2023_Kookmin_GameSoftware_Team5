@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemInfoChange : MonoBehaviour
+public class ItemInfoListItem : MonoBehaviour
 {
     //  tmp item info 橇府崎阑 包府窍绰 按眉
     // TODO

@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 2176122099666044417}
   - component: {fileID: 3707696099801720930}
   m_Layer: 0
-  m_Name: TmpItemInfo
+  m_Name: ItemInfoListItemUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

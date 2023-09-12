@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    /* TODO 
+        * 싱글톤으로 만들기 
+        * 씬 넘어가도 사용할 수 있게 하기 
+        * Item 추가 및 제거 구현하기 
+        * 캐릭터에 아이템 추가 제거 구현하기
+     */
+
     public Transform itemGrid; 
     public GameObject itemInfoPrefab; 
 
@@ -25,7 +32,7 @@ public class ItemManager : MonoBehaviour
     void createItemPrefeb(Item item)
     {
         GameObject newPrefab = Instantiate(itemInfoPrefab, itemGrid);
-        newPrefab.GetComponent<ItemInfoChange>().setItemInfo(item);
+        newPrefab.GetComponent<ItemInfoListItem>().setItemInfo(item);
     }
 
     // Update is called once per frame
