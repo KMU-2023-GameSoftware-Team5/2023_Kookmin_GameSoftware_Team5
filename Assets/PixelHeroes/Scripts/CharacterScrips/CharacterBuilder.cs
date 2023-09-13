@@ -3,7 +3,7 @@ using System.Linq;
 using Assets.PixelHeroes.Scripts.CollectionScripts;
 using Assets.PixelHeroes.Scripts.Utils;
 using UnityEngine;
-using UnityEngine.Experimental.U2D.Animation;
+
 
 namespace Assets.PixelHeroes.Scripts.CharacterScrips
 {
@@ -22,7 +22,7 @@ namespace Assets.PixelHeroes.Scripts.CharacterScrips
         public string Cape;
         public string Back;
         public string Mask;
-        public SpriteLibrary SpriteLibrary;
+        public UnityEngine.U2D.Animation.SpriteLibrary SpriteLibrary;
 
         public Texture2D Texture { get; private set; }
         private Dictionary<string, Sprite> _sprites;
@@ -105,7 +105,7 @@ namespace Assets.PixelHeroes.Scripts.CharacterScrips
                 }
             }
 
-            var spriteLibraryAsset = ScriptableObject.CreateInstance<SpriteLibraryAsset>();
+            var spriteLibraryAsset = ScriptableObject.CreateInstance<UnityEngine.U2D.Animation.SpriteLibraryAsset>();
 
             foreach (var sprite in _sprites)
             {
