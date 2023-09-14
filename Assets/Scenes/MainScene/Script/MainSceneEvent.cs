@@ -7,16 +7,16 @@ using UnityEngine.SceneManagement;
 public class MainSceneEvent : MonoBehaviour
 {
 
-    private static MainSceneEvent Instance;
-    public static MainSceneEvent instance
+    private static MainSceneEvent instance;
+    public static MainSceneEvent Instance
     {
         get
         {
-            if (Instance == null)
+            if (instance == null)
             {
-                Instance = FindObjectOfType<MainSceneEvent>();
+                instance = FindObjectOfType<MainSceneEvent>();
             }
-            return Instance;
+            return instance;
         }
     }
 

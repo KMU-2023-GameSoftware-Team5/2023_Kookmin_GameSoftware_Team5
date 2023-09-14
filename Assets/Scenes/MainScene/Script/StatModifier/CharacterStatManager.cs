@@ -90,69 +90,6 @@ namespace jslee
         }
     }
 
-    public class TmpCharacter
-    {
-        /* 
-            * 아이템 시스템 테스트를 위한 임시 캐릭터 class 
-            * TODO 
-                추상클래스로 하던, 인터페이스로 하던, Character 객체와 합치기
-            * 속성
-                Inventory : 플레이어가 소지할 수 있는 아이템
-                Dictionary<StatType, CharacterStatManager> stats : 플레이어의 스텟 정보 저장
-            * 메서드
-                equip
-                unequop
-         */
-
-        public Item[] Inventory;
-        public Dictionary<StatType, CharacterStatManager> stats;
-        string characterName;
-
-        public TmpCharacter(string name)
-        {
-            characterName = name;
-            stats = new Dictionary<StatType, CharacterStatManager>();
-            foreach (StatType statType in Enum.GetValues(typeof(StatType)))
-            {
-                stats[statType] = new CharacterStatManager(statType);
-            }
-            Inventory = new Item[3];
-        }
-
-        public void equip(Item item, int idx)
-        {
-            if (Inventory[idx] != null)
-            {
-                unequip(idx);
-            }
-            Inventory[idx] = item;
-            Inventory[idx].equip();
-            foreach (KeyValuePair<StatType, CharacterStatManager> pair in stats)
-            {
-                pair.Value.addModifier(item);
-            }
-        }
-
-        public void unequip(int idx)
-        {
-            foreach (KeyValuePair<StatType, CharacterStatManager> pair in stats)
-            {
-                pair.Value.removeModifier(Inventory[idx]);
-            }
-            Inventory[idx].unequip();
-            Inventory[idx] = null;
-        }
-
-        public override string ToString()
-        {
-            string ret = $"name : {characterName}\n";
-            foreach (KeyValuePair<StatType, CharacterStatManager> pair in stats)
-            {
-                ret += $"{pair.Value.ToString()}\n";
-            }
-            return ret;
-        }
-    }
 
 }
 

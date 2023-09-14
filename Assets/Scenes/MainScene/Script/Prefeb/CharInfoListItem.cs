@@ -1,4 +1,5 @@
 using jslee;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,7 +30,7 @@ public class CharInfoListItem : MonoBehaviour
 
     public void chooseCharacter()
     {
-        CharacterManager.instance.chooseCharacter(charId);
+        CharacterSelectManager.Instance.chooseCharacter(charId);
     }
 
     // Update is called once per frame
@@ -37,6 +38,4 @@ public class CharInfoListItem : MonoBehaviour
     {
         tmpCharInfo.text = charInfo.ToString();
     }
-
-    
 }

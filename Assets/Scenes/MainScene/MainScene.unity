@@ -415,7 +415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 139.3
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_SizeDelta.y
@@ -451,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -24
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 139.2974
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_SizeDelta.y
@@ -573,11 +573,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -24
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 108
+      value: 121
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -717,7 +717,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 424342897}
-  - component: {fileID: 424342898}
+  - component: {fileID: 424342900}
+  - component: {fileID: 424342901}
   m_Layer: 0
   m_Name: CharacterSelectListGrid
   m_TagString: Untagged
@@ -741,10 +742,18 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -61.876404, y: 45.460236}
-  m_SizeDelta: {x: -276.6223, y: -254.0711}
+  m_AnchoredPosition: {x: -73.48126, y: 5.600403}
+  m_SizeDelta: {x: -221.2756, y: -70.799}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &424342898
+--- !u!222 &424342900
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424342896}
+  m_CullTransparentMesh: 1
+--- !u!114 &424342901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -753,21 +762,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 424342896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 10
     m_Right: 10
-    m_Top: 0
-    m_Bottom: 0
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 3
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 195, y: 270}
-  m_Spacing: {x: 10, y: 10}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &452568224
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +873,7 @@ Canvas:
   m_GameObject: {fileID: 452568224}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1345,7 +1356,7 @@ GameObject:
   - component: {fileID: 1300787997}
   - component: {fileID: 1300787998}
   m_Layer: 0
-  m_Name: ItemGrid
+  m_Name: EquipItemGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1439,8 +1450,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22515648c5d05141842859578167c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemGrid: {fileID: 1300787997}
-  itemInfoPrefab: {fileID: 6107491511405324264, guid: e6f72dd98effb3b4ab18093d01546e60, type: 3}
+  EquipItemGrid: {fileID: 1300787997}
+  EquipItemInfoPrefab: {fileID: 6107491511405324264, guid: e6f72dd98effb3b4ab18093d01546e60, type: 3}
+  openItemSelect:
+    m_PersistentCalls:
+      m_Calls: []
+  closeItemSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1477091843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1459,6 +1476,7 @@ MonoBehaviour:
   CharSelectPrefab: {fileID: 147218689047903505, guid: 75285253ec478d746ac8eee1264bbcd1, type: 3}
   selectors: []
   nowSelectorId: 0
+  nowItemId: 0
 --- !u!1 &1604169384
 GameObject:
   m_ObjectHideFlags: 0
