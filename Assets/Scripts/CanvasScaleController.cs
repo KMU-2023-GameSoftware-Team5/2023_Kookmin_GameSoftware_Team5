@@ -2,14 +2,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class CanvasScaleController : MonoBehaviour
 {
 	public float defaultScreenWidth;
 	public float defaultScreenHeight;
 	float m_defaultAspectRatio;
 
+	[SerializeField] bool m_enable = true;
+
 	CanvasScaler m_canvasScaler;
-	bool m_enabled = true;
 
 	void Start()
 	{
@@ -18,7 +20,7 @@ public class CanvasScaleController : MonoBehaviour
 		if (m_canvasScaler.IsUnityNull())
 		{
 			Debug.LogError("Can't find canvas scaler!");
-			m_enabled = false;
+			m_enable = false;
 		}
 
 		m_defaultAspectRatio = defaultScreenWidth / defaultScreenHeight;
@@ -26,13 +28,13 @@ public class CanvasScaleController : MonoBehaviour
 		if (!float.IsFinite(m_defaultAspectRatio))
 		{
 			Debug.LogError("Screen size value is invalid!");
-			m_enabled = false;
+			m_enable = false;
 		}
 	}
 
 	void Update()
 	{
-		if (!m_enabled)
+		if (!m_enable)
 			return;
 
 		// Now aspect ratio
