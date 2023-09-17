@@ -1,53 +1,54 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TextTypeEffector : MonoBehaviour
 {
-	public float typeInterval;
-
-	TMP_Text m_text;
+	public float m_typeInterval;
+	public TMP_Text m_sourceTextbox;
+	public TMP_Text m_destinationTextbox;
 
 	IEnumerator m_typingCoroutine = null;
-	bool m_forceCompleteType = false;
 
-	void Start()
-	{
-		m_text = GetComponent<TMP_Text>();
-		Type(m_text.text);
-	}
+	string m_prevText = string.Empty;
+	bool m_forceCompleteType = false;
 
 	void Update()
 	{
 		// If user clicks mouse0 or screen, force typing to complete.
 		m_forceCompleteType = (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) ||
 							   Input.GetKeyUp(KeyCode.Mouse0);
+
+		if (m_prevText != m_sourceTextbox.text)
+		{
+			m_prevText = m_sourceTextbox.text;
+
+			if (m_typingCoroutine is not null)
+				StopCoroutine(m_typingCoroutine);
+
+			m_typingCoroutine = StartTyping();
+			StartCoroutine(m_typingCoroutine);
+		}
 	}
 
-	public void Type(string text)
+	IEnumerator StartTyping()
 	{
-		if (m_typingCoroutine is not null)
-			StopCoroutine(m_typingCoroutine);
+		string text = m_sourceTextbox.text;
 
-		m_typingCoroutine = Typing(text);
-		StartCoroutine(m_typingCoroutine);
-	}
-
-	IEnumerator Typing(string text)
-	{
+		m_destinationTextbox.text = string.Empty;
 		m_forceCompleteType = false;
-		m_text.text = string.Empty;
 
 		foreach (char ch in text)
 		{
 			if (m_forceCompleteType)
 			{
-				m_text.text = text;
+				m_destinationTextbox.text = text;
 				yield break;
 			}
 
-			yield return new WaitForSeconds(typeInterval);
-			m_text.text += ch;
+			yield return new WaitForSeconds(m_typeInterval);
+			m_destinationTextbox.text += ch;
 		}
 	}
 }

@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class ScriptManager : MonoBehaviour
 {
 	[Serializable]
-	public struct ScriptCallback
+	public class ScriptCallback
 	{
 		public string name;
 		public UnityEvent callback;
@@ -23,8 +23,10 @@ public class ScriptManager : MonoBehaviour
 	public GameObject m_buttonPrefab;
 	public LayoutGroup m_buttonLayout;
 
+	public string m_startNode;
+	public char m_prefix;
+
 	static readonly string NamePattern = "[a-zA-Z_][a-zA-Z_0-9]*";
-	static readonly char Prefix = '#';
 
 	readonly Queue<GameObject> m_buttonObjectPool = new();
 
@@ -50,13 +52,19 @@ public class ScriptManager : MonoBehaviour
 		{
 			string line = m_scriptLines[i];
 
-			if (Regex.IsMatch(line, $@"^{Prefix}node {NamePattern}$"))
+			if (Regex.IsMatch(line, $@"^{m_prefix}node {NamePattern}$"))
 			{
 				var spliited = line.Split(' ');
 
 				if (spliited.Length < 2)
 				{
 					Debug.LogError($"(GSC)Invalid node syntax: line {i + 1}");
+					return;
+				}
+
+				if (m_nodeLineDict.ContainsKey(spliited[1]))
+				{
+					Debug.LogError($"(GSC)Multiple node name definition: line {i + 1}");
 					return;
 				}
 
@@ -72,7 +80,13 @@ public class ScriptManager : MonoBehaviour
 
 	IEnumerator StartScript()
 	{
-		string nowNode = string.Empty;
+		if (!m_nodeLineDict.TryGetValue(m_startNode, out m_lineIndex))
+		{
+			Debug.LogError($"(GSC)Invalid start node name: ");
+			yield break;
+		}
+
+		string nowNode = m_startNode;
 
 		while (m_lineIndex < m_scriptLines.Length)
 		{
@@ -83,13 +97,13 @@ public class ScriptManager : MonoBehaviour
 				continue;
 
 			// Prefix check
-			if (!Regex.IsMatch(line, $"{Prefix}.*"))
+			if (!Regex.IsMatch(line, $"{m_prefix}.*"))
 			{
 				m_textBox.text += rawLine;
 				continue;
 			}
 
-			line = line.TrimStart(Prefix);
+			line = line.TrimStart(m_prefix);
 
 			// Check command regex
 			if (Regex.IsMatch(line, $"^goto {NamePattern}$"))
@@ -98,23 +112,20 @@ public class ScriptManager : MonoBehaviour
 
 				if (!m_nodeLineDict.TryGetValue(nextNode, out int nextNodeIndex))
 				{
-					Debug.LogError($"(GSC)Invalid node name: {nextNode}");
+					Debug.LogError($"(GSC)Invalid node name: {nextNode} line {m_lineIndex}");
 					break;
 				}
 
-				nowNode = nextNode;
-				GotoNode(nextNodeIndex);
+				nowNode = GotoNode(nextNodeIndex);
 			}
 			else if (Regex.IsMatch(line, $"^if \".*\" -> {NamePattern}$"))
 			{
-				string[] splitted = line.Split();
-
-				string buttonText = splitted[1].Trim('"');
-				string nextNode = splitted[3];
+				string buttonText = Regex.Match(line, "(\".*\")").Groups[1].Value.Trim('"');
+				string nextNode = line.Split("-> ")[1];
 
 				if (!m_nodeLineDict.TryGetValue(nextNode, out int nextNodeIndex))
 				{
-					Debug.LogError($"(GSC)Invalid node name: {nextNode}");
+					Debug.LogError($"(GSC)Invalid node name: {nextNode} line {m_lineIndex}");
 					break;
 				}
 
@@ -131,8 +142,7 @@ public class ScriptManager : MonoBehaviour
 				buttonComponent.onClick.RemoveAllListeners();
 				buttonComponent.onClick.AddListener(() =>
 				{
-					GotoNode(nextNodeIndex);
-					nowNode = nextNode;
+					nowNode = GotoNode(nextNodeIndex);
 					m_buttonPressed = true;
 				});
 
@@ -169,10 +179,10 @@ public class ScriptManager : MonoBehaviour
 			}
 			else if (Regex.IsMatch(line, $"^node {NamePattern}$"))
 			{
-				if (nowNode != string.Empty)
-					break;
+				string nodeName = line.Split()[1];
 
-				nowNode = line.Split()[1];
+				if (nodeName != nowNode)
+					break;
 			}
 			else
 			{
@@ -182,7 +192,8 @@ public class ScriptManager : MonoBehaviour
 		}
 	}
 
-	void GotoNode(int nodeLineIndex)
+	// Goto the node in line nodeLineIndex and return that node name.
+	string GotoNode(int nodeLineIndex)
 	{
 		// Clear textbox
 		m_textBox.text = string.Empty;
@@ -196,8 +207,12 @@ public class ScriptManager : MonoBehaviour
 			m_buttonObjectPool.Enqueue(childObject);
 		}
 
-		// Goto target node line + 1
-		m_lineIndex = nodeLineIndex + 1;
+		// Goto node
+		m_lineIndex = nodeLineIndex;
+
+		// Return node name
+		string nodeName = m_scriptLines[m_lineIndex].Split()[1];
+		return nodeName;
 	}
 
 	public void Temp()

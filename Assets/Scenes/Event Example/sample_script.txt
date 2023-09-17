@@ -12,8 +12,9 @@ button1 pressed
 #waitif
 
 #node newnew
-#call test
-#scene "Scenes/New New"
+call test
+#if "recursion test" -> newnew
+#waitif
 
 #node two_press
 button2 pressed
