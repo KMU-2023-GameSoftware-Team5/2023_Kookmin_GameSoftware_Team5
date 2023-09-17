@@ -13,6 +13,7 @@ button1 pressed
 
 #node newnew
 call test
+#call test
 #if "recursion test" -> newnew
 #waitif
 

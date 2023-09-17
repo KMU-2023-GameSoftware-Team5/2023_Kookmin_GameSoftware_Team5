@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -14,12 +15,12 @@ public class ScriptManager : MonoBehaviour
 	public class ScriptCallback
 	{
 		public string name;
-		public UnityEvent callback;
+		public UnityEvent onCall;
 	}
 
 	public TMP_Text m_textBox;
 	public TextAsset m_scriptFile;
-	public ScriptCallback[] m_callbacks;
+	public List<ScriptCallback> m_callbacks;
 	public GameObject m_buttonPrefab;
 	public LayoutGroup m_buttonLayout;
 
@@ -29,12 +30,10 @@ public class ScriptManager : MonoBehaviour
 	static readonly string NamePattern = "[a-zA-Z_][a-zA-Z_0-9]*";
 
 	readonly Queue<GameObject> m_buttonObjectPool = new();
-
-	readonly Dictionary<string, UnityEvent> m_callbackDict = new();
 	readonly Dictionary<string, int> m_nodeLineDict = new();
 
 	string[] m_scriptLines;
-	int m_lineIndex = 0;
+	int m_lineIndex;
 
 	bool m_buttonPressed = false;
 
@@ -42,10 +41,6 @@ public class ScriptManager : MonoBehaviour
 	{
 		string scriptText = m_scriptFile.text.Replace("\r", "");
 		m_scriptLines = scriptText.Split("\n");
-
-		// Save callback name and callback as dictionary
-		foreach (var scriptCallback in m_callbacks)
-			m_callbackDict.Add(scriptCallback.name, scriptCallback.callback);
 
 		// Parse script nodes
 		for (int i = 0; i < m_scriptLines.Length; i++)
@@ -157,14 +152,23 @@ public class ScriptManager : MonoBehaviour
 			else if (Regex.IsMatch(line, $"^call {NamePattern}$"))
 			{
 				string callbackName = line.Split()[1];
+				bool callbackNotFound = true;
 
-				if (!m_callbackDict.TryGetValue(callbackName, out UnityEvent callback))
+				foreach (var callback in m_callbacks)
+				{
+					if (callback.name == callbackName)
+					{
+						callback.onCall.Invoke();
+						callbackNotFound = false;
+						break;
+					}
+				}
+
+				if (callbackNotFound)
 				{
 					Debug.LogError($"(GSC)Invalid callback name: {callbackName}");
 					break;
 				}
-
-				callback.Invoke();
 			}
 			else if (Regex.IsMatch(line, $"^scene \".*\"$"))
 			{
