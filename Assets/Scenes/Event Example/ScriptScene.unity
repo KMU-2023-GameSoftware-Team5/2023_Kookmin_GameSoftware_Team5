@@ -1305,11 +1305,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_textBox: {fileID: 698299888}
   m_scriptFile: {fileID: 4900000, guid: 2af5f02cdbdd54d41b4f9f9ab5e4d726, type: 3}
-  m_callbacks: []
   m_buttonPrefab: {fileID: 3314579242983610785, guid: 51c23c6e1a55b8e48b002b2675c18a21, type: 3}
   m_buttonLayout: {fileID: 1044842436}
   m_startNode: start
   m_prefix: 35
+  callbacks:
+  - name: test
+    onCall:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1989538258
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 #if "button1" -> one_press
 asd
 #if "button2" -> two_press
+#if "button3" -> three_press
 qwe
 #waitif
 
@@ -19,3 +20,6 @@ call test
 
 #node two_press
 button2 pressed
+
+#node three_press
+wow!

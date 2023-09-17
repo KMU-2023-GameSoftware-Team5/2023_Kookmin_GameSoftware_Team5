@@ -7,9 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
-public class ScriptManager : MonoBehaviour
+public class GSCManager : MonoBehaviour
 {
 	[Serializable]
 	public class ScriptCallback
@@ -18,16 +17,17 @@ public class ScriptManager : MonoBehaviour
 		public UnityEvent onCall;
 	}
 
-	public TMP_Text m_textBox;
-	public TextAsset m_scriptFile;
-	public List<ScriptCallback> m_callbacks;
-	public GameObject m_buttonPrefab;
-	public LayoutGroup m_buttonLayout;
+	[SerializeField] TMP_Text m_textBox;
+	[SerializeField] TextAsset m_scriptFile;
+	[SerializeField] GameObject m_buttonPrefab;
+	[SerializeField] LayoutGroup m_buttonLayout;
 
-	public string m_startNode;
-	public char m_prefix;
+	[SerializeField] string m_startNode;
+	[SerializeField] char m_prefix;
 
-	static readonly string NamePattern = "[a-zA-Z_][a-zA-Z_0-9]*";
+	public List<ScriptCallback> callbacks;
+
+	const string NamePattern = "[a-zA-Z_][a-zA-Z_0-9]*";
 
 	readonly Queue<GameObject> m_buttonObjectPool = new();
 	readonly Dictionary<string, int> m_nodeLineDict = new();
@@ -67,7 +67,6 @@ public class ScriptManager : MonoBehaviour
 			}
 		}
 
-		// Clear the textbox
 		m_textBox.text = string.Empty;
 
 		StartCoroutine(StartScript());
@@ -83,6 +82,8 @@ public class ScriptManager : MonoBehaviour
 
 		string nowNode = m_startNode;
 
+		Debug.Log($"(GSC)Start script: node {nowNode}, line {m_lineIndex + 1}");
+
 		while (m_lineIndex < m_scriptLines.Length)
 		{
 			string rawLine = m_scriptLines[m_lineIndex++];
@@ -91,16 +92,17 @@ public class ScriptManager : MonoBehaviour
 			if (line == string.Empty)
 				continue;
 
-			// Prefix check
+			// Prefix check: Is not a command line?
 			if (!Regex.IsMatch(line, $"{m_prefix}.*"))
 			{
 				m_textBox.text += rawLine;
 				continue;
 			}
 
+			// Remove prefix from command
 			line = line.TrimStart(m_prefix);
 
-			// Check command regex
+			// Check command regexes
 			if (Regex.IsMatch(line, $"^goto {NamePattern}$"))
 			{
 				string nextNode = line.Split()[1];
@@ -124,11 +126,11 @@ public class ScriptManager : MonoBehaviour
 					break;
 				}
 
-				// Instantiate and set button as children of button layout
+				// Instantiate and set button as children of button layout, or dequeue
 				if (!m_buttonObjectPool.TryDequeue(out GameObject buttonObject))
 					buttonObject = Instantiate(m_buttonPrefab, m_buttonLayout.transform);
 
-				// Activate buttonObject
+				buttonObject.transform.SetParent(m_buttonLayout.transform);
 				buttonObject.SetActive(true);
 
 				// Set button onClick events
@@ -141,11 +143,16 @@ public class ScriptManager : MonoBehaviour
 					m_buttonPressed = true;
 				});
 
-				// Set button textbox
 				buttonObject.GetComponentInChildren<TMP_Text>().text = buttonText;
 			}
 			else if (Regex.IsMatch(line, "^waitif"))
 			{
+				if (m_buttonLayout.GetComponentsInChildren<Button>().Length == 0)
+				{
+					Debug.LogError($"(GSC)No active if found: line {m_lineIndex}");
+					break;
+				}
+
 				yield return new WaitUntil(() => m_buttonPressed);
 				m_buttonPressed = false;
 			}
@@ -154,7 +161,7 @@ public class ScriptManager : MonoBehaviour
 				string callbackName = line.Split()[1];
 				bool callbackNotFound = true;
 
-				foreach (var callback in m_callbacks)
+				foreach (var callback in callbacks)
 				{
 					if (callback.name == callbackName)
 					{
@@ -194,6 +201,8 @@ public class ScriptManager : MonoBehaviour
 				break;
 			}
 		}
+
+		Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 	}
 
 	// Goto the node in line nodeLineIndex and return that node name.
@@ -208,6 +217,7 @@ public class ScriptManager : MonoBehaviour
 			var childObject = childButton.gameObject;
 
 			childObject.SetActive(false);
+			childObject.transform.SetParent(null);
 			m_buttonObjectPool.Enqueue(childObject);
 		}
 
@@ -217,10 +227,5 @@ public class ScriptManager : MonoBehaviour
 		// Return node name
 		string nodeName = m_scriptLines[m_lineIndex].Split()[1];
 		return nodeName;
-	}
-
-	public void Temp()
-	{
-		print("callback!!!!!!!!!!");
 	}
 }
