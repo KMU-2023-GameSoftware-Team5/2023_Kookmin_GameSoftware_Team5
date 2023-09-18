@@ -793,7 +793,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 409706758}
   m_HandleRect: {fileID: 409706757}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1166,6 +1166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultScreenWidth: 1920
   defaultScreenHeight: 1080
+  m_enable: 1
 --- !u!1 &1500755028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1568,7 +1569,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1347146952}
-  - {fileID: 17185243}
   - {fileID: 698299890}
   - {fileID: 421644169264758342}
   - {fileID: 522934798859206032}
+  - {fileID: 17185243}

@@ -225,13 +225,10 @@ namespace GSC
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 		}
 
-		// Goto the node in line nodeLineIndex and return that node name.
-		string GotoNode(int nodeLineIndex)
+		// Detach all buttons from button layout with disable it
+		// And enqueue to the button object pool
+		void ClearButtonLayout()
 		{
-			// Clear textbox
-			m_textBox.text = string.Empty;
-
-			// Clear button layout
 			foreach (var childButton in m_buttonLayout.GetComponentsInChildren<Button>())
 			{
 				var childObject = childButton.gameObject;
@@ -240,13 +237,18 @@ namespace GSC
 				childObject.transform.SetParent(null);
 				m_buttonObjectPool.Enqueue(childObject);
 			}
+		}
 
-			// Goto node
+		// Goto the node in line nodeLineIndex and return that node name.
+		string GotoNode(int nodeLineIndex)
+		{
+			m_textBox.text = string.Empty;
+
+			ClearButtonLayout();
+
 			m_lineIndex = nodeLineIndex;
 
-			// Return node name
-			string nodeName = m_scriptLines[m_lineIndex].Split()[1];
-			return nodeName;
+			return m_scriptLines[m_lineIndex].Split()[1];
 		}
 	}
 }
