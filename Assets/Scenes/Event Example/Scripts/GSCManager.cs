@@ -47,8 +47,9 @@ namespace GSC
 			public UnityEvent onCall;
 		}
 
-		[SerializeField] TMP_Text m_textBox;
 		[SerializeField] TextAsset m_GSCScript;
+
+		[SerializeField] TMP_Text m_textBox;
 		[SerializeField] GameObject m_buttonPrefab;
 		[SerializeField] LayoutGroup m_buttonLayout;
 
@@ -57,19 +58,19 @@ namespace GSC
 
 		public List<ScriptCallback> callbacks;
 
-		readonly Queue<GameObject> m_buttonObjectPool = new();
-		readonly Dictionary<string, int> m_nodeLineDict = new();
-
 		const string OPRule = "([A-Za-z]+)";
 		const string NameRule = "([A-Za-z_][0-9A-Za-z_]*)";
 		const string TextRule = "(\".*\")";
-		const string SpaceRule = "([ \t]*)";
+		const string SpaceMustRule = "([ \t]+)";
+		const string SpaceMayRule = "([ \t]*)";
 		const string AnyRule = "(.*)";
 		readonly string ArgRule = $"{NameRule}|{TextRule}";
 
+		readonly Dictionary<string, int> m_nodeLineDict = new();
 		string[] m_scriptLines;
 		int m_lineIndex;
 
+		readonly Queue<GameObject> m_buttonObjectPool = new();
 		bool m_buttonPressed = false;
 
 		void Start()
@@ -82,7 +83,7 @@ namespace GSC
 			{
 				string line = m_scriptLines[i].Trim();
 
-				if (Regex.IsMatch(line, $@"^{SpaceRule}{m_prefix}node {NameRule}{SpaceRule}$"))
+				if (Regex.IsMatch(line, $@"^{SpaceMayRule}{m_prefix}node{SpaceMustRule}{NameRule}{SpaceMayRule}$"))
 				{
 					// Add node to dictionary
 					string nodeName = line.Split()[1];
@@ -94,15 +95,12 @@ namespace GSC
 				}
 			}
 
-			m_textBox.text = string.Empty;
-
 			StartCoroutine(StartScript());
 		}
 
 		IEnumerator StartScript()
 		{
-			bool ifStateOpened = false;
-			bool keepLoop = true;
+			m_textBox.text = string.Empty;
 
 			if (!m_nodeLineDict.TryGetValue(m_startNode, out m_lineIndex))
 				throw new GSCException($"Invalid start node name({m_startNode})", -1);
@@ -111,12 +109,15 @@ namespace GSC
 
 			Debug.Log($"(GSC)Start script: node {nowNode}, line {m_lineIndex + 1}");
 
+			bool ifStateOpened = false;
+			bool keepLoop = true;
+
 			while (m_lineIndex < m_scriptLines.Length && keepLoop)
 			{
 				string line = m_scriptLines[m_lineIndex++];
 
 				// Textbox output
-				if (!Regex.IsMatch(line, $"^{SpaceRule}[{m_prefix}]"))
+				if (!Regex.IsMatch(line, $"^{SpaceMayRule}{m_prefix}"))
 				{
 					m_textBox.text += line;
 					continue;
@@ -136,7 +137,7 @@ namespace GSC
 				else
 					throw new GSCInvalidCommandException(m_lineIndex);
 
-				// Start parsing commands
+				// Divide by argument type
 				// No arguments
 				if (args == string.Empty)
 				{
@@ -157,11 +158,11 @@ namespace GSC
 					}
 				}
 				// One argument
-				else if ((match = Regex.Match(args, $"^{SpaceRule}{ArgRule}$")).Success)
+				else if ((match = Regex.Match(args, $"^{SpaceMustRule}{ArgRule}$")).Success)
 				{
-					int groupCount = match.Groups.Count;
-					string arg = match.Groups[groupCount != 1 ? 2 : 1].Value;
+					string arg = args.TrimStart();
 
+					// Argument is Text
 					if (Regex.IsMatch(arg, TextRule))
 					{
 						string scenePath = arg.Trim('"');
@@ -185,6 +186,7 @@ namespace GSC
 								throw new GSCInvalidCommandException(m_lineIndex);
 						}
 					}
+					// Argument is Name
 					else if (Regex.IsMatch(arg, NameRule))
 					{
 						string nodeName = arg;
@@ -195,17 +197,6 @@ namespace GSC
 							case "node":
 								if (nowNode != nodeName)
 									keepLoop = false;
-
-								break;
-
-							case "goto":
-								if (!m_nodeLineDict.TryGetValue(nodeName, out int nextNodeIndex))
-									throw new GSCNodeNotFoundException(nodeName, m_lineIndex);
-
-								nowNode = GotoNode(nextNodeIndex);
-
-								if (ifStateOpened)
-									throw new GSCException("If statement didn't waited", m_lineIndex);
 
 								break;
 
@@ -235,7 +226,7 @@ namespace GSC
 						throw new GSCInvalidCommandException(m_lineIndex);
 				}
 				// Two arguments
-				else if ((match = Regex.Match(args, $"^{SpaceRule}+{ArgRule}{SpaceRule}+{ArgRule}$")).Success)
+				else if ((match = Regex.Match(args, $"^{SpaceMustRule}{ArgRule}{SpaceMustRule}{ArgRule}$")).Success)
 				{
 					// Index 0 is entire,
 					// Index 1 is SpaceRule,
@@ -290,6 +281,9 @@ namespace GSC
 					throw new GSCInvalidCommandException(m_lineIndex);
 			}
 
+			if (ifStateOpened)
+				throw new GSCException("No waiting if statement", m_lineIndex);
+
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 		}
 
@@ -316,7 +310,7 @@ namespace GSC
 
 			m_lineIndex = nodeLineIndex;
 
-			return m_scriptLines[m_lineIndex].Split()[1];
+			return m_nodeLineDict.First(pair => pair.Value == m_lineIndex).Key;
 		}
 	}
 }
