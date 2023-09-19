@@ -7,9 +7,37 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace GSC
 {
+	[Serializable]
+	public class GSCException : UnityException
+	{
+		public GSCException(string message, int lineIndex)
+			: base($"(GSC){message}: line {lineIndex}")
+		{
+		}
+	}
+
+	[Serializable]
+	public class GSCInvalidCommandException : GSCException
+	{
+		public GSCInvalidCommandException(int lineIndex)
+			: base("Invalid command", lineIndex)
+		{
+		}
+	}
+
+	[Serializable]
+	public class GSCNodeNotFoundException : GSCException
+	{
+		public GSCNodeNotFoundException(string nodeName, int lineIndex)
+			: base($"Node not found({nodeName})", lineIndex)
+		{
+		}
+	}
+
 	public class GSCManager : MonoBehaviour
 	{
 		[Serializable]
@@ -29,10 +57,15 @@ namespace GSC
 
 		public List<ScriptCallback> callbacks;
 
-		const string NamePattern = "[a-zA-Z_][a-zA-Z_0-9]*";
-
 		readonly Queue<GameObject> m_buttonObjectPool = new();
 		readonly Dictionary<string, int> m_nodeLineDict = new();
+
+		const string OPRule = "([A-Za-z]+)";
+		const string NameRule = "([A-Za-z_][0-9A-Za-z_]*)";
+		const string TextRule = "(\".*\")";
+		const string SpaceRule = "([ \t]*)";
+		const string AnyRule = "(.*)";
+		readonly string ArgRule = $"{NameRule}|{TextRule}";
 
 		string[] m_scriptLines;
 		int m_lineIndex;
@@ -44,46 +77,20 @@ namespace GSC
 			string scriptText = m_GSCScript.text.Replace("\r", "");
 			m_scriptLines = scriptText.Split("\n");
 
-			string nowNode = string.Empty;
-			bool ifStateEnded = true;
-
 			// Parse script nodes and check if-waitif
 			for (int i = 0; i < m_scriptLines.Length; i++)
 			{
 				string line = m_scriptLines[i].Trim();
 
-				if (Regex.IsMatch(line, $"^{m_prefix}if \".*\" -> {NamePattern}$"))
-					ifStateEnded = false;
-				else if (Regex.IsMatch(line, $"^{m_prefix}waitif$"))
-				{
-					// If statement has already ended, but multiple waitif detected.
-					if (ifStateEnded)
-					{
-						Debug.LogError($"(GSC)Multiple 'waitif' detected: line {i + 1}");
-						return;
-					}
-
-					ifStateEnded = true;
-				}
-				else if (Regex.IsMatch(line, $@"^{m_prefix}node {NamePattern}$"))
+				if (Regex.IsMatch(line, $@"^{SpaceRule}{m_prefix}node {NameRule}{SpaceRule}$"))
 				{
 					// Add node to dictionary
 					string nodeName = line.Split()[1];
 
 					if (m_nodeLineDict.ContainsKey(nodeName))
-					{
-						Debug.LogError($"(GSC)Multiple node name definition: line {i + 1}");
-						return;
-					}
-
-					if (!ifStateEnded)
-					{
-						Debug.LogError($"(GSC)'if' must end with 'waitif': node {nowNode}");
-						return;
-					}
+						throw new GSCException("Multiple node name definition", i + 1);
 
 					m_nodeLineDict.Add(nodeName, i);
-					nowNode = nodeName;
 				}
 			}
 
@@ -94,132 +101,193 @@ namespace GSC
 
 		IEnumerator StartScript()
 		{
+			bool ifStateOpened = false;
+			bool keepLoop = true;
+
 			if (!m_nodeLineDict.TryGetValue(m_startNode, out m_lineIndex))
-			{
-				Debug.LogError($"(GSC)Invalid start node name: ");
-				yield break;
-			}
+				throw new GSCException($"Invalid start node name({m_startNode})", -1);
 
 			string nowNode = m_startNode;
 
 			Debug.Log($"(GSC)Start script: node {nowNode}, line {m_lineIndex + 1}");
 
-			while (m_lineIndex < m_scriptLines.Length)
+			while (m_lineIndex < m_scriptLines.Length && keepLoop)
 			{
-				string rawLine = m_scriptLines[m_lineIndex++];
-				string line = rawLine.Trim();
+				string line = m_scriptLines[m_lineIndex++];
 
-				if (line == string.Empty)
-					continue;
-
-				// Prefix check: Is not a command line?
-				if (!Regex.IsMatch(line, $"{m_prefix}.*"))
+				// Textbox output
+				if (!Regex.IsMatch(line, $"^{SpaceRule}[{m_prefix}]"))
 				{
-					m_textBox.text += rawLine;
+					m_textBox.text += line;
 					continue;
 				}
 
-				// Remove prefix from command
-				line = line.TrimStart(m_prefix);
+				// Remove prefix from cmd
+				string cmd = line.Trim()[1..];
+				string op, args;
+				Match match;
 
-				// Check command regexes
-				if (Regex.IsMatch(line, $"^goto {NamePattern}$"))
+				// Parse cmd to op and args
+				if ((match = Regex.Match(cmd, $"^{OPRule}{AnyRule}$")).Success)
 				{
-					string nextNode = line.Split()[1];
-
-					if (!m_nodeLineDict.TryGetValue(nextNode, out int nextNodeIndex))
-					{
-						Debug.LogError($"(GSC)Invalid node name: {nextNode} line {m_lineIndex}");
-						break;
-					}
-
-					nowNode = GotoNode(nextNodeIndex);
-				}
-				else if (Regex.IsMatch(line, $"^if \".*\" -> {NamePattern}$"))
-				{
-					string buttonText = Regex.Match(line, "(\".*\")").Groups[1].Value.Trim('"');
-					string nextNode = line.Split("-> ")[1];
-
-					if (!m_nodeLineDict.TryGetValue(nextNode, out int nextNodeIndex))
-					{
-						Debug.LogError($"(GSC)Invalid node name: {nextNode} line {m_lineIndex}");
-						break;
-					}
-
-					// Instantiate and set button as children of button layout, or dequeue
-					if (!m_buttonObjectPool.TryDequeue(out GameObject buttonObject))
-						buttonObject = Instantiate(m_buttonPrefab, m_buttonLayout.transform);
-
-					buttonObject.transform.SetParent(m_buttonLayout.transform);
-					buttonObject.SetActive(true);
-
-					// Set button onClick events
-					Button buttonComponent = buttonObject.GetComponent<Button>();
-
-					buttonComponent.onClick.RemoveAllListeners();
-					buttonComponent.onClick.AddListener(() =>
-					{
-						nowNode = GotoNode(nextNodeIndex);
-						m_buttonPressed = true;
-					});
-
-					buttonObject.GetComponentInChildren<TMP_Text>().text = buttonText;
-				}
-				else if (Regex.IsMatch(line, "^waitif"))
-				{
-					if (m_buttonLayout.GetComponentsInChildren<Button>().Length == 0)
-					{
-						Debug.LogError($"(GSC)No active if found: line {m_lineIndex}");
-						break;
-					}
-
-					yield return new WaitUntil(() => m_buttonPressed);
-					m_buttonPressed = false;
-				}
-				else if (Regex.IsMatch(line, $"^call {NamePattern}$"))
-				{
-					string callbackName = line.Split()[1];
-					bool callbackNotFound = true;
-
-					foreach (var callback in callbacks)
-					{
-						if (callback.name == callbackName)
-						{
-							callback.onCall.Invoke();
-							callbackNotFound = false;
-							break;
-						}
-					}
-
-					if (callbackNotFound)
-					{
-						Debug.LogError($"(GSC)Invalid callback name: {callbackName}");
-						break;
-					}
-				}
-				else if (Regex.IsMatch(line, $"^scene \".*\"$"))
-				{
-					string scenePath = line[(line.IndexOf(' ') + 1)..].Trim('"');
-
-					if (SceneUtility.GetBuildIndexByScenePath(scenePath + "") != -1)
-						SceneManager.LoadScene(scenePath);
-					else
-						Debug.LogError($"(GSC)Invalid scene path: {scenePath}");
-
-					break;
-				}
-				else if (Regex.IsMatch(line, $"^node {NamePattern}$"))
-				{
-					string nodeName = line.Split()[1];
-
-					if (nodeName != nowNode)
-						break;
+					op = match.Groups[1].Value;
+					args = match.Groups[2].Value;
 				}
 				else
+					throw new GSCInvalidCommandException(m_lineIndex);
+
+				// Start parsing commands
+				// No arguments
+				if (args == string.Empty)
 				{
-					Debug.LogError($"Invalid command line: \"{rawLine}\"");
-					break;
+					switch (op)
+					{
+						case "waitif":
+							if (!ifStateOpened)
+								throw new GSCException("No waiting if statement", m_lineIndex);
+
+							yield return new WaitUntil(() => m_buttonPressed);
+							m_buttonPressed = false;
+							ifStateOpened = false;
+
+							break;
+
+						default:
+							throw new GSCInvalidCommandException(m_lineIndex);
+					}
 				}
+				// One argument
+				else if ((match = Regex.Match(args, $"^{SpaceRule}{ArgRule}$")).Success)
+				{
+					int groupCount = match.Groups.Count;
+					string arg = match.Groups[groupCount != 1 ? 2 : 1].Value;
+
+					if (Regex.IsMatch(arg, TextRule))
+					{
+						string scenePath = arg.Trim('"');
+
+						switch (op)
+						{
+							case "scene":
+								if (SceneUtility.GetBuildIndexByScenePath(scenePath + "") != -1)
+								{
+									var task = SceneManager.LoadSceneAsync(scenePath);
+
+									yield return new WaitUntil(() => task.isDone);
+									keepLoop = false;
+
+									break;
+								}
+								else
+									throw new GSCException("Scene don't exist({scenePath})", m_lineIndex);
+
+							default:
+								throw new GSCInvalidCommandException(m_lineIndex);
+						}
+					}
+					else if (Regex.IsMatch(arg, NameRule))
+					{
+						string nodeName = arg;
+						string callbackName = arg;
+
+						switch (op)
+						{
+							case "node":
+								if (nowNode != nodeName)
+									keepLoop = false;
+
+								break;
+
+							case "goto":
+								if (!m_nodeLineDict.TryGetValue(nodeName, out int nextNodeIndex))
+									throw new GSCNodeNotFoundException(nodeName, m_lineIndex);
+
+								nowNode = GotoNode(nextNodeIndex);
+
+								if (ifStateOpened)
+									throw new GSCException("If statement didn't waited", m_lineIndex);
+
+								break;
+
+							case "call":
+								bool callbackNotFound = true;
+
+								foreach (var callback in callbacks)
+								{
+									if (callback.name == callbackName)
+									{
+										callback.onCall.Invoke();
+										callbackNotFound = false;
+										break;
+									}
+								}
+
+								if (callbackNotFound)
+									throw new GSCException($"Callback not found({callbackName})", m_lineIndex);
+
+								break;
+
+							default:
+								throw new GSCInvalidCommandException(m_lineIndex);
+						}
+					}
+					else
+						throw new GSCInvalidCommandException(m_lineIndex);
+				}
+				// Two arguments
+				else if ((match = Regex.Match(args, $"^{SpaceRule}+{ArgRule}{SpaceRule}+{ArgRule}$")).Success)
+				{
+					// Index 0 is entire,
+					// Index 1 is SpaceRule,
+					// Index 2 is NameRule, v
+					// Index 3 is TextRule, v
+					// Index 4 is SpaceRule,
+					// Index 5 is NameRule, v
+					// Index 6 is TextRule, v
+					// This sucks.
+					string arg1 = match.Groups[match.Groups[2].Value != "" ? 2 : 3].Value;
+					string arg2 = match.Groups[match.Groups[5].Value != "" ? 5 : 6].Value;
+
+					switch (op)
+					{
+						case "if":
+							if (!Regex.IsMatch(arg1, TextRule) || !Regex.IsMatch(arg2, NameRule))
+								throw new GSCInvalidCommandException(m_lineIndex);
+
+							ifStateOpened = true;
+
+							string buttonText = arg1.Trim('"');
+							string nodeName = arg2;
+
+							if (!m_nodeLineDict.TryGetValue(nodeName, out int nextNodeIndex))
+								throw new GSCNodeNotFoundException(nodeName, m_lineIndex);
+
+							// Instantiate and set button as children of button layout, or dequeue
+							if (!m_buttonObjectPool.TryDequeue(out GameObject buttonObject))
+								buttonObject = Instantiate(m_buttonPrefab, m_buttonLayout.transform);
+
+							buttonObject.transform.SetParent(m_buttonLayout.transform);
+							buttonObject.SetActive(true);
+
+							// Set button onClick events
+							Button buttonComponent = buttonObject.GetComponent<Button>();
+
+							buttonComponent.onClick.RemoveAllListeners();
+							buttonComponent.onClick.AddListener(() =>
+							{
+								nowNode = GotoNode(nextNodeIndex);
+								m_buttonPressed = true;
+							});
+
+							buttonObject.GetComponentInChildren<TMP_Text>().text = buttonText;
+							break;
+
+						default:
+							throw new GSCInvalidCommandException(m_lineIndex);
+					}
+				}
+				else
+					throw new GSCInvalidCommandException(m_lineIndex);
 			}
 
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");

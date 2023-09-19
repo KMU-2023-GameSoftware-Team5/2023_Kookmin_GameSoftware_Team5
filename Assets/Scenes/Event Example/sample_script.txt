@@ -1,21 +1,21 @@
 #node start
-#if "button1" -> one_press
+#if "button1" one_press
 asd
-#if "button2" -> two_press
-#if "button3" -> three_press
+#if "button2" two_press
+#if "button3" three_press
 qwe
 #waitif
 
 #node one_press
 button1 pressed
-#if "button1-1" -> newnew
-#if "re" -> start
+#if "button1-1" newnew
+#if "re" start
 #waitif
 
 #node newnew
 call test
 #call test
-#if "recursion test" -> newnew
+#if "recursion test" newnew
 #waitif
 
 #node two_press
