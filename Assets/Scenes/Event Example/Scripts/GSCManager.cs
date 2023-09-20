@@ -103,7 +103,7 @@ namespace GSC
 			m_textBox.text = string.Empty;
 
 			if (!m_nodeLineDict.TryGetValue(m_startNode, out m_lineIndex))
-				throw new GSCException($"Invalid start node name({m_startNode})", -1);
+				throw new GSCException($"Invalid start node ({m_startNode})", -1);
 
 			string nowNode = m_startNode;
 
@@ -145,7 +145,7 @@ namespace GSC
 					{
 						case "waitif":
 							if (!ifStateOpened)
-								throw new GSCException("No waiting if statement", m_lineIndex);
+								throw new GSCException("If statement not opened", m_lineIndex);
 
 							yield return new WaitUntil(() => m_buttonPressed);
 							m_buttonPressed = false;
@@ -180,7 +180,7 @@ namespace GSC
 									break;
 								}
 								else
-									throw new GSCException("Scene don't exist({scenePath})", m_lineIndex);
+									throw new GSCException("Scene not exist({scenePath})", m_lineIndex);
 
 							default:
 								throw new GSCInvalidCommandException(m_lineIndex);
@@ -282,7 +282,7 @@ namespace GSC
 			}
 
 			if (ifStateOpened)
-				throw new GSCException("No waiting if statement", m_lineIndex);
+				throw new GSCException("Unclosed if statement detected", m_lineIndex);
 
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 		}
