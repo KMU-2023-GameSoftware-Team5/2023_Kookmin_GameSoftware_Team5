@@ -38,16 +38,16 @@ namespace GSC
 		}
 	}
 
+	[Serializable]
+	public class ScriptCallback
+	{
+		public string name;
+		public UnityEvent onCall;
+	}
+
 	public class GSCManager : MonoBehaviour
 	{
-		[Serializable]
-		public class ScriptCallback
-		{
-			public string name;
-			public UnityEvent onCall;
-		}
-
-		[SerializeField] TextAsset m_GSCScript;
+		public TextAsset m_GSCScript;
 
 		[SerializeField] TMP_Text m_textBox;
 		[SerializeField] GameObject m_buttonPrefab;
@@ -73,8 +73,12 @@ namespace GSC
 		readonly Queue<GameObject> m_buttonObjectPool = new();
 		bool m_buttonPressed = false;
 
-		void Start()
+		IEnumerator scriptCoroutine = null;
+
+		void OnEnable()
 		{
+			Initialize();
+
 			string scriptText = m_GSCScript.text.Replace("\r", "");
 			m_scriptLines = scriptText.Split("\n");
 
@@ -95,13 +99,12 @@ namespace GSC
 				}
 			}
 
-			StartCoroutine(StartScript());
+			scriptCoroutine = StartScript();
+			StartCoroutine(scriptCoroutine);
 		}
 
 		IEnumerator StartScript()
 		{
-			m_textBox.text = string.Empty;
-
 			if (!m_nodeLineDict.TryGetValue(m_startNode, out m_lineIndex))
 				throw new GSCException($"Invalid start node ({m_startNode})", -1);
 
@@ -180,7 +183,7 @@ namespace GSC
 									break;
 								}
 								else
-									throw new GSCException("Scene not exist({scenePath})", m_lineIndex);
+									throw new GSCException($"Scene not exist({scenePath})", m_lineIndex);
 
 							default:
 								throw new GSCInvalidCommandException(m_lineIndex);
@@ -287,11 +290,22 @@ namespace GSC
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 		}
 
+		void Initialize()
+		{
+			if (scriptCoroutine != null)
+				StopCoroutine(scriptCoroutine);
+
+			m_textBox.text = string.Empty;
+			m_buttonPressed = false;
+			m_nodeLineDict.Clear();
+			ClearButtonLayout();
+		}
+
 		// Detach all buttons from button layout with disable it
 		// And enqueue to the button object pool
 		void ClearButtonLayout()
 		{
-			foreach (var childButton in m_buttonLayout.GetComponentsInChildren<Button>())
+			foreach (var childButton in m_buttonLayout.GetComponentsInChildren<Button>(true))
 			{
 				var childObject = childButton.gameObject;
 
