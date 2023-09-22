@@ -7,11 +7,17 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/StartScene/StartScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    guid: 935bd08a8dfeb2948ae461f84eadb1a5
   - enabled: 1
     path: Assets/Scenes/MainScene/MainScene.unity
     guid: 898488dce4c664044ba39b060d217bff
   - enabled: 1
-    path: Assets/Scenes/Item/ItemManageScene.unity
-    guid: b33d2189b402f004989142530fdc7425
+    path: Assets/Scenes/MapScenes/MapScene1.unity
+    guid: d30ff3979b5e29f45865ac6dd3d29c2e
+  - enabled: 1
+    path: Assets/Scenes/Battle Test/Battle Test.unity
+    guid: b84fc70e344ffdb43be7fad31de47e0e
+  - enabled: 1
+    path: Assets/Scenes/SelectScenes/SelectScene.unity
+    guid: bced39031dc04e44ba5d33eb45f1d585
   m_configObjects: {}
