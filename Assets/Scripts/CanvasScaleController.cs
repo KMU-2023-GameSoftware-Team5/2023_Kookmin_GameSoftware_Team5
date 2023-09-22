@@ -5,9 +5,8 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class CanvasScaleController : MonoBehaviour
 {
-	public float defaultScreenWidth;
-	public float defaultScreenHeight;
-	float m_defaultAspectRatio;
+	public float screenWidth = 1920;
+	public float screenHeight = 1080;
 
 	[SerializeField] bool m_enable = true;
 
@@ -15,19 +14,9 @@ public class CanvasScaleController : MonoBehaviour
 
 	void Start()
 	{
-		m_canvasScaler = GetComponent<CanvasScaler>();
-
-		if (m_canvasScaler.IsUnityNull())
+		if (!TryGetComponent(out m_canvasScaler))
 		{
-			Debug.LogError("Can't find canvas scaler!");
-			m_enable = false;
-		}
-
-		m_defaultAspectRatio = defaultScreenWidth / defaultScreenHeight;
-
-		if (!float.IsFinite(m_defaultAspectRatio))
-		{
-			Debug.LogError("Screen size value is invalid!");
+			Debug.LogError("Can't find canvas scaler");
 			m_enable = false;
 		}
 	}
@@ -37,10 +26,18 @@ public class CanvasScaleController : MonoBehaviour
 		if (!m_enable)
 			return;
 
+		float nowAspectRatio = screenWidth / screenHeight;
+
+		if (!float.IsFinite(nowAspectRatio))
+		{
+			Debug.LogError("Screen size value is invalid");
+			return;
+		}
+
 		// Now aspect ratio
 		float currentAspectRatio = (float)Screen.width / Screen.height;
 
-		if (m_defaultAspectRatio < currentAspectRatio)
+		if (nowAspectRatio < currentAspectRatio)
 			m_canvasScaler.matchWidthOrHeight = 1; // Match with height
 		else
 			m_canvasScaler.matchWidthOrHeight = 0; // Match with width
