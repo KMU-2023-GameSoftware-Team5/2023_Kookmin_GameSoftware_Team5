@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1500,7 +1500,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4610915573495850343, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_Name
-      value: ScriptMananger
+      value: GSCMananger
       objectReference: {fileID: 0}
     - target: {fileID: 5112201599995517174, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1543,21 +1543,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
-      propertyPath: m_gscript
-      value: 
-      objectReference: {fileID: 4900000, guid: 2af5f02cdbdd54d41b4f9f9ab5e4d726, type: 3}
-    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_textBox
       value: 
       objectReference: {fileID: 698299888}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_GSCScript
       value: 
-      objectReference: {fileID: 4900000, guid: 2af5f02cdbdd54d41b4f9f9ab5e4d726, type: 3}
+      objectReference: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_startNode
+      value: start
+      objectReference: {fileID: 0}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_buttonLayout
       value: 
       objectReference: {fileID: 1044842436}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_buttonPrefab
+      value: 
+      objectReference: {fileID: 3314579242983610785, guid: 51c23c6e1a55b8e48b002b2675c18a21, type: 3}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: callbacks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: callbacks.Array.data[0].name
+      value: test
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

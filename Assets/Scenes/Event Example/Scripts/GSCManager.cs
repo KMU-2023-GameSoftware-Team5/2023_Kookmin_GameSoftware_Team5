@@ -47,7 +47,7 @@ namespace GSC
 
 	public class GSCManager : MonoBehaviour
 	{
-		public TextAsset m_GSCScript;
+		public GSCScript m_GSCScript;
 
 		[SerializeField] TMP_Text m_textBox;
 		[SerializeField] GameObject m_buttonPrefab;
@@ -79,7 +79,7 @@ namespace GSC
 		{
 			Initialize();
 
-			string scriptText = m_GSCScript.text.Replace("\r", "");
+			string scriptText = m_GSCScript.script.Replace("\r", "");
 			m_scriptLines = scriptText.Split("\n");
 
 			// Parse script nodes and check if-waitif
