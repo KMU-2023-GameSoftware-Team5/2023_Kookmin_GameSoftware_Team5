@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace lee
 {
@@ -15,11 +16,12 @@ namespace lee
         public float speed;
         public int damage;
         public bool isAlive;
-        public bool lodge;
+        public bool lodge;  // EXPERIMENTAL
 
         [Header("Reference")]
         public SpriteRenderer sr;
 
+        // TODO: too many initializers: just use prefap default value and make more prefab
         public void Initialize(BattleManager bm, PixelHumanoid parent, Vector3 birthPosition, uint targetId, float radius, bool rotateDirection, float lifeTime, float speed, int damage, bool lodge)
         {
             isAlive = true;
@@ -34,6 +36,19 @@ namespace lee
             this.speed = speed;
             this.damage = damage;
             this.lodge = lodge;
+
+            PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
+            if (target == null)
+            {
+                transform.position += transform.right * speed * Time.deltaTime;
+                return;
+            }
+
+            Vector3 targetPos = target.transform.position + Vector3.up;
+            if (rotateDirection)
+            {
+                rotate(targetPos);
+            }
         }
 
         private void Update()
@@ -45,23 +60,24 @@ namespace lee
             if (!isAlive)
                 return;
 
-            PixelHumanoid target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
+            PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
             if (target == null)
             {
-                transform.position += transform.forward * speed * Time.deltaTime;
+                transform.position += transform.right * speed * Time.deltaTime;
                 return;
             }
 
+            Vector3 targetPos = target.transform.position + Vector3.up;
             if (rotateDirection)
             {
-                transform.LookAt(target.transform.position + Vector3.up);
+                rotate(targetPos);
             }
 
             // TODO: clamp delta' size so that not pass by target
-            // 아 귀찮아
-            transform.position += transform.forward * speed * Time.deltaTime;
+            Vector3 delta = targetPos - transform.position;
+            transform.position += delta.normalized * speed * Time.deltaTime;
 
-            if (Utility.GetDistanceBetween(transform.position, target.transform.position + Vector3.up) <= radius)
+            if (Utility.GetDistanceBetween(transform.position, targetPos) <= radius)
             {
                 // TODO: handle HIT
                 transform.SetParent(target.transform);
@@ -71,13 +87,29 @@ namespace lee
                 {
                     isAlive = false;
                     leftLifeTime = 5.0f;    // 타겟에 충돌하면 타켓 몸에 n초동안 붙어있는다. 
-                    sr.sortingOrder = -1;
                 }
                 else
                 {
                     Destroy(gameObject);
                 }
             }
+
+        } /* end of Update() */
+
+        private void LateUpdate()
+        {
+            if (Camera.main != null)
+            {
+            }
+        }
+
+        // REF : https://forum.unity.com/threads/set-forward-and-right-of-a-transform.461482/   
+        private void rotate(Vector3 target_pos)
+        {
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 right = target_pos - transform.position;
+            Vector3 up = Vector3.Cross(forward, right);
+            transform.rotation = Quaternion.LookRotation(forward, up);
         }
     }
 }

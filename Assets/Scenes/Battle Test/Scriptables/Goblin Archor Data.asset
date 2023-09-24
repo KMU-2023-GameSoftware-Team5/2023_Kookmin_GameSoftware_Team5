@@ -27,7 +27,8 @@ MonoBehaviour:
   Mask: 
   defualtAttackType: 1
   hp: 8
-  damage: 2
+  damage: 1
   walkSpeed: 3.5
   attackRange: 5
-  attackDelay: 0.6
+  attackDelay: 1.2
+  criticalRate: 0.5
