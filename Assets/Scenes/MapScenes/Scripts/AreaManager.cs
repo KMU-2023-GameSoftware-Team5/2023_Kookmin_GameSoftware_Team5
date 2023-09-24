@@ -65,7 +65,7 @@ namespace GameMap
 			m_bossArea.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(m_bossArea));
 		}
 
-		public void AreaOnClick(GameObject callerObject)
+		void AreaOnClick(GameObject callerObject)
 		{
 			if (++AreaVisitedCount >= m_bossOpenMinimum && !m_bossRevealed)
 			{
