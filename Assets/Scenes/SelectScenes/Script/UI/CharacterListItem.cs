@@ -24,7 +24,7 @@ namespace jslee{
         /// 플레이어가 가진 캐릭터를 일괄하여 보여주는 UI의 위치(초기위치)
         /// </summary>
         Transform characterList;
-        Transform rect;
+        RectTransform rect;
         CanvasGroup canvasGroup;
         /// <summary>
         /// 캐릭터가 선택된 경우 그에 따른 캐릭터 선택 슬롯
@@ -35,7 +35,7 @@ namespace jslee{
         /// 캐릭터 이미지 출력 UI
         /// </summary>
         [SerializeField]
-        Image characterImg;
+        CharacterBuilderControl characterImage;
        
         public TmpCharacter getCharacter()
         {
@@ -61,7 +61,8 @@ namespace jslee{
         {
             // TODO 
             this.character = character;
-            characterImg.color = this.character.playerColor; 
+            characterImage.buildCharacter(this.character.characterName);
+            // characterImg.color = this.character.playerColor; 
             rect = GetComponent<RectTransform>(); 
             canvasGroup = GetComponent<CanvasGroup>(); 
             this.characterList = characterList;
@@ -163,17 +164,20 @@ namespace jslee{
             transform.SetParent(canvas);
             transform.SetAsLastSibling();
 
-            canvasGroup.alpha = 0.6f;
+            canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = false;
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
-            rect.position = eventData.position;
+            rect.anchorMin = new Vector2(0f, 0f);
+            rect.anchorMax = new Vector2(0f, 0f);
+            rect.anchoredPosition = Input.mousePosition;
         }
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
+            
             if(transform.parent == canvas) // 최종위치가 캔버스면 복귀
             {
                 returnList();
@@ -183,6 +187,7 @@ namespace jslee{
                     unSelectChracter(false);
                 }
             }
+            
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = true; 
         }

@@ -27,7 +27,7 @@ namespace jslee
         /// <summary>
         /// 이 UI의 위치 정보
         /// </summary>
-        Transform rect;
+        RectTransform rect;
         /// <summary>
         /// 이 UI의 캔버스 그룹
         /// </summary>
@@ -116,7 +116,9 @@ namespace jslee
         /// <param name="eventData"></param>
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
-            rect.position = eventData.position;
+            rect.anchorMin = new Vector2(0f, 0f);
+            rect.anchorMax = new Vector2(0f, 0f);
+            rect.anchoredPosition = Input.mousePosition;
         }
 
         /// <summary>

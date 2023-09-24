@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace jslee
 { 
@@ -13,7 +15,7 @@ namespace jslee
         /// <summary>
         /// 캐릭터의 이름(캐릭터 팩토리에서 사용하는 캐릭터의 이름)
         /// </summary>
-        string characterName; 
+        public string characterName { get; private set; }
         /// <summary>
         /// 플레이어가 설정할 캐릭터의 닉네임
         /// </summary>
@@ -30,7 +32,10 @@ namespace jslee
 
         public TmpCharacter(string nickname, Color color)
         {
-            characterName = "Demon";
+            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+            System.Random random = new System.Random();
+            characterName = characterNames[random.Next(0, characterNames.Length)];
+
             characterNickName = nickname;
             characterStat = new StatClass();
             Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];

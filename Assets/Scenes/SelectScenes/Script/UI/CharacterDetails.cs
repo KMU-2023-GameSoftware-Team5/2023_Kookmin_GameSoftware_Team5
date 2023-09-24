@@ -25,7 +25,7 @@ namespace jslee
         /// 캐릭터 이미지를 보여질 컴포넌트
         /// </summary>
         [SerializeField]
-        Image chracterImage;
+        CharacterBuilderControl chracterImage;
 
         /// <summary>
         /// 캐릭터 이름보여줄 텍스트 컴포넌트
@@ -88,7 +88,7 @@ namespace jslee
             this.character = character;
             characterName.text = this.character.getName();
             characterDescription.text = this.character.getDescribe();
-            chracterImage.color = this.character.playerColor;
+            chracterImage.buildCharacter(this.character.characterName);
             for(int i = 0; i < this.character.Inventory.Length; i++)
             {
                 charactrerEquipItemSlot[i].setItem(this.character.Inventory[i]);

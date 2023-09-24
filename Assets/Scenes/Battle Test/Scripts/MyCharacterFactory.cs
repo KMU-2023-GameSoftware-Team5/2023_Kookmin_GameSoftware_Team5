@@ -46,5 +46,10 @@ namespace lee
 
             return ret;
         }
+
+        public PixelHumanoidData getPixelHumanoidData(string name)
+        {
+            return m_humanoidDataMap[name];
+        }
     }
 }
