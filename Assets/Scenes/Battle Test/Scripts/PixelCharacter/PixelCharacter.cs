@@ -1,3 +1,4 @@
+using data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,17 +13,10 @@ namespace lee
 
         [Header("Status: PixelCharacter")]
         // DON'T SET THESE VALUES DIRECTLY: it is maganged by BattleManager, not byt self
-        public int sheild;
+        public CommonStats stats;
         public int maxHp;
-        public int hp;
-        public int mp;
-        public int energy;
         public uint targetId;
-        public float walkSpeed;
-        public int damage;
-        public float attackDelay;
         public float leftAttackDelay;
-        public float criticalRate;
 
         [Header("Setting: PixelCharacter")]
         public int teamIndex;

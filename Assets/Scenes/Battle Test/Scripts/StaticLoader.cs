@@ -1,5 +1,6 @@
 using Assets.PixelHeroes.Scripts.CollectionScripts;
 using UnityEngine;
+using data;
 
 namespace lee
 {

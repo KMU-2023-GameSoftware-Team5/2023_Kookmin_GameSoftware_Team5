@@ -1,7 +1,7 @@
 ﻿using Assets.PixelHeroes.Scripts.CharacterScrips;
 using UnityEngine;
 
-namespace lee
+namespace data
 {
     public enum EDefualtAttackType
     {
@@ -11,11 +11,13 @@ namespace lee
         RangedFire2,    // 양손 총
     }
 
-    [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "lee/PixelHumanoidData", order = 1)]
-    public class PixelHumanoidData: ScriptableObject
+    [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "data/PixelHumanoidData", order = 1)]
+    public class PixelHumanoidData: scriptable.CommonStats
     {
+        [Header("PixelHumanoidData")]
         // WARNUNG: MUST BE UNIQUE!
         public string characterName = "unique_name";
+        public float attackRange;
 
         [Header("Appearance")]
         public string Head = "Human";
@@ -33,14 +35,6 @@ namespace lee
 
         [Header("Setting")]
         public EDefualtAttackType defualtAttackType;
-
-        [Header("Status")]
-        public int hp;
-        public int damage;
-        public float walkSpeed;
-        public float attackRange;
-        public float attackDelay;
-        public float criticalRate;
 
         public void SetOutToBuilder(CharacterBuilder builder)
         {
