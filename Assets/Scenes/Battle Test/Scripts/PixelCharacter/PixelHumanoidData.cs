@@ -1,5 +1,4 @@
-using Assets.PixelHeroes.Scripts.CharacterScrips;
-using SharpUI.Source.Client.UI.User.CharacterCreate.ArrowListAdapters;
+ï»¿using Assets.PixelHeroes.Scripts.CharacterScrips;
 using UnityEngine;
 
 namespace lee
@@ -7,9 +6,9 @@ namespace lee
     public enum EDefualtAttackType
     {
         Melee,
-        RangedShot,    // È°
-        RangedFire1,    // ÇÑ¼Õ ÃÑ
-        RangedFire2,    // ¾ç¼Õ ÃÑ
+        RangedShot,    // í™œ
+        RangedFire1,    // í•œì† ì´
+        RangedFire2,    // ì–‘ì† ì´
     }
 
     [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "lee/PixelHumanoidData", order = 1)]
@@ -41,6 +40,7 @@ namespace lee
         public float walkSpeed;
         public float attackRange;
         public float attackDelay;
+        public float criticalRate;
 
         public void SetOutToBuilder(CharacterBuilder builder)
         {

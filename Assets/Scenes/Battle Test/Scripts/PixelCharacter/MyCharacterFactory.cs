@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace lee
 {
+    // TODO:궂이 component여야 할까? 
     public class MyCharacterFactory : StaticGetter<MyCharacterFactory>
     {
         // find PixelCharacterData by characterName
@@ -28,12 +29,12 @@ namespace lee
                 return null;
             }
 
-            GameObject prefap = StaticLoader.Instance().GetPixelCharacterPrefap();
-            GameObject go =Instantiate(prefap, Vector3.zero, Quaternion.identity, parent);
+            GameObject characterPrefap = StaticLoader.Instance().GetPixelCharacterPrefap();
+            GameObject characterGo =Instantiate(characterPrefap, Vector3.zero, Quaternion.identity, parent);
 
-            go.transform.position = worldPosition;
+            characterGo.transform.position = worldPosition;
             
-            PixelHumanoid ret = go.GetComponent<PixelHumanoid>();
+            PixelHumanoid ret = characterGo.GetComponent<PixelHumanoid>();
 
             // build
             ret.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
@@ -43,6 +44,14 @@ namespace lee
             ret.builder.Rebuild();
 
             ret.Initilize(data);
+
+            // head bar
+            GameObject characterHeadBarPrefap = StaticLoader.Instance().GetPixelCharacterHeadBarPrefap();
+            GameObject characterHeadBarGo = Instantiate(characterHeadBarPrefap, Vector3.zero, Quaternion.identity, WorldCanvas.Instance().transform);
+
+            PixelCharacterHeadBar bar = characterHeadBarGo.GetComponent<PixelCharacterHeadBar>();
+            bar.Initialize(ret);
+            ret.headBar = bar;
 
             return ret;
         }

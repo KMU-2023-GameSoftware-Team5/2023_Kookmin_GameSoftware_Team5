@@ -13,12 +13,16 @@ namespace lee
             public Vector3 position;
         }
 
+        public bool doRandom;
         public BuildTarget[] team0Characters;
         public BuildTarget[] team1Characters;
 
         private void Start()
         {
-            spawnCharacters();
+            if (doRandom)
+                spawnCharactersRandom();
+            else
+                spawnCharacters();
         }
 
         List<PixelHumanoid> m_team0Humanoids = new List<PixelHumanoid>();
@@ -31,7 +35,7 @@ namespace lee
                     continue;
 
                 PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(target.name, target.position, transform);
-                humanoid.SetDirectionLeft(Utility.Direction2.Right);
+                humanoid.SetDirection(Utility.Direction2.Right);
                 humanoid.teamIndex = 0;
                 humanoid.bm = BattleManager.Instance();
 
@@ -44,7 +48,36 @@ namespace lee
                     continue;
 
                 PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(target.name, target.position, transform);
-                humanoid.SetDirectionLeft(Utility.Direction2.Left);
+                humanoid.SetDirection(Utility.Direction2.Left);
+                humanoid.teamIndex = 1;
+                humanoid.bm = BattleManager.Instance();
+
+                m_team1Humanoids.Add(humanoid);
+            }
+        }
+
+        private void spawnCharactersRandom()
+        {
+            int humanoidCount = StaticLoader.Instance().GetPixelHumanoidCount();
+            int randomHumanoidIndex = 0;
+            string name = "";
+
+            for (int i = 0; i < 100; i++)
+            {
+                Vector3 rand_pos0 = new Vector3(UnityEngine.Random.Range(-8, -2), 0.0f, UnityEngine.Random.Range(-8, 6));
+                randomHumanoidIndex = (int)UnityEngine.Random.Range(0, humanoidCount - 0.0001f);
+                name = StaticLoader.Instance().GetPixelHumanoidData(randomHumanoidIndex).characterName;
+                PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(name, rand_pos0, transform);
+                humanoid.SetDirection(Utility.Direction2.Right);
+                humanoid.teamIndex = 0;
+                humanoid.bm = BattleManager.Instance();
+                m_team0Humanoids.Add(humanoid);
+
+                Vector3 rand_pos1 = new Vector3(UnityEngine.Random.Range(2, 8), 0.0f, UnityEngine.Random.Range(-8, 6));
+                randomHumanoidIndex = (int)UnityEngine.Random.Range(0, humanoidCount - 0.0001f);
+                name = StaticLoader.Instance().GetPixelHumanoidData(randomHumanoidIndex).characterName;
+                humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(name, rand_pos1, transform);
+                humanoid.SetDirection(Utility.Direction2.Left);
                 humanoid.teamIndex = 1;
                 humanoid.bm = BattleManager.Instance();
 
