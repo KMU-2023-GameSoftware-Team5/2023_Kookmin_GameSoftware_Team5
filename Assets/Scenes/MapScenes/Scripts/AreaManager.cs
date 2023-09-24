@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,8 +14,8 @@ namespace GameMap
 		[SerializeField] Sprite m_randomSprite;
 		[SerializeField] Sprite m_chestSprite;
 
+		[SerializeField] GameObject m_areaGroup;
 		[SerializeField] GameObject m_bossArea;
-		[SerializeField] GameObject[] m_otherAreas;
 
 		[SerializeField] int m_bossOpenMinimum = 5;
 		[SerializeField] int m_areaOpenAtOnce = 3;
@@ -30,11 +27,16 @@ namespace GameMap
 			private set;
 		} = 0;
 
+		readonly List<GameObject> m_otherAreas = new();
 		readonly List<GameObject> m_areaHided = new();
 
 		void Start()
 		{
 			InitializeRandomSeed();
+
+			// Add all other areas to list
+			foreach (Transform areaTransfrom in m_areaGroup.transform)
+				m_otherAreas.Add(areaTransfrom.gameObject);
 
 			Sprite[] t_sprites = { // THIS IS TEMP!
 				m_midBossSprite,
@@ -54,17 +56,16 @@ namespace GameMap
 				SetAreaSprite(area, t_sprites[index]);
 			}
 
-			// Set start area
-			int startAreaIndex = Random.Range(0, m_otherAreas.Length);
+			// Show start area
+			int startAreaIndex = Random.Range(0, m_otherAreas.Count);
 			m_otherAreas[startAreaIndex].SetActive(true);
 
-			// Set boss area
-			SetAreaSprite(m_bossArea, m_bossSprite);
-			m_bossArea.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(m_bossArea));
+			// Hide and set boss area
 			m_bossArea.SetActive(false);
+			m_bossArea.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(m_bossArea));
 		}
 
-		void AreaOnClick(GameObject callerObject)
+		public void AreaOnClick(GameObject callerObject)
 		{
 			if (++AreaVisitedCount >= m_bossOpenMinimum && !m_bossRevealed)
 			{
