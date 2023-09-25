@@ -53,32 +53,9 @@ MonoBehaviour:
   m_battleSprite: {fileID: 1276331895, guid: f7ad9854dd5f8cb448623dbbf6faa250, type: 3}
   m_randomSprite: {fileID: -408190311, guid: d703a52321f8e4f428370b0496f6853e, type: 3}
   m_chestSprite: {fileID: -289275078, guid: d516ee3c07e0eef48924f8ffce533e6a, type: 3}
+  m_areaGroup: {fileID: 0}
   m_bossArea: {fileID: 0}
-  m_otherAreas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_maximumDistanceBetween:
+    a: {fileID: 0}
+    b: {fileID: 0}
   m_bossOpenMinimum: 5
-  m_areaOpenAtOnce: 3

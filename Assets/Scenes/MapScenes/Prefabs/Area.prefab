@@ -120,19 +120,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1461031004193165864}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-        m_TargetAssemblyTypeName: CanditiateManager, Assembly-CSharp
-        m_MethodName: OnAreaClick
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: area
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
 --- !u!114 &4034130040223352310
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,18 @@ using UnityEngine.UI;
 
 namespace GameMap
 {
+	[System.Serializable]
+	public class LimitStandard
+	{
+		public GameObject a;
+		public GameObject b;
+
+		public float LimitDistance
+		{
+			get => (a.transform.position - b.transform.position).magnitude;
+		}
+	}
+
 	public class AreaManager : MonoBehaviour
 	{
 		static readonly System.Random SystemRandom = new();
@@ -17,9 +29,9 @@ namespace GameMap
 		[SerializeField] GameObject m_areaGroup;
 		[SerializeField] GameObject m_bossArea;
 
+		[SerializeField] LimitStandard m_maximumDistanceBetween;
 		[SerializeField] int m_bossOpenMinimum = 5;
-		[SerializeField] int m_areaOpenAtOnce = 3;
-		bool m_bossRevealed = false;
+		int m_areaVisitCount = 0;
 
 		public int AreaVisitedCount
 		{
@@ -28,7 +40,15 @@ namespace GameMap
 		} = 0;
 
 		readonly List<GameObject> m_otherAreas = new();
-		readonly List<GameObject> m_areaHided = new();
+
+		static Vector3 GetWorldCenterPositionOfRectObject(GameObject target)
+		{
+			Vector3[] temp = new Vector3[4];
+
+			target.GetComponent<RectTransform>().GetWorldCorners(temp);
+
+			return (temp[0] + temp[2]) / 2;
+		}
 
 		void Start()
 		{
@@ -44,44 +64,63 @@ namespace GameMap
 				m_chestSprite
 			};
 
-			// Set areas
+			// Set area
 			foreach (GameObject area in m_otherAreas)
 			{
 				area.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(area));
-				area.SetActive(false);
-				m_areaHided.Add(area);
 
 				// THIS IS TEMP!
 				int index = Random.Range(0, t_sprites.Length);
 				SetAreaSprite(area, t_sprites[index]);
 			}
 
+			// Hide all areas
+			HideAllAreas();
+
 			// Show start area
 			int startAreaIndex = Random.Range(0, m_otherAreas.Count);
 			m_otherAreas[startAreaIndex].SetActive(true);
-
-			// Hide and set boss area
-			m_bossArea.SetActive(false);
-			m_bossArea.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(m_bossArea));
 		}
 
-		void AreaOnClick(GameObject callerObject)
+		// THIS IS TEMP!
+		public void AreaOnClick(GameObject area)
 		{
-			if (++AreaVisitedCount >= m_bossOpenMinimum && !m_bossRevealed)
+			m_areaVisitCount++;
+			HideAllAreas();
+			RevealNearAreas(area);
+		}
+
+		void HideAllAreas()
+		{
+			foreach (var area in m_otherAreas)
+				area.SetActive(false);
+			m_bossArea.SetActive(false);
+		}
+
+		void RevealNearAreas(GameObject area)
+		{
+			Vector3 areaPos = GetWorldCenterPositionOfRectObject(area);
+
+			foreach (var target in m_otherAreas)
 			{
-				m_bossArea.SetActive(true);
-				m_bossRevealed = true;
+				if (area == target)
+					continue;
+
+				Vector3 targetPos = GetWorldCenterPositionOfRectObject(target);
+
+				if ((areaPos - targetPos).magnitude >= m_maximumDistanceBetween.LimitDistance)
+					continue;
+
+				target.SetActive(true);
 			}
 
-			for (int i = 0; i < m_areaOpenAtOnce && m_areaHided.Count != 0; i++)
+			if (m_areaVisitCount >= m_bossOpenMinimum)
 			{
-				GameObject targetArea = m_areaHided[Random.Range(0, m_areaHided.Count)];
+				Vector3 bossPos = GetWorldCenterPositionOfRectObject(m_bossArea);
 
-				m_areaHided.Remove(targetArea);
-				targetArea.SetActive(true);
+				if ((areaPos - bossPos).magnitude < m_maximumDistanceBetween.LimitDistance)
+					m_bossArea.SetActive(true);
 			}
-
-			callerObject.SetActive(false);
 		}
 
 		void InitializeRandomSeed()
