@@ -48,11 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 295d3d54bd7b3c34d8ba5adf98a278d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bossSprite: {fileID: 1676801142, guid: c00215cb2e1644b47af67b8771e93794, type: 3}
-  m_midBossSprite: {fileID: -1963889076, guid: 0c9cd0410c3d5094580d412e6d4ddbc8, type: 3}
-  m_battleSprite: {fileID: 1276331895, guid: f7ad9854dd5f8cb448623dbbf6faa250, type: 3}
-  m_randomSprite: {fileID: -408190311, guid: d703a52321f8e4f428370b0496f6853e, type: 3}
-  m_chestSprite: {fileID: -289275078, guid: d516ee3c07e0eef48924f8ffce533e6a, type: 3}
+  m_areaData:
+  - {fileID: 11400000, guid: c0f33d1dd02cace449ead785151f9998, type: 2}
+  m_mapIconLayout: {fileID: 0}
+  m_mapIconPrefab: {fileID: 600626810237708539, guid: c90c0282845c7fb488cfc30b2f2a7203, type: 3}
   m_areaGroup: {fileID: 0}
   m_bossArea: {fileID: 0}
   m_maximumDistanceBetween:

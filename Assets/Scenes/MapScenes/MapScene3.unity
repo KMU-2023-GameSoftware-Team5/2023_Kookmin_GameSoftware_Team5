@@ -1080,7 +1080,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1457,6 +1457,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3918360099807208390, guid: 7f5938d983e053c4cbe6449e4851f115, type: 3}
   m_PrefabInstance: {fileID: 1431100369}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1651453043 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4875566651243362422, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+  m_PrefabInstance: {fileID: 1768847224}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1743524634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2302,6 +2313,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7828449521959625697, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+      propertyPath: m_Name
+      value: MapIconLayout
+      objectReference: {fileID: 0}
     - target: {fileID: 8443396528808638418, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2339,7 +2354,15 @@ PrefabInstance:
       value: LegendPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2101938920299382395, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 2064675614402228954, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 7653555522556108240, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 5928869501081489683, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 468482903932988966, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 2606688001685015513, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 668494517568795956, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
+    - {fileID: 3879204147056409012, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffe9fb35af675514387c31badfe33ce6, type: 3}
@@ -2891,6 +2914,10 @@ PrefabInstance:
       propertyPath: m_areaGroup
       value: 
       objectReference: {fileID: 1743524636}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_mapIconLayout
+      value: 
+      objectReference: {fileID: 1651453043}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_maximumDistanceBetween.a
       value: 

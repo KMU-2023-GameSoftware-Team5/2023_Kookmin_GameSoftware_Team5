@@ -20,11 +20,10 @@ namespace GameMap
 	{
 		static readonly System.Random SystemRandom = new();
 
-		[SerializeField] Sprite m_bossSprite;
-		[SerializeField] Sprite m_midBossSprite;
-		[SerializeField] Sprite m_battleSprite;
-		[SerializeField] Sprite m_randomSprite;
-		[SerializeField] Sprite m_chestSprite;
+		[SerializeField] AreaData[] m_areaData;
+
+		[SerializeField] LayoutGroup m_mapIconLayout;
+		[SerializeField] GameObject m_mapIconPrefab;
 
 		[SerializeField] GameObject m_areaGroup;
 		[SerializeField] GameObject m_bossArea;
@@ -53,31 +52,41 @@ namespace GameMap
 		void Start()
 		{
 			InitializeRandomSeed();
+			SetMapAreas();
+			SetMapIcons();
+		}
 
+		void SetMapIcons()
+		{
+			// Set icons with m_areaData
+			foreach (var areaData in m_areaData)
+			{
+				GameObject mapIcon = Instantiate(m_mapIconPrefab, m_mapIconLayout.transform);
+				areaData.SetIcon(mapIcon);
+			}
+		}
+
+		void SetMapAreas()
+		{
 			// Add all other areas to list
 			foreach (Transform areaTransfrom in m_areaGroup.transform)
 				m_otherAreas.Add(areaTransfrom.gameObject);
 
-			Sprite[] t_sprites = { // THIS IS TEMP!
-				m_midBossSprite,
-				m_battleSprite, m_randomSprite,
-				m_chestSprite
-			};
-
 			// Set area
+			// THIS IS TEMP!
 			foreach (GameObject area in m_otherAreas)
 			{
-				area.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(area));
+				int index = Random.Range(0, m_areaData.Length);
 
-				// THIS IS TEMP!
-				int index = Random.Range(0, t_sprites.Length);
-				SetAreaSprite(area, t_sprites[index]);
+				// Set area
+				area.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(area));
+				m_areaData[index].SetArea(area);
 			}
 
 			// Hide all areas
 			HideAllAreas();
 
-			// Show start area
+			// Pick and show start area
 			int startAreaIndex = Random.Range(0, m_otherAreas.Count);
 			m_otherAreas[startAreaIndex].SetActive(true);
 		}
