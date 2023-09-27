@@ -25,8 +25,8 @@ namespace lee
                 spawnCharacters();
         }
 
-        List<PixelHumanoid> m_team0Humanoids = new List<PixelHumanoid>();
-        List<PixelHumanoid> m_team1Humanoids = new List<PixelHumanoid>();
+        List<PixelCharacter> m_team0Humanoids = new List<PixelCharacter>();
+        List<PixelCharacter> m_team1Humanoids = new List<PixelCharacter>();
         private void spawnCharacters()
         {
             foreach (BuildTarget target in team0Characters)

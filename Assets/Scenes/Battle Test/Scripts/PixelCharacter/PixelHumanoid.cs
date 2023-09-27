@@ -2,7 +2,7 @@ using Assets.PixelHeroes.Scripts.CharacterScrips;
 using System;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
-using UnityEngine.UIElements;
+using data;
 
 namespace lee
 {
@@ -48,15 +48,15 @@ namespace lee
         // TODO: PixelHumanoidData와 PixelCharacterData 구분하기
         public void Initilize(PixelHumanoidData data)
         {
-            walkSpeed = data.walkSpeed;
+            stats.walkSpeed = data.walkSpeed;
             maxHp = data.hp;
-            hp = data.hp;
-            mp = 0;
+            stats.hp = data.hp;
+            stats.mp = 0;
             attackRange = data.attackRange;
-            attackDelay = data.attackDelay;
+            stats.attackDelay = data.attackDelay;
             defaultAttackType = data.defualtAttackType;
-            damage = data.damage;
-            criticalRate = data.criticalRate;
+            stats.damage = data.damage;
+            stats.criticalRate = data.criticalRate;
 
             m_fsm = new FSM(StateSet.CreateTestStateSet0(), EState.Waiting);
             m_isDead = false;

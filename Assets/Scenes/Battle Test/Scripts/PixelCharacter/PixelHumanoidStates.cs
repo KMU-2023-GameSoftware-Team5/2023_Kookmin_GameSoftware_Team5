@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using data;
 
 // PixelHumanoid가 가질 수 있는 State를 정의하는 파일
 
@@ -56,11 +57,11 @@ namespace lee
                     Vector3 delta = Vector3.zero;
                     if (owner.m_direction == Utility.Direction2.Left)
                     {
-                        delta = Vector3.left * Time.deltaTime * owner.walkSpeed;
+                        delta = Vector3.left * Time.deltaTime * owner.stats.walkSpeed;
                     }
                     else if (owner.m_direction == Utility.Direction2.Right)
                     {
-                        delta = Vector3.right * Time.deltaTime * owner.walkSpeed;
+                        delta = Vector3.right * Time.deltaTime * owner.stats.walkSpeed;
                     }
                     owner.transform.position += delta;
 
@@ -117,7 +118,7 @@ namespace lee
                         {
                             Vector3 delta = target.transform.position - owner.transform.position;
                             delta.Normalize();
-                            delta = delta * owner.walkSpeed * Time.deltaTime;
+                            delta = delta * owner.stats.walkSpeed * Time.deltaTime;
                             owner.transform.position += delta;
 
                             // consider on paused
@@ -156,7 +157,7 @@ namespace lee
                         owner.m_animator.SetTrigger("Slash");
                         owner.bm.HandleDefaultAttack(owner, target);
 
-                        owner.leftAttackDelay = owner.attackDelay;
+                        owner.leftAttackDelay = owner.stats.attackDelay;
                         return EState.Delaying;
                     }
                 }
@@ -187,7 +188,7 @@ namespace lee
                                     GameObject arrow = StaticLoader.Instance().GetDefaultArrowPrefab();
                                     GameObject arrowGo = Instantiate(arrow, owner.transform.position + Vector3.up, Quaternion.identity, null);
                                     AttackProjectile attackProjectile = arrowGo.GetComponent<AttackProjectile>();
-                                    attackProjectile.Initialize(owner.bm, owner, owner.transform.position, owner.targetId, 0.5f, true, 2.0f, 10.0f, owner.damage, false);
+                                    attackProjectile.Initialize(owner.bm, owner, owner.transform.position, owner.targetId, 0.5f, true, 2.0f, 10.0f, owner.stats.damage, false);
 
                                     break;
                                 }
@@ -203,7 +204,7 @@ namespace lee
                                 }
                         }
 
-                        owner.leftAttackDelay = owner.attackDelay;
+                        owner.leftAttackDelay = owner.stats.attackDelay;
                         return EState.Delaying;
                     }
                 }

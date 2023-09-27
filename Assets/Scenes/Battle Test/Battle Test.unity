@@ -1854,13 +1854,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618590fc21385364d8229293461fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doRandom: 1
+  doRandom: 0
   team0Characters:
   - name: Demon
     position: {x: -6, y: 0, z: -3}
   team1Characters:
   - name: Goblin Archor
+    position: {x: 6, y: 0, z: -1}
+  - name: Goblin Archor
     position: {x: 6, y: 0, z: 0}
+  - name: Goblin Archor
+    position: {x: 6, y: 0, z: 1}
 --- !u!4 &1492391913
 Transform:
   m_ObjectHideFlags: 0
@@ -2120,7 +2124,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 1916691369
+  m_SortingLayerID: -42945
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &2086997161
