@@ -701,16 +701,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 969779001670801439, guid: da438e4420cd95243918b981b4ab3e6e, type: 3}
   m_PrefabInstance: {fileID: 1351174713}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1351174715 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1594096004585689814, guid: da438e4420cd95243918b981b4ab3e6e, type: 3}
-  m_PrefabInstance: {fileID: 1351174713}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1351174716 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 541686436952538581, guid: da438e4420cd95243918b981b4ab3e6e, type: 3}
-  m_PrefabInstance: {fileID: 1351174713}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1930524225
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -912,22 +902,6 @@ PrefabInstance:
       propertyPath: m_mapIconLayout
       value: 
       objectReference: {fileID: 3947173237592668259}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_areaData.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_areaData.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c0f33d1dd02cace449ead785151f9998, type: 2}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_maximumDistanceBetween.a
-      value: 
-      objectReference: {fileID: 1351174716}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_maximumDistanceBetween.b
-      value: 
-      objectReference: {fileID: 1351174715}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

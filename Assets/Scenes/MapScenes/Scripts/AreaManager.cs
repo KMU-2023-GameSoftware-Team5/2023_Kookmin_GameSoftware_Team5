@@ -28,15 +28,9 @@ namespace GameMap
 		[SerializeField] GameObject m_areaGroup;
 		[SerializeField] GameObject m_bossArea;
 
-		[SerializeField] LimitStandard m_maximumDistanceBetween;
+		[SerializeField] LimitStandard m_maximumDistanceBetweenArea;
 		[SerializeField] int m_bossOpenMinimum = 5;
 		int m_areaVisitCount = 0;
-
-		public int AreaVisitedCount
-		{
-			get;
-			private set;
-		} = 0;
 
 		readonly List<GameObject> m_otherAreas = new();
 
@@ -110,14 +104,15 @@ namespace GameMap
 		{
 			Vector3 areaPos = GetWorldCenterPositionOfRectObject(area);
 
-			foreach (var target in m_otherAreas)
+			foreach (GameObject target in m_otherAreas)
 			{
 				if (area == target)
 					continue;
 
 				Vector3 targetPos = GetWorldCenterPositionOfRectObject(target);
 
-				if ((areaPos - targetPos).magnitude >= m_maximumDistanceBetween.LimitDistance)
+				// Target area is out of range
+				if ((areaPos - targetPos).magnitude >= m_maximumDistanceBetweenArea.LimitDistance)
 					continue;
 
 				target.SetActive(true);
@@ -127,7 +122,8 @@ namespace GameMap
 			{
 				Vector3 bossPos = GetWorldCenterPositionOfRectObject(m_bossArea);
 
-				if ((areaPos - bossPos).magnitude < m_maximumDistanceBetween.LimitDistance)
+				// Boss area is in range
+				if ((areaPos - bossPos).magnitude < m_maximumDistanceBetweenArea.LimitDistance)
 					m_bossArea.SetActive(true);
 			}
 		}
@@ -138,12 +134,6 @@ namespace GameMap
 
 			Random.InitState(seed);
 			Debug.Log($"Seed: {seed}");
-		}
-
-		void SetAreaSprite(GameObject areaObject, Sprite sprite)
-		{
-			Image image = areaObject.GetComponent<Image>();
-			image.sprite = sprite;
 		}
 	}
 }

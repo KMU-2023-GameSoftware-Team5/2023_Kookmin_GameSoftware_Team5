@@ -50,11 +50,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_areaData:
   - {fileID: 11400000, guid: c0f33d1dd02cace449ead785151f9998, type: 2}
+  - {fileID: 11400000, guid: a5d6f5ecb9303ea48be1fd7e27b85548, type: 2}
   m_mapIconLayout: {fileID: 0}
   m_mapIconPrefab: {fileID: 600626810237708539, guid: c90c0282845c7fb488cfc30b2f2a7203, type: 3}
   m_areaGroup: {fileID: 0}
   m_bossArea: {fileID: 0}
-  m_maximumDistanceBetween:
+  m_maximumDistanceBetweenArea:
     a: {fileID: 0}
     b: {fileID: 0}
   m_bossOpenMinimum: 5
