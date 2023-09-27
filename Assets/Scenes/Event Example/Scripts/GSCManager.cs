@@ -70,7 +70,6 @@ namespace GSC
 		string[] m_scriptLines;
 		int m_lineIndex;
 
-		readonly Queue<GameObject> m_buttonObjectPool = new();
 		bool m_buttonPressed = false;
 
 		IEnumerator scriptCoroutine = null;
@@ -256,18 +255,11 @@ namespace GSC
 							if (!m_nodeLineDict.TryGetValue(nodeName, out int nextNodeIndex))
 								throw new GSCNodeNotFoundException(nodeName, m_lineIndex);
 
-							// Instantiate and set button as children of button layout, or dequeue
-							if (!m_buttonObjectPool.TryDequeue(out GameObject buttonObject))
-								buttonObject = Instantiate(m_buttonPrefab, m_buttonLayout.transform);
+							var buttonObject = Instantiate(m_buttonPrefab, m_buttonLayout.transform);
+							var button = buttonObject.GetComponent<Button>();
 
-							buttonObject.transform.SetParent(m_buttonLayout.transform);
-							buttonObject.SetActive(true);
-
-							// Set button onClick events
-							Button buttonComponent = buttonObject.GetComponent<Button>();
-
-							buttonComponent.onClick.RemoveAllListeners();
-							buttonComponent.onClick.AddListener(() =>
+							button.onClick.RemoveAllListeners();
+							button.onClick.AddListener(() =>
 							{
 								nowNode = GotoNode(nextNodeIndex);
 								m_buttonPressed = true;
@@ -301,17 +293,13 @@ namespace GSC
 			ClearButtonLayout();
 		}
 
-		// Detach all buttons from button layout with disable it
-		// And enqueue to the button object pool
+		// Destroy all buttons from layout
 		void ClearButtonLayout()
 		{
 			foreach (var childButton in m_buttonLayout.GetComponentsInChildren<Button>(true))
 			{
 				var childObject = childButton.gameObject;
-
-				childObject.SetActive(false);
-				childObject.transform.SetParent(null);
-				m_buttonObjectPool.Enqueue(childObject);
+				Destroy(childObject);
 			}
 		}
 
