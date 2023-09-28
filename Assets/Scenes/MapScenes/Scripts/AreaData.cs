@@ -1,21 +1,13 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "Map Area", order = 3)]
-public class AreaData : ScriptableObject
+namespace GameMap
 {
-	[SerializeField] Sprite sprite;
-	[SerializeField] string areaName;
-
-	public void SetArea(GameObject areaObject)
+	[CreateAssetMenu(menuName = "Map Area", order = 3)]
+	public class AreaData : ScriptableObject
 	{
-		areaObject.GetComponent<Image>().sprite = sprite;
-	}
-
-	public void SetIcon(GameObject iconObject)
-	{
-		iconObject.GetComponentInChildren<Image>().sprite = sprite;
-		iconObject.GetComponentInChildren<TMP_Text>().text = areaName;
+		public string areaName;
+		public Sprite sprite;
+		public UnityEvent onClick;
 	}
 }

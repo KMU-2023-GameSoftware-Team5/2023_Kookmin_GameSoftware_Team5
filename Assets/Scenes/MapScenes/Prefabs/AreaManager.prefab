@@ -51,11 +51,9 @@ MonoBehaviour:
   m_areaData:
   - {fileID: 11400000, guid: c0f33d1dd02cace449ead785151f9998, type: 2}
   - {fileID: 11400000, guid: a5d6f5ecb9303ea48be1fd7e27b85548, type: 2}
-  m_mapIconLayout: {fileID: 0}
-  m_mapIconPrefab: {fileID: 600626810237708539, guid: c90c0282845c7fb488cfc30b2f2a7203, type: 3}
-  m_areaGroup: {fileID: 0}
+  m_iconGroupLayout: {fileID: 0}
+  m_iconPrefab: {fileID: 9101710550927767454, guid: 5b0f3289ad469ff43993d65283151cb4, type: 3}
+  m_canditiateGroup: {fileID: 7407533105053168903, guid: d90b17a7d697a674eb60c2a3490ea8e2, type: 3}
   m_bossArea: {fileID: 0}
-  m_maximumDistanceBetweenArea:
-    a: {fileID: 0}
-    b: {fileID: 0}
+  m_maxDistanceGroup: {fileID: 0}
   m_bossOpenMinimum: 5

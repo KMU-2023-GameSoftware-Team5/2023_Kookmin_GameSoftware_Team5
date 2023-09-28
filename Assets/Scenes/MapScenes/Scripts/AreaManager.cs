@@ -5,12 +5,12 @@ using UnityEngine.UI;
 namespace GameMap
 {
 	[System.Serializable]
-	public class LimitStandard
+	public class LimitDistanceStandard
 	{
 		public GameObject a;
 		public GameObject b;
 
-		public float LimitDistance
+		public float Value
 		{
 			get => (a.transform.position - b.transform.position).magnitude;
 		}
@@ -22,19 +22,18 @@ namespace GameMap
 
 		[SerializeField] AreaData[] m_areaData;
 
-		[SerializeField] LayoutGroup m_mapIconLayout;
-		[SerializeField] GameObject m_mapIconPrefab;
+		[SerializeField] GameObject m_iconGroupLayout;
+		[SerializeField] GameObject m_iconPrefab;
 
-		[SerializeField] GameObject m_areaGroup;
+		[SerializeField] GameObject m_canditiateGroup;
 		[SerializeField] GameObject m_bossArea;
 
-		[SerializeField] LimitStandard m_maximumDistanceBetweenArea;
+		[SerializeField] LimitDistanceStandard m_maxDistanceGroup;
 		[SerializeField] int m_bossOpenMinimum = 5;
-		int m_areaVisitCount = 0;
 
-		readonly List<GameObject> m_otherAreas = new();
+		List<GameObject> m_areas = null;
 
-		static Vector3 GetWorldCenterPositionOfRectObject(GameObject target)
+		static Vector3 GetWorldCenterPosition(GameObject target)
 		{
 			Vector3[] temp = new Vector3[4];
 
@@ -46,86 +45,81 @@ namespace GameMap
 		void Start()
 		{
 			InitializeRandomSeed();
-			SetMapAreas();
-			SetMapIcons();
-		}
+			BuildAreas();
 
-		void SetMapIcons()
-		{
-			// Set icons with m_areaData
-			foreach (var areaData in m_areaData)
+			// Disable all areas and add onClick to areas
+			foreach (GameObject area in m_areas)
 			{
-				GameObject mapIcon = Instantiate(m_mapIconPrefab, m_mapIconLayout.transform);
-				areaData.SetIcon(mapIcon);
+				area.SetActive(false);
+
+				var button = area.GetComponent<Button>();
+
+				button.onClick.AddListener(() =>
+				{
+					Vector3 areaPos = GetWorldCenterPosition(area);
+
+					foreach (GameObject other in m_areas)
+					{
+						if (area == other)
+							continue;
+
+						Vector3 otherPos = GetWorldCenterPosition(other);
+
+						// Other area is out of range
+						if ((areaPos - otherPos).magnitude >= m_maxDistanceGroup.Value)
+							continue;
+
+						other.SetActive(true);
+					}
+				});
 			}
-		}
-
-		void SetMapAreas()
-		{
-			// Add all other areas to list
-			foreach (Transform areaTransfrom in m_areaGroup.transform)
-				m_otherAreas.Add(areaTransfrom.gameObject);
-
-			// Set area
-			// THIS IS TEMP!
-			foreach (GameObject area in m_otherAreas)
-			{
-				int index = Random.Range(0, m_areaData.Length);
-
-				// Set area
-				area.GetComponent<Button>().onClick.AddListener(() => AreaOnClick(area));
-				m_areaData[index].SetArea(area);
-			}
-
-			// Hide all areas
-			HideAllAreas();
 
 			// Pick and show start area
-			int startAreaIndex = Random.Range(0, m_otherAreas.Count);
-			m_otherAreas[startAreaIndex].SetActive(true);
+			int startAreaIndex = Random.Range(0, m_areas.Count);
+			m_areas[startAreaIndex].SetActive(true);
 		}
 
-		// THIS IS TEMP!
-		public void AreaOnClick(GameObject area)
+		void BuildAreas()
 		{
-			m_areaVisitCount++;
-			HideAllAreas();
-			RevealNearAreas(area);
-		}
+			var builder = new AreaBuilder();
 
-		void HideAllAreas()
-		{
-			foreach (var area in m_otherAreas)
-				area.SetActive(false);
-			m_bossArea.SetActive(false);
-		}
-
-		void RevealNearAreas(GameObject area)
-		{
-			Vector3 areaPos = GetWorldCenterPositionOfRectObject(area);
-
-			foreach (GameObject target in m_otherAreas)
+			if (!builder.TryUseIconPrefab(m_iconPrefab))
 			{
-				if (area == target)
-					continue;
-
-				Vector3 targetPos = GetWorldCenterPositionOfRectObject(target);
-
-				// Target area is out of range
-				if ((areaPos - targetPos).magnitude >= m_maximumDistanceBetweenArea.LimitDistance)
-					continue;
-
-				target.SetActive(true);
+				Debug.LogError("Icon prefab doesn't have component Image or TMP_Text or both.");
+				return;
 			}
 
-			if (m_areaVisitCount >= m_bossOpenMinimum)
+			builder.UseAreaPickStrategy(areaDataCount =>
 			{
-				Vector3 bossPos = GetWorldCenterPositionOfRectObject(m_bossArea);
+				// THIS IS TEMP!
+				return Random.Range(0, areaDataCount);
+			});
 
-				// Boss area is in range
-				if ((areaPos - bossPos).magnitude < m_maximumDistanceBetweenArea.LimitDistance)
-					m_bossArea.SetActive(true);
+			builder.UseIconParent(m_iconGroupLayout.transform);
+
+			foreach (Transform canditiateTransfrom in m_canditiateGroup.transform)
+			{
+				if (!canditiateTransfrom.TryGetComponent(out Image image))
+				{
+					string name = canditiateTransfrom.name;
+					Debug.LogError($"This area does not have image component: {name}");
+					continue;
+				}
+
+				if (!canditiateTransfrom.TryGetComponent(out Button button))
+				{
+					string name = canditiateTransfrom.name;
+					Debug.LogError($"This area does not have button component: {name}");
+					continue;
+				}
+
+				builder.AddAreaTarget(image, button);
 			}
+
+			foreach (AreaData areaData in m_areaData)
+				builder.AddAreaData(areaData);
+
+			m_areas = builder.Build();
 		}
 
 		void InitializeRandomSeed()
