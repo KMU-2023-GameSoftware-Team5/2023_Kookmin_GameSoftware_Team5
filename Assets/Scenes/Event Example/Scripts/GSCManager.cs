@@ -45,11 +45,11 @@ namespace GSC
 		public UnityEvent onCall;
 	}
 
-	public class GSCManager : MonoBehaviour
+	public partial class GSCManager : MonoBehaviour
 	{
-		public GSCScript m_GSCScript;
+		[SerializeField] GSCScript m_GSCScript;
 
-		[SerializeField] TMP_Text m_textBox;
+		[SerializeField] GSCText m_GSCTextbox;
 		[SerializeField] GameObject m_buttonPrefab;
 		[SerializeField] LayoutGroup m_buttonLayout;
 
@@ -121,7 +121,7 @@ namespace GSC
 				// Textbox output
 				if (!Regex.IsMatch(line, $"^{SpaceMayRule}{m_prefix}"))
 				{
-					m_textBox.text += line;
+					m_GSCTextbox.AddText(line);
 					continue;
 				}
 
@@ -130,14 +130,12 @@ namespace GSC
 				string op, args;
 				Match match;
 
-				// Parse cmd to op and args
-				if ((match = Regex.Match(cmd, $"^{OPRule}{AnyRule}$")).Success)
-				{
-					op = match.Groups[1].Value;
-					args = match.Groups[2].Value;
-				}
-				else
+				if (!(match = Regex.Match(cmd, $"^{OPRule}{AnyRule}$")).Success)
 					throw new GSCInvalidCommandException(m_lineIndex);
+
+				// Parse cmd to op and args
+				op = match.Groups[1].Value;
+				args = match.Groups[2].Value;
 
 				// Divide by argument type
 				// No arguments
@@ -149,7 +147,9 @@ namespace GSC
 							if (!ifStateOpened)
 								throw new GSCException("If statement not opened", m_lineIndex);
 
+							m_GSCTextbox.StartTyping();
 							yield return new WaitUntil(() => m_buttonPressed);
+
 							m_buttonPressed = false;
 							ifStateOpened = false;
 
@@ -279,6 +279,7 @@ namespace GSC
 			if (ifStateOpened)
 				throw new GSCException("Unclosed if statement detected", m_lineIndex);
 
+			m_GSCTextbox.StartTyping();
 			Debug.Log($"(GSC)End script: node {nowNode}, line {m_lineIndex}");
 		}
 
@@ -287,7 +288,7 @@ namespace GSC
 			if (scriptCoroutine != null)
 				StopCoroutine(scriptCoroutine);
 
-			m_textBox.text = string.Empty;
+			m_GSCTextbox.Clear();
 			m_buttonPressed = false;
 			m_nodeLineDict.Clear();
 			ClearButtonLayout();
@@ -306,7 +307,7 @@ namespace GSC
 		// Goto the node in line nodeLineIndex and return that node name.
 		string GotoNode(int nodeLineIndex)
 		{
-			m_textBox.text = string.Empty;
+			m_GSCTextbox.Clear();
 
 			ClearButtonLayout();
 

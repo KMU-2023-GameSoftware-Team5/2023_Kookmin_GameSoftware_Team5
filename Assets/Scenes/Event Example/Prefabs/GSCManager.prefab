@@ -44,10 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c64e9600ddd794f8781206f3393382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GSCScript: {fileID: 0}
+  m_GSCScript: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
   m_textBox: {fileID: 0}
-  m_buttonPrefab: {fileID: 0}
+  m_buttonPrefab: {fileID: 3314579242983610785, guid: 51c23c6e1a55b8e48b002b2675c18a21, type: 3}
   m_buttonLayout: {fileID: 0}
-  m_startNode: 
+  m_startNode: start
   m_prefix: 35
-  callbacks: []
+  callbacks:
+  - name: test
+    onCall:
+      m_PersistentCalls:
+        m_Calls: []
+  m_typeInterval: 0.01
+  m_sourceTextbox: {fileID: 0}
+  m_destinationTextbox: {fileID: 0}
