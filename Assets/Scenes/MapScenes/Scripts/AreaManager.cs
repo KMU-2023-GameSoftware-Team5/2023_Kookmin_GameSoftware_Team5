@@ -4,42 +4,31 @@ using UnityEngine.UI;
 
 namespace GameMap
 {
-	[System.Serializable]
-	public class LimitDistanceStandard
-	{
-		public GameObject a;
-		public GameObject b;
-
-		public float Value
-		{
-			get => (a.transform.position - b.transform.position).magnitude;
-		}
-	}
-
 	public class AreaManager : MonoBehaviour
 	{
 		static readonly System.Random SystemRandom = new();
 
-		[SerializeField] AreaData[] m_areaData;
-
 		[SerializeField] GameObject m_iconGroupLayout;
 		[SerializeField] GameObject m_iconPrefab;
 
+		[SerializeField] AreaData[] m_areaData;
 		[SerializeField] GameObject m_canditiateGroup;
+
 		[SerializeField] GameObject m_bossArea;
+		[SerializeField] AreaData m_bossData;
 
-		[SerializeField] LimitDistanceStandard m_maxDistanceGroup;
-		[SerializeField] int m_bossOpenMinimum = 5;
+		[SerializeField] GameObject m_nearbyStandardA;
+		[SerializeField] GameObject m_nearbyStandardB;
 
-		List<GameObject> m_areas = null;
+		[SerializeField] [Range(0, 50)] int m_bossOpenMinimum = 5;
+		int m_areaVisitCount = 0;
 
-		static Vector3 GetWorldCenterPosition(GameObject target)
+		List<GameObject> m_areas;
+
+		float NearbyDistanceStandard
 		{
-			Vector3[] temp = new Vector3[4];
-
-			target.GetComponent<RectTransform>().GetWorldCorners(temp);
-
-			return (temp[0] + temp[2]) / 2;
+			get => (m_nearbyStandardA.transform.position -
+					m_nearbyStandardB.transform.position).magnitude;
 		}
 
 		void Start()
@@ -47,36 +36,29 @@ namespace GameMap
 			InitializeRandomSeed();
 			BuildAreas();
 
-			// Disable all areas and add onClick to areas
+			// Disable all areas and add onClick listeners to area
 			foreach (GameObject area in m_areas)
 			{
 				area.SetActive(false);
 
 				var button = area.GetComponent<Button>();
 
-				button.onClick.AddListener(() =>
-				{
-					Vector3 areaPos = GetWorldCenterPosition(area);
-
-					foreach (GameObject other in m_areas)
-					{
-						if (area == other)
-							continue;
-
-						Vector3 otherPos = GetWorldCenterPosition(other);
-
-						// Other area is out of range
-						if ((areaPos - otherPos).magnitude >= m_maxDistanceGroup.Value)
-							continue;
-
-						other.SetActive(true);
-					}
-				});
+				button.onClick.AddListener(() => m_areaVisitCount++);
+				button.onClick.AddListener(() => DisableAllAreas(area));
+				button.onClick.AddListener(() => ActivateNearAreas(area));
 			}
 
 			// Pick and show start area
 			int startAreaIndex = Random.Range(0, m_areas.Count);
 			m_areas[startAreaIndex].SetActive(true);
+		}
+
+		void InitializeRandomSeed()
+		{
+			int seed = SystemRandom.Next();
+
+			Random.InitState(seed);
+			Debug.Log($"Seed: {seed}");
 		}
 
 		void BuildAreas()
@@ -85,7 +67,7 @@ namespace GameMap
 
 			if (!builder.TryUseIconPrefab(m_iconPrefab))
 			{
-				Debug.LogError("Icon prefab doesn't have component Image or TMP_Text or both.");
+				Debug.LogError("Icon prefab doesn't have chuld component Image or TMP_Text or both.");
 				return;
 			}
 
@@ -97,23 +79,31 @@ namespace GameMap
 
 			builder.UseIconParent(m_iconGroupLayout.transform);
 
+			if (!m_bossArea.TryGetComponent(out Button bossButton))
+			{
+				Debug.LogError($"Boss area does not have button component");
+				return;
+			}
+
+			builder.UseBossTarget(bossButton, m_bossData);
+
 			foreach (Transform canditiateTransfrom in m_canditiateGroup.transform)
 			{
 				if (!canditiateTransfrom.TryGetComponent(out Image image))
 				{
 					string name = canditiateTransfrom.name;
-					Debug.LogError($"This area does not have image component: {name}");
+					Debug.LogWarning($"This area does not have image component: {name}");
 					continue;
 				}
 
 				if (!canditiateTransfrom.TryGetComponent(out Button button))
 				{
 					string name = canditiateTransfrom.name;
-					Debug.LogError($"This area does not have button component: {name}");
+					Debug.LogWarning($"This area does not have button component: {name}");
 					continue;
 				}
 
-				builder.AddAreaTarget(image, button);
+				builder.AddCanditiateTarget(image, button);
 			}
 
 			foreach (AreaData areaData in m_areaData)
@@ -122,12 +112,34 @@ namespace GameMap
 			m_areas = builder.Build();
 		}
 
-		void InitializeRandomSeed()
+		void ActivateNearAreas(GameObject target)
 		{
-			int seed = SystemRandom.Next();
+			Vector3 areaPos = target.transform.position;
 
-			Random.InitState(seed);
-			Debug.Log($"Seed: {seed}");
+			foreach (GameObject other in m_areas)
+			{
+				if (target == other || (other == m_bossArea && m_areaVisitCount < m_bossOpenMinimum))
+					continue;
+
+				Vector3 otherPos = other.transform.position;
+
+				// Other area is out of range
+				if ((areaPos - otherPos).magnitude >= NearbyDistanceStandard)
+					continue;
+
+				other.SetActive(true);
+			}
+		}
+
+		void DisableAllAreas(GameObject exclusive = null)
+		{
+			foreach (GameObject area in m_areas)
+			{
+				if (area == exclusive)
+					continue;
+
+				area.SetActive(false);
+			}
 		}
 	}
 }

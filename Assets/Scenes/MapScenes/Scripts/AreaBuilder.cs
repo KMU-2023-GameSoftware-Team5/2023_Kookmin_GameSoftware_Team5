@@ -15,23 +15,19 @@ namespace GameMap
 		/// <returns> Return index of AreaData array to apply </returns>
 		public delegate int AreaPickStrategy(int areaDataCount);
 
-		readonly List<Tuple<Image, Button>> m_areaTagets = new();
-		readonly List<GameObject> m_canditiates = new();
+		readonly List<Tuple<Image, Button>> m_canditiateTargets = new();
 		readonly List<AreaData> m_areaDatas = new();
+
+		Button m_bossButton;
+		AreaData m_bossData;
 
 		AreaPickStrategy m_areaPickStrategy = null;
 
-		GameObject m_iconPrefab = null;
-		Transform m_iconParent = null;
+		GameObject m_iconPrefab;
+		Transform m_iconParent;
 
-		public void AddAreaTarget(Image areaImage, Button areaButton) =>
-			m_areaTagets.Add(Tuple.Create(areaImage, areaButton));
-
-		public void AddCanditiateGroup(GameObject group)
-		{
-			foreach (Transform child in group.transform)
-				m_canditiates.Add(child.gameObject);
-		}
+		public void AddCanditiateTarget(Image areaImage, Button areaButton) =>
+			m_canditiateTargets.Add(Tuple.Create(areaImage, areaButton));
 
 		public void AddAreaData(AreaData areaData) => m_areaDatas.Add(areaData);
 
@@ -54,14 +50,21 @@ namespace GameMap
 
 		public void UseIconParent(Transform parent) => m_iconParent = parent;
 
+		public void UseBossTarget(Button bossButton, AreaData bossData)
+		{
+			m_bossButton = bossButton;
+			m_bossData = bossData;
+		}
+
 		/// <summary>
-		/// Instantiate icons with AreaDatas and 
+		/// Instantiate icons with AreaDatas and pick each areas type.
 		/// </summary>
-		/// <returns>  </returns>
+		/// <returns> Return all areas </returns>
 		public List<GameObject> Build()
 		{
 			// 0. If any core object is null, return empty list
-			if (m_iconPrefab == null || m_areaPickStrategy == null)
+			if (m_iconPrefab == null || m_areaPickStrategy is null ||
+				m_bossButton == null || m_bossData == null)
 				return new List<GameObject>();
 
 			// 1. Instantiate area icon
@@ -72,20 +75,27 @@ namespace GameMap
 				areaIcon.GetComponentInChildren<TMP_Text>().SetText(areaData.areaName);
 			}
 
-			// 2. Pick Area type with AreaPickStrategy and add to List
+			// 2-1. Remove boss data from m_areaDatas if exist
+			m_areaDatas.Remove(m_bossData);
+
+			// 2-2. Pick Area type with AreaPickStrategy and add to List
 			List<GameObject> ret = new();
 
-			foreach (var targetTuple in m_areaTagets)
+			foreach (var targetTuple in m_canditiateTargets)
 			{
 				int index = m_areaPickStrategy(m_areaDatas.Count);
 
 				targetTuple.Item1.sprite = m_areaDatas[index].sprite;
-				targetTuple.Item2.onClick.AddListener(() => m_areaDatas[index].onClick.Invoke());
+				targetTuple.Item2.onClick.AddListener(m_areaDatas[index].onClick.Invoke);
 
 				ret.Add(targetTuple.Item1.gameObject);
 			}
 
-			// 3. Return list
+			// 3. Set boss button and add to list
+			m_bossButton.onClick.AddListener(m_bossData.onClick.Invoke);
+			ret.Add(m_bossButton.gameObject);
+
+			// 4. Return list
 			return ret;
 		}
 	}
