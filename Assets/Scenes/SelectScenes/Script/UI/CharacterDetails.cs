@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 캐릭터 세부 정보창 관리 컴포넌트
@@ -19,7 +19,7 @@ namespace jslee
         /// <summary>
         /// 세부정보창에서 보여질 캐릭터
         /// </summary>
-        TmpCharacter character;
+        PixelCharacter character;
 
         /// <summary>
         /// 캐릭터 이미지를 보여질 컴포넌트
@@ -82,7 +82,7 @@ namespace jslee
         /// </summary>
         /// <remarks>외부에서 호출하는 함수</remarks>
         /// <param name="character">세부 정보창에서 보여질 캐릭터</param>
-        public void openCharacterDetails(TmpCharacter character)
+        public void openCharacterDetails(PixelCharacter character)
         {
             details.SetActive(true);
             this.character = character;
@@ -101,18 +101,18 @@ namespace jslee
         /// <remarks>아이템 매니저의 equip 메서드 호출</remarks>
         /// <param name="equipId">아이템 장착할 캐릭터의 인벤토리 슬롯</param>
         /// <param name="item">장착할 아이템</param>
-        public void equip(int equipId, EquipItem item)
+        public bool equip(int equipId, EquipItem item)
         {
-            EquipItemManager.Instance.equip(character, equipId,item);
+            return CharacterSelectManager.Instance.equip(character, equipId,item);
         }
 
         /// <summary>
         /// 아이템 해제 메서드
         /// </summary>
         /// <param name="equipId">아이템 해제할 인벤토리 슬롯</param>
-        public void unEquip(int equipId)
+        public bool unEquip(int equipId)
         {
-            EquipItemManager.Instance.unEquip(character, equipId);
+            return CharacterSelectManager.Instance.unEquip(character, equipId);
         }
 
     }

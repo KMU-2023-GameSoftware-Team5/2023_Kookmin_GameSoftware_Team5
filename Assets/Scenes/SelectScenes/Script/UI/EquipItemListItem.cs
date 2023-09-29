@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 플레이어 보유 장비아이템 하나의 정보를 보여주는 객체
@@ -93,7 +93,8 @@ namespace jslee
             this.itemInventorySlot = itemInventorySlot;
             this.canvas = canvas;
             itemName.text = this.item.getItemName();
-            itemImage.color = this.item.itemColor;
+            // itemImage.color = this.item.itemColor;
+            itemImage.sprite = this.item.getItemIconImage(); 
         }
 
         /// <summary>

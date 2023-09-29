@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.61}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.210022, y: -16.790009}
+  m_AnchoredPosition: {x: -3.210022, y: -16.79001}
   m_SizeDelta: {x: -73.58, y: -33.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &38558874
@@ -320,6 +320,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190140389}
   m_CullTransparentMesh: 1
+--- !u!1 &227280080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227280082}
+  - component: {fileID: 227280081}
+  m_Layer: 0
+  m_Name: MyDeckFactroy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &227280081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227280080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0263cca8e70bac5468727c8bf36407b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDatas:
+  - {fileID: 11400000, guid: cf1356f1d4b2c9a4bbd019677451530f, type: 2}
+  - {fileID: 11400000, guid: 5d55cb751bc46b549b279f47e2991d63, type: 2}
+  - {fileID: 11400000, guid: b43bc3cb15ef957429f7b490425ffc6d, type: 2}
+  - {fileID: 11400000, guid: 60b2641dfe24aee409fab59c8c752e7d, type: 2}
+  - {fileID: 11400000, guid: 19bf4b8f060dbb340a0fa6405b14630c, type: 2}
+  - {fileID: 11400000, guid: f116655cd23ca7446ad05c7238a79452, type: 2}
+--- !u!4 &227280082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227280080}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3859646, y: -0.5382948, z: -9.984357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &237389840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2725,6 +2776,8 @@ MonoBehaviour:
   collection: {fileID: 11400000, guid: 490ae32d2288bb44c860168dd03613ca, type: 2}
   pixelHumanoidPrefap: {fileID: 216740871570109727, guid: 119cde6ab8738b34781bf6430c92feec, type: 3}
   defaultArrowPrefap: {fileID: 3484203600360959584, guid: e62cfc5a062735240ba5a596d2a920e8, type: 3}
+  pixelCharacterHeadBarPrefap: {fileID: 0}
+  floatingTextPrefap: {fileID: 0}
   myCharacterBuilder: {fileID: 1769271881}
   pixeHumanoidDatas:
   - {fileID: 11400000, guid: dae5869a46e0a11469cf4bc08fddac8e, type: 2}
@@ -2850,7 +2903,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b9963f8189f2e408d59fdd75de107f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: 0
 --- !u!4 &1755410574
 Transform:
   m_ObjectHideFlags: 0
@@ -3434,7 +3486,7 @@ GameObject:
   - component: {fileID: 1963001152}
   - component: {fileID: 1963001153}
   m_Layer: 0
-  m_Name: PlayerCharacterManager
+  m_Name: PlayerDeckManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3911,3 +3963,4 @@ SceneRoots:
   - {fileID: 1734933255}
   - {fileID: 1769271882}
   - {fileID: 1755410574}
+  - {fileID: 227280082}

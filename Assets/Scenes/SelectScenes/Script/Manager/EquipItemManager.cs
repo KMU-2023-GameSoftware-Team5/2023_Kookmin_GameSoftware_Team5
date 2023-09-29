@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 플레이어가 보유한 아이템에 대한 관리 객체
@@ -58,12 +58,14 @@ namespace jslee
         { 
             // 임시 데이터 생성
             items = new EquipItem[6];
-            items[0] = new EquipItem("blue", Color.blue);
-            items[1] = new EquipItem("magenta", Color.magenta);
-            items[2] = new EquipItem("cyan", Color.cyan);
-            items[3] = new EquipItem("yellow", Color.yellow);
-            items[4] = new EquipItem("red", Color.red);
-            items[5] = new EquipItem("green", Color.green);
+            
+            items[0] = new EquipItem("sheild");
+            items[1] = new EquipItem("sword");
+            items[2] = new EquipItem("scroll");
+            items[3] = new EquipItem("ring");
+            items[4] = new EquipItem("wand");
+            items[5] = new EquipItem("saber");
+            
 
             // 플레이어 보유 아이템에 대한 UI 생성
             for (int i = 0; i < items.Length; i++)
@@ -80,27 +82,6 @@ namespace jslee
         {
             GameObject newPrefab = Instantiate(itemInventoryItemPrefeb, itemInventoryGrid);
             newPrefab.GetComponent<ItemInventorySlot>().Initialize(item, canvas.transform);
-        }
-
-        /// <summary>
-        /// 캐릭터에게 아이템 장착 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 장착할 캐릭터</param>
-        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
-        /// <param name="item">장착할 아이템</param>
-        public void equip(TmpCharacter character, int equipId, EquipItem item)
-        {
-            character.equip(equipId, item);
-        }
-
-        /// <summary>
-        /// 캐릭터 아이템 장착 해제 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 해제할 캐릭터</param>
-        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
-        public void unEquip(TmpCharacter character, int equipId)
-        {
-            character.unEquip(equipId);
         }
 
         /// <summary>

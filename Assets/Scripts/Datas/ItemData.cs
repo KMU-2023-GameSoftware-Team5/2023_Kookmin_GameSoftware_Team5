@@ -20,7 +20,7 @@ namespace data
         // WARNUNG: MUST BE UNIQUE!
         public string itemName = "unique_name";
 
-        public Image iconImage;
+        public Sprite iconImage;
         public EItemEffect effect;
         public string description;
     }

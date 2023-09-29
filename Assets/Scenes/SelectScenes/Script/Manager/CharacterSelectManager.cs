@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 캐릭터 선택 관리 객체
@@ -29,11 +29,11 @@ namespace jslee
         /// <summary>
         /// 현재 플레이어가 가지고 있는 캐릭터의 집합
         /// </summary>
-        public TmpCharacter[] characters;
+        public PixelCharacter[] characters;
         /// <summary>
         /// 현재 플레이어가 선택한 캐릭터의 집합
         /// </summary>
-        public TmpCharacter[] selectCharacters;
+        public PixelCharacter[] selectCharacters;
         /// <summary>
         /// 캐릭터 선택 슬롯에 대한 배열
         /// </summary>
@@ -81,13 +81,14 @@ namespace jslee
         void Start()
         {
             // 임시 데이터 생성
-            characters = new TmpCharacter[6];
-            characters[0] = new TmpCharacter("blue", Color.blue);
-            characters[1] = new TmpCharacter("magenta", Color.magenta);
-            characters[2] = new TmpCharacter("cyan", Color.cyan);
-            characters[3] = new TmpCharacter("yellow", Color.yellow);
-            characters[4] = new TmpCharacter("red", Color.red);
-            characters[5] = new TmpCharacter("green", Color.green);
+            characters = new PixelCharacter[6];
+            
+            characters[0] = MyDeckFactory.Instance().buildPixelCharacter("blue");
+            characters[1] = MyDeckFactory.Instance().buildPixelCharacter("magenta");
+            characters[2] = MyDeckFactory.Instance().buildPixelCharacter("cyan");
+            characters[3] = MyDeckFactory.Instance().buildPixelCharacter("yellow");
+            characters[4] = MyDeckFactory.Instance().buildPixelCharacter("red");
+            characters[5] = MyDeckFactory.Instance().buildPixelCharacter("green");
 
             // 현재 보유중인 캐릭터 출력
             for (int i = 0; i < characters.Length; i++)
@@ -96,7 +97,7 @@ namespace jslee
             }
 
             // 캐릭터 선택 슬롯 생성
-            selectCharacters = new TmpCharacter[5]; 
+            selectCharacters = new PixelCharacter[5]; 
             selectors = new CharacterSelector[5];
             for(int i=0; i < selectors.Length; i++)
             {
@@ -110,7 +111,7 @@ namespace jslee
         /// </summary>
         /// <param name="i">추후 제거 필요(미사용)</param>
         /// <param name="character">플레이어의 캐릭터 정보</param>
-        void createCharacterInventoryPrefeb(int i, TmpCharacter character)
+        void createCharacterInventoryPrefeb(int i, PixelCharacter character)
         {
             GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
             newPrefab.GetComponent<CharacterListItem>().Initialize(character, canvas.transform, characterInventoryGrid.transform);
@@ -133,7 +134,7 @@ namespace jslee
         /// 캐릭터 세부 정보창 열기
         /// </summary>
         /// <param name="character">세부 정보창을 열어야하는 캐릭터</param>
-        public void openCharacterDetails(TmpCharacter character)
+        public void openCharacterDetails(PixelCharacter character)
         {
             characterDetails.openCharacterDetails(character);
         }
@@ -143,10 +144,9 @@ namespace jslee
         /// </summary>
         /// <param name="selectId">캐릭터가 몇번에 선택되었는지</param>
         /// <param name="character">선택된 캐릭터 정보</param>
-        public void selectCharacter(int selectId, TmpCharacter character)
+        public void selectCharacter(int selectId, PixelCharacter character)
         {
             selectCharacters[selectId] = character;
-            logSelectors();
         }
 
         /// <summary>
@@ -160,23 +160,25 @@ namespace jslee
         }
 
         /// <summary>
-        /// 디버깅용 임시 로그 함수(추후제거)
+        /// 캐릭터에게 아이템 장착 이벤트
         /// </summary>
-        void logSelectors()
+        /// <param name="character">아이템을 장착할 캐릭터</param>
+        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
+        /// <param name="item">장착할 아이템</param>
+        public bool equip(PixelCharacter character, int equipId, EquipItem item)
         {
-            string ret = "nowSelected\n";
-            for(int i = 0; i < selectCharacters.Length; i++)
-            {
-                if (selectCharacters[i] == null)
-                {
-                    ret += $"null\n";
-                }
-                else
-                {
-                    ret += $"{selectCharacters[i].getName()}";
-                }
-            }
-            Debug.Log(ret);
+            return character.equip(equipId, item);
         }
+
+        /// <summary>
+        /// 캐릭터 아이템 장착 해제 이벤트
+        /// </summary>
+        /// <param name="character">아이템을 해제할 캐릭터</param>
+        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
+        public bool unEquip(PixelCharacter character, int equipId)
+        {
+            return character.unEquip(equipId);
+        }
+
     }
 }

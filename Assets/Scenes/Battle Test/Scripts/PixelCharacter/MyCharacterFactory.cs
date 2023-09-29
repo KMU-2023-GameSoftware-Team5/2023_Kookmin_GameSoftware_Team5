@@ -4,7 +4,7 @@ using data;
 
 namespace lee
 {
-    // TODO:±ÄÀÌ component¿©¾ß ÇÒ±î? 
+    // TODO:ê¶‚ì´ componentì—¬ì•¼ í• ê¹Œ? 
     public class MyCharacterFactory : StaticGetter<MyCharacterFactory>
     {
         // find PixelCharacterData by characterName
@@ -57,9 +57,9 @@ namespace lee
             return ret;
         }
 
-        public PixelHumanoidData getPixelHumanoidData(string name)
+        public Dictionary<string, PixelHumanoidData> getPixelHumanoidDataMap()
         {
-            return m_humanoidDataMap[name];
+            return m_humanoidDataMap;
         }
     }
 }

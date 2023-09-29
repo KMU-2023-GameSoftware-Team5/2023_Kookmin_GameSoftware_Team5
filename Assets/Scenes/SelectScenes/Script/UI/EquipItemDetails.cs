@@ -1,10 +1,11 @@
+using deck;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 아이템 세부 정보창
@@ -47,7 +48,8 @@ namespace jslee
             this.item = item;
             itemName.text = this.item.getItemName();
             itemDescription.text = this.item.getItemDescription();
-            itemImage.color = this.item.itemColor;
+            //itemImage.color = this.item.itemColor;
+            itemImage.sprite = this.item.getItemIconImage();
             detailUI.SetActive(true);
         }
 

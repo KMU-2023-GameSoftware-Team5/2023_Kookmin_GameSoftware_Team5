@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace jslee{
+namespace deck
+{
     /// <summary>
     /// 플레이어가 보유한 캐릭터 하나에 대한 정보를 보여주는 UI를 제어하는 객체
     /// </summary>
@@ -14,7 +15,7 @@ namespace jslee{
         /// <summary>
         /// UI가 보여줄 캐릭터 객체
         /// </summary>
-        TmpCharacter character;
+        PixelCharacter character;
 
         /// <summary>
         /// 드래그 처리를 위한 캔버스
@@ -37,7 +38,7 @@ namespace jslee{
         [SerializeField]
         CharacterBuilderControl characterImage;
        
-        public TmpCharacter getCharacter()
+        public PixelCharacter getCharacter()
         {
             return character;
         }
@@ -57,7 +58,7 @@ namespace jslee{
         /// <param name="character"></param>
         /// <param name="canvas"></param>
         /// <param name="characterList"></param>
-        public void Initialize(TmpCharacter character, Transform canvas, Transform characterList)
+        public void Initialize(PixelCharacter character, Transform canvas, Transform characterList)
         {
             // TODO 
             this.character = character;

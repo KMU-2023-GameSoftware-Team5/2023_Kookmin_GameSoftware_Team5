@@ -1,9 +1,10 @@
+using deck;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 캐릭터 아이템 정보보여주는 UI를 감싸는 컴포넌트

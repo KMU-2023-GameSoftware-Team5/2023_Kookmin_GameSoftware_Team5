@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 캐릭터 선택 슬롯 컴포넌트 객체

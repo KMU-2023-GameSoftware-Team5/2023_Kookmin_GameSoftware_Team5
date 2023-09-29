@@ -1,12 +1,12 @@
 using Assets.PixelHeroes.Scripts.CharacterScrips;
-using lee;
+using data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-namespace jslee
+namespace deck
 {
     public class CharacterBuilderControl : MonoBehaviour
     {
@@ -19,9 +19,9 @@ namespace jslee
         public void buildCharacter(string characterName)
         {
 
-            builder.SpriteCollection = StaticLoader.Instance().GetCollection();
+            builder.SpriteCollection = MyDeckFactory.Instance().GetCollection();
             builder.SpriteLibrary = spriteLibrary;
-            MyCharacterFactory.Instance().getPixelHumanoidData(characterName).SetOutToBuilder(builder);
+            MyDeckFactory.Instance().getPixelHumanoidData(characterName).SetOutToBuilder(builder);
             builder.Rebuild();
         }
     }

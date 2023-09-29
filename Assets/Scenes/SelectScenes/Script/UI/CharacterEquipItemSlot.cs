@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 캐릭터 세부정보창에서 캐릭터 인벤토리 UI 관리하는 객체
@@ -34,7 +34,7 @@ namespace jslee
         /// </summary>
         CharacterDetails characterDetails;
 
-        public TmpCharacter character { 
+        public PixelCharacter character { 
             get {
                 return this.character;
             }
@@ -91,8 +91,11 @@ namespace jslee
         /// <param name="newItem">새로 장착할 아이템</param>
         void equip(EquipItem newItem)
         {
-            characterDetails.equip(equipId, newItem);
-            equipItem = newItem;
+            bool equip = characterDetails.equip(equipId, newItem);
+            if (equip) // 장비 성공시에
+            {
+                equipItem = newItem;
+            }
         }
 
         /// <summary>
@@ -100,8 +103,11 @@ namespace jslee
         /// </summary>
         public void unEquip()
         {
-            characterDetails.unEquip(equipId); 
-            equipItem = null;
+            bool unequip = characterDetails.unEquip(equipId); 
+            if (unequip)
+            {
+                equipItem = null;
+            }
         }
 
         void Update()
@@ -111,7 +117,8 @@ namespace jslee
             }
             else {
                 emptySlot.SetActive(false);
-                itemImage.color = equipItem.itemColor;
+                // itemImage.color = equipItem.itemColor;
+                itemImage.sprite = equipItem.getItemIconImage();
                 itemName.text = equipItem.getItemName();
             }
         }

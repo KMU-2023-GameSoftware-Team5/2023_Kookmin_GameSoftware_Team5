@@ -1,40 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using data;
 using UnityEngine;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 장비 아이템 정보 관리하는 객체 
     /// </summary>
     public class EquipItem
     {
-        /*
-            이하의 속성들은 추후 개편 예정
-        */
-        string itemName;
-        StatClass itemStat;
+
         /// <summary>
-        /// TODO 아이템 스프라이트로 대체할 것
+        /// 아이템 정보 객체(scriptable)
         /// </summary>
-        public Color itemColor;
+        ItemData itemData;
+
         /// <summary>
         /// 아이템 주인에 대한 레퍼런스
         /// </summary>
-        private TmpCharacter itemOwner;
+        private PixelCharacter itemOwner;
+        
         /// <summary>
         /// 아이템 주인의 인벤토리 몇번째 칸에 아이템이 저장되어 있는 지 확인하는 변수
         /// </summary>
         private int idx = -1;
-        /// <summary>
-        /// 장비아이템 객체 생성자. 추후 개선해야함
-        /// </summary>
-        /// <param name="itemName"></param>
-        /// <param name="color"></param>
-        public EquipItem(string itemName, Color color)
+
+        public EquipItem(ItemData itemData)
         {
-            this.itemName = itemName;
-            itemColor = color;
+            this.itemData = itemData;
+        }
+
+
+        public EquipItem(string itemName) {
+            this.itemData = MyDeckFactory.Instance().GetItemData(itemName);
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace jslee
         /// <returns> 아이템 이름 </returns>
         public string getItemName()
         {
-            return itemName;
+            return itemData.itemName;
         }
 
         /// <summary>
@@ -53,14 +52,17 @@ namespace jslee
         /// <returns>아이템에 대한 설명(플레이어를 위한)</returns>
         public string getItemDescription()
         {
-            string ret = "";
-            ret += $"{getItemName()}\n";
-            if (itemOwner != null)
-            {
-                ret += $"now owner is {itemOwner.getName()}\n";
-            }
+            return itemData.description;
+        }
 
-            return ret;
+        public Sprite getItemIconImage()
+        {
+            return itemData.iconImage;
+        }
+
+        public ItemData getItemData()
+        {
+            return itemData;
         }
 
         /// <summary>
@@ -68,23 +70,26 @@ namespace jslee
         /// </summary>
         /// <param name="idx"> 아이템이 플레이어의 인벤토리에서 몇번쨰 칸에 착용할 것인지</param>
         /// <param name="owner">아이템 착용 대상자</param>
-        public void equip(int idx, TmpCharacter owner)
+        /// <returns>(boolean) 장비 아이템 착용 성공 여부</returns>
+        public bool equip(int idx, PixelCharacter owner)
         {
             if(itemOwner != null) 
             {
                 itemOwner.Inventory[idx] = null;
-            }
-            
+            }            
             this.idx = idx;
             itemOwner = owner;
+            return true;
         }
         /// <summary>
         /// 아이템 착용해제 코드
         /// </summary>
-        public void unEquip()
+        /// <returns>(boolean) 장비 아이템 해제 성공 여부</returns>
+        public bool unEquip()
         {
             this.idx = -1;
             itemOwner = null;
+            return true;
         }
         /// <summary>
         /// 착용하고자하는 아이템이 원래의 주인이 있는지

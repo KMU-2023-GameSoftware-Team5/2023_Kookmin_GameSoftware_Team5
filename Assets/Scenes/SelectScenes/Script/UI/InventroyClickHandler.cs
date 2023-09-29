@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace jslee
+namespace deck
 {
     /// <summary>
     /// 플레이어가 보유한 캐릭터, 아이템 보여주는 창에서 탭버튼 조작 이벤트 관리 컴포넌트
