@@ -4,7 +4,7 @@ namespace GSC
 {
 	public class GSCForceType : MonoBehaviour
 	{
-		GSCText m_textbox;
+		GSCTextbox m_textbox;
 		bool m_enable = true;
 
 		void Start()

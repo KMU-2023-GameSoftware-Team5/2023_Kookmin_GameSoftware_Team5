@@ -1375,8 +1375,52 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1044842436}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_buttonParent
+      value: 
+      objectReference: {fileID: 1044842435}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_typeInterval
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScriptFile
+      value: 
+      objectReference: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].name
+      value: test
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Temp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GSC.GSCManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_callbacks.Array.data[0].onCall.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

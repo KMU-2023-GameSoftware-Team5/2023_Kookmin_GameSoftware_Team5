@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace GSC
 {
-	[AddComponentMenu("GSC Text", 1)]
-	public class GSCText : TextMeshProUGUI
+	[AddComponentMenu("GSC Textbox", 1)]
+	public class GSCTextbox : TextMeshProUGUI
 	{
 		[SerializeField] float m_typeInterval = 0.01f;
 
@@ -28,14 +28,12 @@ namespace GSC
 		{
 			if (m_typingCoroutine is not null)
 			{
-				Debug.Log("(GSC)Shut down prev typing effect");
 				StopCoroutine(m_typingCoroutine);
 
 				m_effectBuilder.Clear();
 				ForceCompleteType = false;
 			}
 
-			Debug.Log("(GSC)Start typing effect");
 			m_typingCoroutine = Typing();
 			StartCoroutine(m_typingCoroutine);
 		}
@@ -59,8 +57,6 @@ namespace GSC
 			}
 
 			ForceCompleteType = false;
-
-			Debug.Log("(GSC)End typing effect");
 		}
 
 		public new void SetText(StringBuilder sb)
