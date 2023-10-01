@@ -121,7 +121,9 @@ namespace deck
         /// <param name="equipId">아이템 해제할 인벤토리 슬롯</param>
         public bool unEquip(int equipId)
         {
-            return CharacterSelectManager.Instance.unEquip(character, equipId);
+            bool unEquipSuccess = CharacterSelectManager.Instance.unEquip(character, equipId);
+            characterStats.updateStat();
+            return unEquipSuccess;
         }
 
     }

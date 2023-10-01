@@ -22,10 +22,6 @@ namespace deck{
         /// <param name="item">캐릭터가 장착할 아이템</param>
         public bool equip(int idx, EquipItem item)
         {
-            if (Inventory[idx] != null) // 해당 아이템 슬롯에 아이템이 이미 있는 경우
-            {
-                unEquip(idx);
-            }
             foreach (EquipItem myItem in Inventory)
             {
                 if (myItem != null)
@@ -35,6 +31,10 @@ namespace deck{
                         return false;
                     }
                 }
+            }
+            if (Inventory[idx] != null) // 해당 아이템 슬롯에 아이템이 이미 있는 경우
+            {
+                unEquip(idx);
             }
             Inventory[idx] = item;
             Inventory[idx].equip(idx, this);

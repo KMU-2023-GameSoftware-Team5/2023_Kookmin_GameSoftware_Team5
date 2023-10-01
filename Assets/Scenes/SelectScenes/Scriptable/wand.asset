@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sheild: 0
   hp: 0
-  mp: 0
-  energy: 10
+  mp: 5
+  energy: 17
   walkSpeed: 0
-  damage: 10
+  damage: 6
   attackDelay: 0
-  criticalRate: 0
+  criticalRate: 0.5
   itemName: wand
   iconImage: {fileID: 21300000, guid: 3eefd8e118ab286458819a807332bc47, type: 3}
   effect: 0

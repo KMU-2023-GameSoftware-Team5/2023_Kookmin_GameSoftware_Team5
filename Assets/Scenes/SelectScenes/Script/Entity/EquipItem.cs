@@ -31,12 +31,24 @@ namespace deck
         private int idx = -1;
 
         /// <summary>
-        /// 생성자에서만 사용하는 초기 스텟 복사 메서드
+        /// 생성자에서만 사용하는 아이템 스텟 복사 메서드
+        /// CopyFrom이 작동안되서 생성
         /// </summary>
         void copyStat()
         {
-            itemStat = new CommonStats();
-            itemStat.CopyFrom(itemData);
+            itemStat = new CommonStats()
+            {
+                sheild = itemData.sheild,
+                hp = itemData.hp,
+                mp = itemData.mp,
+                energy = itemData.energy,
+                walkSpeed = itemData.walkSpeed,
+                damage = itemData.damage,
+                attackDelay = itemData.attackDelay,
+                criticalRate = itemData.criticalRate
+            };
+
+            Debug.Log($"itemData : {itemData.energy} / itemStat : {itemStat.energy}");
         }
 
         public EquipItem(ItemData itemData)
@@ -67,7 +79,7 @@ namespace deck
         /// <returns>아이템에 대한 설명(플레이어를 위한)</returns>
         public string getItemDescription()
         {
-            return itemData.description + $"{itemStat.energy}";
+            return itemData.description;
         }
 
         public Sprite getItemIconImage()

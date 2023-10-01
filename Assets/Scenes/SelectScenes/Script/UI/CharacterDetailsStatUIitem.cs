@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,8 +27,11 @@ namespace deck
 
         public void setStat(int characterStat, int itemStat)
         {
-            string characterStatString = characterStat.ToString();
-            string itemStatString = itemStat.ToString();
+            int characterStatFortext= characterStat > 0 ? characterStat : 0;
+            int itemStatFortext = itemStat > 0 ? itemStat : -itemStat;
+
+            string characterStatString = characterStatFortext.ToString();
+            string itemStatString = itemStatFortext.ToString();
             int colorFlag;
             if(itemStat > 0)
             {
@@ -45,8 +49,11 @@ namespace deck
 
         public void setStat(float characterStat, float itemStat)
         {
-            string characterStatString = characterStat.ToString();
-            string itemStatString = itemStat.ToString();
+            float characterStatFortext = characterStat > 0 ? characterStat : 0;
+            float itemStatFortext = itemStat > 0 ? itemStat : -itemStat;
+
+            string characterStatString = characterStatFortext.ToString();
+            string itemStatString = itemStatFortext.ToString();
             int colorFlag;
             if (itemStat > 0)
             {
@@ -72,18 +79,19 @@ namespace deck
         /// <param name="colorFlag">텍스트 색깔 설정을 위한 속성 : 아이템에 의해 스텟이 증가되는가? 증가, 변동없음, 감소 순으로 1, 0, -1</param>
         void setStat(string characterStat, string itemStat, int colorFlag)
         {
-            this.characterStat.text = characterStat;
-            this.itemStat.text = itemStat;
-            this.characterStat.overrideColorTags = true;
-            this.itemStat.overrideColorTags = true;
+            string plusMinusText = "";
+            //this.characterStat.overrideColorTags = true;
+            //this.itemStat.overrideColorTags = true;
             
             if(colorFlag == 1)
             {
+                plusMinusText = "+";
                 this.characterStat.color = plusColor;
                 this.itemStat.color = plusColor;
             }
             else if(colorFlag == -1)
             {
+                plusMinusText = "-";
                 this.characterStat.color = minusColor;
                 this.itemStat.color = minusColor;
             }
@@ -92,6 +100,9 @@ namespace deck
                 this.characterStat.color = basicColor;
                 this.itemStat.color = basicColor;
             }
+            this.characterStat.text = characterStat;
+            this.itemStat.text = $"({plusMinusText}{itemStat})";
+
         }
     }
 
