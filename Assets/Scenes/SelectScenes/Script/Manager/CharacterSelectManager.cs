@@ -1,3 +1,4 @@
+using placement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,6 +79,11 @@ namespace deck
         [SerializeField]
         CharacterDetails characterDetails;
 
+        /// <summary>
+        /// 배치 UI 배열
+        /// /summary>
+        PlacementCharacter[] placementUIs;
+
         void Start()
         {
             // 임시 데이터 생성
@@ -104,6 +110,8 @@ namespace deck
                 selectors[i] = createCharacterSelectorPrefeb(i);
 
             }
+
+            placementUIs = new PlacementCharacter[5];
         }
 
         /// <summary>
@@ -147,6 +155,9 @@ namespace deck
         public void selectCharacter(int selectId, PixelCharacter character)
         {
             selectCharacters[selectId] = character;
+            placementUIs[selectId] = MyDeckFactory.Instance().buildPixelHumanoidByPixelCharacter(
+                (PixelHumanoid)selectCharacters[selectId]
+            );
         }
 
         /// <summary>
@@ -156,6 +167,9 @@ namespace deck
         public void unSelectCharacter(int selectId)
         {
             selectCharacters[selectId] = null;
+            Debug.Log(placementUIs[selectId]);
+            placementUIs[selectId].unSelect();
+            placementUIs[selectId] = null;
             //logSelectors();
         }
 

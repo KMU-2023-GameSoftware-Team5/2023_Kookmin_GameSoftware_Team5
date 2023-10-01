@@ -15,6 +15,8 @@ namespace deck{
         public EquipItem[] Inventory;
         protected CommonStats characterStat; 
 
+        public Vector3 worldPosition {  get; set; }
+
         /// <summary>
         /// 캐릭터에게 아이템 장착 메서드
         /// </summary>

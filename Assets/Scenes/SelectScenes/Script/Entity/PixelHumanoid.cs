@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using data;
+using System;
 
 namespace deck
 {
@@ -18,6 +19,8 @@ namespace deck
             
             characterName = characterNames[random.Next(0, characterNames.Length)];
             characterNickName = nickname;
+
+            worldPosition = new Vector3(UnityEngine.Random.Range(-8, -2), 0.0f, UnityEngine.Random.Range(-8, 6));
 
             // 캐릭터 스텟정보 추출
             characterStat = new CommonStats();
