@@ -1857,14 +1857,18 @@ MonoBehaviour:
   doRandom: 0
   team0Characters:
   - name: Demon
-    position: {x: -6, y: 0, z: -3}
+    position: {x: -6, y: 0, z: 0}
   team1Characters:
   - name: Goblin Archor
-    position: {x: 6, y: 0, z: -1}
+    position: {x: 6, y: 0, z: 3}
+  - name: Goblin Archor
+    position: {x: 6, y: 0, z: 1}
   - name: Goblin Archor
     position: {x: 6, y: 0, z: 0}
   - name: Goblin Archor
-    position: {x: 6, y: 0, z: 1}
+    position: {x: 6, y: 0, z: -2}
+  - name: Goblin Archor
+    position: {x: 6, y: 0, z: -3}
 --- !u!4 &1492391913
 Transform:
   m_ObjectHideFlags: 0
@@ -2155,6 +2159,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1046406378751200722, guid: 306c1e357682f314593846b0331134b2, type: 3}
+      propertyPath: lightningPillar
+      value: 
+      objectReference: {fileID: 5980311250256988142, guid: 1eaaf01e0bb97254a9347289189019b4, type: 3}
     - target: {fileID: 1046406378751200722, guid: 306c1e357682f314593846b0331134b2, type: 3}
       propertyPath: myCharacterBuilder
       value: 

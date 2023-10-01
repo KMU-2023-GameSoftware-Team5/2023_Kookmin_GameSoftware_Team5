@@ -16,7 +16,6 @@ namespace lee
         public CommonStats stats;
         public int maxHp;
         public uint targetId;
-        public float leftAttackDelay;
 
         [Header("Setting: PixelCharacter")]
         public int teamIndex;

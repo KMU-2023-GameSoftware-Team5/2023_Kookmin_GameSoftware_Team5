@@ -9,7 +9,8 @@ namespace lee
     public partial class PixelHumanoid : PixelCharacter
     {
         [Header("Status: PixelHumanoid")]
-        public EState state; 
+        public EState state;
+        public float leftAttackDelay;
 
         [Header("Setting: PixelCharacter")]
         public float searchingRange = 5.0f;
