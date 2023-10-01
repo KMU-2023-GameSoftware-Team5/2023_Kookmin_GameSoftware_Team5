@@ -10,10 +10,10 @@ namespace GSC
 	{
 		[SerializeField] float m_typeInterval = 0.01f;
 
-		// Real text content of this textbox
+		// Real text content
 		readonly StringBuilder m_contentBuilder = new();
-		// Use for typing effect
-		readonly StringBuilder m_effectBuilder = new();
+		// Use for build textbox content
+		readonly StringBuilder m_textboxBuilder = new();
 
 		IEnumerator m_typingCoroutine = null;
 
@@ -29,8 +29,6 @@ namespace GSC
 			if (m_typingCoroutine is not null)
 			{
 				StopCoroutine(m_typingCoroutine);
-
-				m_effectBuilder.Clear();
 				ForceCompleteType = false;
 			}
 
@@ -40,9 +38,9 @@ namespace GSC
 
 		IEnumerator Typing()
 		{
-			m_effectBuilder.Clear();
+			var effect = EffectGenerator();
 
-			for (int i = 0; i < m_contentBuilder.Length; i++)
+			while (effect.MoveNext())
 			{
 				if (ForceCompleteType)
 				{
@@ -51,12 +49,20 @@ namespace GSC
 				}
 
 				yield return new WaitForSeconds(m_typeInterval);
-
-				m_effectBuilder.Append(m_contentBuilder[i]);
-				base.SetText(m_effectBuilder);
 			}
+		}
 
-			ForceCompleteType = false;
+		IEnumerator EffectGenerator()
+		{
+			m_textboxBuilder.Clear();
+
+			for (int i = 0; i < m_contentBuilder.Length; i++)
+			{
+				yield return null;
+
+				m_textboxBuilder.Append(m_contentBuilder[i]);
+				base.SetText(m_textboxBuilder);
+			}
 		}
 
 		public new void SetText(StringBuilder sb)
