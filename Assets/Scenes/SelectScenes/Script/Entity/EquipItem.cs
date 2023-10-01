@@ -15,6 +15,10 @@ namespace deck
         /// 아이템 정보 객체(scriptable)
         /// </summary>
         ItemData itemData;
+        /// <summary>
+        /// Item 스텟
+        /// </summary>
+        public CommonStats itemStat { get; private set; }
 
         /// <summary>
         /// 아이템 주인에 대한 레퍼런스
@@ -26,14 +30,25 @@ namespace deck
         /// </summary>
         private int idx = -1;
 
+        /// <summary>
+        /// 생성자에서만 사용하는 초기 스텟 복사 메서드
+        /// </summary>
+        void copyStat()
+        {
+            itemStat = new CommonStats();
+            itemStat.CopyFrom(itemData);
+        }
+
         public EquipItem(ItemData itemData)
         {
             this.itemData = itemData;
+            copyStat();
         }
 
 
         public EquipItem(string itemName) {
             this.itemData = MyDeckFactory.Instance().GetItemData(itemName);
+            copyStat();
         }
 
         /// <summary>
@@ -52,7 +67,7 @@ namespace deck
         /// <returns>아이템에 대한 설명(플레이어를 위한)</returns>
         public string getItemDescription()
         {
-            return itemData.description;
+            return itemData.description + $"{itemStat.energy}";
         }
 
         public Sprite getItemIconImage()

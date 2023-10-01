@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c3de4dfb7b27e4ea869ccb19444945, type: 3}
   m_Name: sheild
   m_EditorClassIdentifier: 
-  sheild: 0
+  sheild: 10
   hp: 0
   mp: 0
   energy: 0

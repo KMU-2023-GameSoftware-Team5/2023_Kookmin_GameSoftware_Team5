@@ -39,6 +39,11 @@ namespace deck
         TextMeshProUGUI characterDescription;
 
         /// <summary>
+        /// 캐릭터 스텟을 보여줄 UI 컴포넌트
+        /// </summary>
+        [SerializeField] CharacterDetailsStatUI characterStats;
+        
+        /// <summary>
         /// 캐릭터 인벤토리 정보 위치 컴포넌트
         /// </summary>
         [SerializeField]
@@ -52,6 +57,7 @@ namespace deck
         /// 캐릭터 인벤토리 정보 슬롯
         /// </summary>
         CharacterEquipItemSlot[] charactrerEquipItemSlot;
+        
 
 
         void Awake()
@@ -89,6 +95,7 @@ namespace deck
             characterName.text = this.character.getName();
             characterDescription.text = this.character.getDescribe();
             chracterImage.buildCharacter(this.character.characterName);
+            characterStats.setCharacter(character);
             for(int i = 0; i < this.character.Inventory.Length; i++)
             {
                 charactrerEquipItemSlot[i].setItem(this.character.Inventory[i]);
@@ -103,7 +110,9 @@ namespace deck
         /// <param name="item">장착할 아이템</param>
         public bool equip(int equipId, EquipItem item)
         {
-            return CharacterSelectManager.Instance.equip(character, equipId,item);
+            bool equipSuccess = CharacterSelectManager.Instance.equip(character, equipId,item);
+            characterStats.updateStat();
+            return equipSuccess;
         }
 
         /// <summary>

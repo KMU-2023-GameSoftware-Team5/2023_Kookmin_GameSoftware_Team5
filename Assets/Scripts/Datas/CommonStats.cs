@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace data
@@ -27,6 +28,23 @@ namespace data
         public int damage;
         public float attackDelay;
         public float criticalRate;
+
+        /// <summary>
+        /// 스텟 출력을 위한 + 연산 오버로딩
+        /// </summary>
+        public static CommonStats operator +(CommonStats A, CommonStats B) {
+            CommonStats ret = new CommonStats();
+            ret.sheild = A.sheild + B.sheild;
+            ret.hp = A.hp + B.hp;
+            ret.mp = A.mp + B.mp;
+            ret.energy = A.energy + B.energy;
+            ret.walkSpeed = A.walkSpeed + B.walkSpeed;
+            ret.damage = A.damage + B.damage;
+            ret.attackDelay = A.attackDelay + B.attackDelay;
+            ret.criticalRate = A.criticalRate + B.criticalRate;
+            return ret;
+        }
+
     }
 
     namespace scriptable

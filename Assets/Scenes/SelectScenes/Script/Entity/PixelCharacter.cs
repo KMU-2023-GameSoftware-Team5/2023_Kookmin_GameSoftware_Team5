@@ -72,7 +72,25 @@ namespace deck{
             ret += $"{getName()}";
             return ret;
         }
+        
+        public CommonStats getEquipItemStats()
+        {
+            CommonStats ret = new CommonStats();
+            foreach(EquipItem item in Inventory)
+            {
+                if(item != null)
+                {
+                    ret += item.itemStat;
+                }
+            }
+            return ret;
+        }
 
-
+        public CommonStats getCharacterStats()
+        {
+            CommonStats equipItemStat = getEquipItemStats();
+            CommonStats ret = characterStat + equipItemStat;
+            return ret;
+        }
     }
 }
