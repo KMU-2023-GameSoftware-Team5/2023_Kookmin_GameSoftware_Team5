@@ -16,7 +16,7 @@ MonoBehaviour:
     \"two buttons\"\r\n3\r\n#if \"long description\" long\r\n4\r\n#waitif\r\n\r\n#node
     scene_test\r\n#scene \"SampleScene\"\r\n\r\n#node \"two buttons\"\r\n1\r\n#if
     \"exit\" exit\r\n2\r\n#if \"to start\" start\r\n3\r\n#waitif\r\ndont show!\r\n\r\n#node
-    call_test\r\ncall test\r\n\t#call \ttest\t\r\n#if \"to start\" start\r\n#waitif\r\n\r\n\r\n\r\n#node
+    call_test\r\ncall test\r\n\t#call \ttest\t\r\n#if \"to start\" start\r\n#waitif\r\n\n#node
     long\r\nAnything long Anything long Anything long Anything long Anything long
     Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
@@ -26,5 +26,5 @@ MonoBehaviour:
     long Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
-    long Anything long Anything long Anything long Anything long Anything long \r\n#node
-    exit\r\nEXITED"
+    long Anything long Anything long Anything long Anything long Anything long \n#if
+    long_if long_if\r\n#waitif\n#node long_if\nhello world!\n\n#node exit\r\nEXITED\n\n"
