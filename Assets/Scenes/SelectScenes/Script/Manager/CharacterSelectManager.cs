@@ -49,7 +49,7 @@ namespace deck
         /// Drag 이벤트 처리를 위한 canvas레퍼런스
         /// </summary>
         [SerializeField]
-        GameObject canvas;
+        GameObject selectUICanvas;
 
         /// <summary>
         /// 플레이어가 현재 가지고 있는 캐릭터들을 보여주는 리스트의 위치
@@ -84,8 +84,15 @@ namespace deck
         /// /summary>
         PlacementCharacter[] placementUIs;
 
+        /// <summary>
+        /// 캐릭터 배치 모드. TODO
+        /// </summary>
+        public bool isPlacementMode { get; private set; }
+
         void Start()
         {
+            isPlacementMode = false; 
+
             // 임시 데이터 생성
             characters = new PixelCharacter[6];
             
@@ -122,7 +129,7 @@ namespace deck
         void createCharacterInventoryPrefeb(int i, PixelCharacter character)
         {
             GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
-            newPrefab.GetComponent<CharacterListItem>().Initialize(character, canvas.transform, characterInventoryGrid.transform);
+            newPrefab.GetComponent<CharacterListItem>().Initialize(character, selectUICanvas.transform, characterInventoryGrid.transform);
         }
 
         /// <summary>
@@ -167,7 +174,6 @@ namespace deck
         public void unSelectCharacter(int selectId)
         {
             selectCharacters[selectId] = null;
-            Debug.Log(placementUIs[selectId]);
             placementUIs[selectId].unSelect();
             placementUIs[selectId] = null;
             //logSelectors();
@@ -194,5 +200,22 @@ namespace deck
             return character.unEquip(equipId);
         }
 
+        /// <summary>
+        /// 캐릭터 배치 모드로 만들기. TODO
+        /// </summary>
+        public void togglePlacementMode()
+        {
+            isPlacementMode = isPlacementMode ? false : true;
+            selectUICanvas.SetActive(!isPlacementMode);
+            foreach(PlacementCharacter ui in placementUIs)
+            {
+                if(ui != null)
+                {
+                    ui.dragMode = isPlacementMode;
+                }
+            }
+        }
+
+        
     }
 }

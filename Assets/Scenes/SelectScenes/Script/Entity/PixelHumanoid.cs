@@ -20,7 +20,7 @@ namespace deck
             characterName = characterNames[random.Next(0, characterNames.Length)];
             characterNickName = nickname;
 
-            worldPosition = new Vector3(UnityEngine.Random.Range(-8, -2), 0.0f, UnityEngine.Random.Range(-8, 6));
+            worldPosition = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 10);
 
             // 캐릭터 스텟정보 추출
             characterStat = new CommonStats();
