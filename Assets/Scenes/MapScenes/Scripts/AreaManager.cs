@@ -41,11 +41,13 @@ namespace GameMap
 			{
 				area.SetActive(false);
 
-				var button = area.GetComponent<Button>();
-
-				button.onClick.AddListener(() => m_areaVisitCount++);
-				button.onClick.AddListener(() => DisableAllAreas(area));
-				button.onClick.AddListener(() => ActivateNearAreas(area));
+				// Todo: Check this work on multiple button click
+				area.GetComponent<Button>().onClick.AddListener(() =>
+				{
+					m_areaVisitCount++;
+					DisableAllAreas(area);
+					ActivateNearAreas(area);
+				});
 			}
 
 			// Pick and show start area

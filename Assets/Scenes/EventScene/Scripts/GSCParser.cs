@@ -34,25 +34,26 @@ namespace GSC
 
 		public List<string> ParseArguments(string argStr)
 		{
+			ReadOnlySpan<char> t_argStr = argStr.AsSpan();
 			List<string> ret = new();
 
 			// Keep slicing argStr to parse
-			while (argStr != string.Empty)
+			while (t_argStr.Length != 0)
 			{
-				argStr = argStr.TrimStart();
+				Match match;
 
 				// Only allow double-quoted or \w+ string
-				// Match with double-quoted string first
-				Match match = Regex.Match(argStr, "^(\"[^\"]*\")");
-
-				// And match with word string secondly
-				if (match.Success || (match = Regex.Match(argStr, "^(\\w+)")).Success)
+				// Group 1. Entire group
+				// Group 2. Word group
+				if ((match = Regex.Match(t_argStr.ToString(), "^(\\s*(\"[^\"]*\"|\\w+))")).Success)
 				{
-					string temp = match.Groups[1].Value;
+					// Slice this match from string
+					int entireLength = match.Groups[1].Length;
+					t_argStr = t_argStr[entireLength..];
 
-					argStr = argStr[temp.Length..];
-
-					ret.Add(temp.Trim('"'));
+					// Trim double quote and add to ret
+					string text = match.Groups[2].Value;
+					ret.Add(text.Trim('"'));
 				}
 				else
 					throw new UnityException($"(GSC)Invalid character argument: {argStr}");
@@ -68,9 +69,6 @@ namespace GSC
 			foreach (string line in m_lines)
 			{
 				string trimmed = line.Trim();
-
-				if (trimmed == string.Empty)
-					continue;
 
 				GSCCommand cmd;
 				List<string> args;
