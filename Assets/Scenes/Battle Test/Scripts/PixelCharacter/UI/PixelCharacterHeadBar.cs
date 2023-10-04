@@ -29,8 +29,8 @@ public class PixelCharacterHeadBar : MonoBehaviour
         if (target == null)
             return;
 
-        float hpScale = target.hp / (float)target.maxHp;
-        float mpScale = target.mp / (float)PixelCharacter.MaxMp;
+        float hpScale = target.stats.hp / (float)target.maxHp;
+        float mpScale = target.stats.mp / (float)PixelCharacter.MaxMp;
 
         hpBar.rectTransform.localScale = new Vector3(hpScale, 1.0f, 1.0f);
         mpBar.rectTransform.localScale = new Vector3(mpScale, 1.0f, 1.0f);

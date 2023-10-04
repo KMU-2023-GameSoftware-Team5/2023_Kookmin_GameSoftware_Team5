@@ -81,7 +81,7 @@ namespace lee
             {
                 // TODO: handle HIT
                 transform.SetParent(target.transform);
-                bm.HandleDefaultAttack(parent, target);
+                bm.ApplyDefaultAttack(parent, target);
 
                 if (lodge)
                 {

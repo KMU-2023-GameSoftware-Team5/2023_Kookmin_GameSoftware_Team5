@@ -1,5 +1,6 @@
 using Assets.PixelHeroes.Scripts.CollectionScripts;
 using UnityEngine;
+using data;
 
 namespace lee
 {
@@ -20,6 +21,9 @@ namespace lee
 
         [SerializeField] private GameObject floatingTextPrefap;
         public GameObject GetFlatingTextPrefap() { return floatingTextPrefap; }
+
+        [SerializeField] private GameObject lightningPillar;
+        public GameObject GetLightningPillar() {  return lightningPillar; }
 
         [Header("Reference")]
         [SerializeField] private MyCharacterFactory myCharacterBuilder;
