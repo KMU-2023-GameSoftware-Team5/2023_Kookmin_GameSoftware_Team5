@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace lee
@@ -58,9 +59,9 @@ namespace lee
             return ret;
         }
 
-        private List<PixelHumanoid> m_team0Humanoids;
-        private List<PixelHumanoid> m_team1Humanoids;
-        public bool StartBattle(List<PixelHumanoid> team0Humanoids, List<PixelHumanoid> team1Humanoids)
+        private List<PixelCharacter> m_team0Characters;
+        private List<PixelCharacter> m_team1Characters;
+        public bool StartBattle(List<PixelCharacter> team0, List<PixelCharacter> team1)
         {
             if (status == EStatus.Fighting)
             {
@@ -68,31 +69,31 @@ namespace lee
                 return false;
             }
 
-            m_team0Humanoids = team0Humanoids;
-            m_team1Humanoids = team1Humanoids;
+            m_team0Characters = team0;
+            m_team1Characters = team1;
 
             uint lastEntityNumber = 0;  // 1부터 시작
-            foreach (PixelHumanoid humanoid in m_team0Humanoids)
+            foreach (PixelCharacter character in m_team0Characters)
             {
-                humanoid.entityId = lastEntityNumber++;
-                m_entityMap[humanoid.entityId] = humanoid;
+                character.entityId = lastEntityNumber++;
+                m_entityMap[character.entityId] = character;
             }
-            foreach (PixelHumanoid humanoid in m_team1Humanoids)
+            foreach (PixelCharacter character in m_team1Characters)
             {
-                humanoid.entityId = lastEntityNumber++;
-                m_entityMap[humanoid.entityId] = humanoid;
+                character.entityId = lastEntityNumber++;
+                m_entityMap[character.entityId] = character;
             }
 
             Debug.Log("battle started");
 
-            foreach(PixelHumanoid humanoid in m_team0Humanoids)
+            foreach(PixelCharacter character in m_team0Characters)
             {
-                humanoid.OnBattleStarted(m_team0Humanoids.ToArray(), m_team1Humanoids.ToArray());
+                character.OnBattleStarted(m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
 
-            foreach (PixelHumanoid humanoid in m_team1Humanoids)
+            foreach (PixelCharacter character in m_team1Characters)
             {
-                humanoid.OnBattleStarted(m_team1Humanoids.ToArray(), m_team0Humanoids.ToArray());
+                character.OnBattleStarted(m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
 
 
@@ -106,7 +107,7 @@ namespace lee
             if (myTeamIndex == 0)
             {
                 float distance = float.MaxValue;
-                foreach (PixelHumanoid humanoid in m_team1Humanoids)
+                foreach (PixelHumanoid humanoid in m_team1Characters)
                 {
                     if (humanoid.IsDead())
                         continue;
@@ -125,7 +126,7 @@ namespace lee
             else if (myTeamIndex == 1)
             {
                 float distance = float.MaxValue;
-                foreach (PixelHumanoid humanoid in m_team0Humanoids)
+                foreach (PixelHumanoid humanoid in m_team0Characters)
                 {
                     if (humanoid.IsDead())
                         continue;
@@ -149,71 +150,104 @@ namespace lee
             }
         }
 
-        public void HandleDefaultAttack(PixelCharacter from, PixelCharacter to)
+        public void GetAliveEnemiesFromClosest(PixelCharacter from, out PixelCharacter[] out_enemies)
+        {
+            List<PixelCharacter> ret = new List<PixelCharacter>();
+            
+            List<PixelCharacter> enemies = m_team1Characters;
+            if (from.teamIndex == 1)
+                enemies = m_team0Characters;
+
+            foreach (PixelCharacter iCharacter in enemies)
+            {
+                if (iCharacter.IsDead()) continue;
+
+                ret.Add(iCharacter);
+            }
+
+            // 오름차순
+            ret.Sort((PixelCharacter x, PixelCharacter y) =>
+                {
+                    float distX = (from.transform.position - x.transform.position).sqrMagnitude;
+                    float distY = (from.transform.position - y.transform.position).sqrMagnitude;
+
+                    return (int)(distX - distY);
+                }
+            );
+
+            out_enemies = ret.ToArray();
+        }
+
+        public void ApplyDefaultAttack(PixelCharacter from, PixelCharacter to)
+        {
+            ApplyDamage(from, to, from.stats.damage, true);
+        }
+
+        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical)
         {
             // 이미 죽었으면 아무 처리도 하지 않는다. 
             if (to.IsDead())
                 return;
 
-            // TODO : 전략 객체로 분리
-            // TODO: 방어력, 크리티컬 등 고려
-            int damage = from.damage;
-            to.hp -= damage;
+            to.stats.hp -= damage;
 
-            from.mp += 10;
-            if (from.mp > 100)
+            from.stats.mp += 10;
+            if (from.stats.mp > 100)
             {
-                from.mp = PixelCharacter.MaxMp;
+                from.stats.mp = PixelCharacter.MaxMp;
 
                 // TODO: notify mp 100 maybe?
             }
 
             Color damageTextColor = Color.white;
-            if (UnityEngine.Random.Range(0.0f, 1.0f) <= from.criticalRate)
+            if (checkCritical)
             {
-                damageTextColor = Color.yellow;
-                damage *= 2;
+                if (UnityEngine.Random.Range(0.0f, 1.0f) <= from.stats.criticalRate)
+                {
+                    damageTextColor = Color.yellow;
+                    damage *= 2;
+                }
             }
-
+            
             // creat damage text
             GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
             GameObject damageTextGo = Instantiate(damageTextPrefap, Vector3.zero, Quaternion.identity, to.transform);
             damageTextGo.transform.localPosition = new Vector3(0.0f, 2.0f, 0.0f);
             FloatingText floatingText = damageTextGo.GetComponent<FloatingText>();
             floatingText.Initialize(damage.ToString(), damageTextColor);
-            
+
             // callback on damaged
             if (to.teamIndex == 0)
             {
-                to.OnDamaged(from, m_team0Humanoids.ToArray(), m_team1Humanoids.ToArray());
+                to.OnDamaged(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
             else if (to.teamIndex == 1)
             {
-                to.OnDamaged(from, m_team1Humanoids.ToArray(), m_team0Humanoids.ToArray());
+                to.OnDamaged(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
 
             // callback if dead
             // 상태 관리는 PixelCharacter에서 알아서 하니까 콜백만 호출한다. 
-            if (to.hp <= 0)
+            if (to.stats.hp <= 0)
             {
                 // call victim's callback
-                if (from.teamIndex == 0) 
+                if (from.teamIndex == 0)
                 {
-                    to.OnDead(from, m_team0Humanoids.ToArray(), m_team1Humanoids.ToArray());
+                    to.OnDead(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
                 }
                 else if (from.teamIndex == 1)
                 {
-                    to.OnDead(from, m_team1Humanoids.ToArray(), m_team0Humanoids.ToArray());
+                    to.OnDead(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
 
                 // call killer's callback
                 if (from.teamIndex == 0)
                 {
-                    to.OnKill(to, m_team0Humanoids.ToArray(), m_team1Humanoids.ToArray());
+                    to.OnKill(to, m_team0Characters.ToArray(), m_team1Characters.ToArray());
                 }
                 else if (from.teamIndex == 1)
                 {
-                    to.OnKill(to, m_team1Humanoids.ToArray(), m_team0Humanoids.ToArray());
+                    to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
             }
         }

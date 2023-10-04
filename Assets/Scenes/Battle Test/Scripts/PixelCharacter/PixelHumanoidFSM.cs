@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace lee
@@ -13,22 +14,37 @@ namespace lee
             MeleeAttacking,
             RangedAttacking,
             Delaying,
+            Skill,
             Dead,
-            None, 
+            None,
         }
 
         public partial class State
         {
-            public State() {}
+            public State() { }
 
             // 이 부분을 상속으로 구현하면 상태 하나마다 클래스 하나가 되는데, 코드가 길어지는 것이 싫다. 
             // 그래서 대리자로 했다. 
             // 대리자 구현은 PixelHumnaoid.StateFactory에서 확인할 수 있다.
-            public Action<PixelHumanoid> Start;
-            public Func<PixelHumanoid, EState> Update;
-            public Action<PixelHumanoid> End;
+            public Action<PixelHumanoid> OnEnter;
+            public Func<PixelHumanoid, EState> OnUpdate;
+            public Action<PixelHumanoid> OnEnd;
+        }
 
-            // 추가적인 멤버 변수가 필요한 경우는 상속으로 추가한다. 
+        // 기존 State에 멤버 변수가 필요한 경우, ExtendedState를 상속 받아 onEnter, onUpdate, onEnd를 구현한다. 
+        // delegate가 아닌 메서드를 사용하기 때문에 this를 사용할 수 있다. 
+        public abstract partial class ExtendedState : State
+        {
+            public ExtendedState() 
+            {
+                OnEnter = onEnter;
+                OnUpdate = onUpdate;
+                OnEnd = onEnd;
+            }
+
+            protected virtual void onEnter(PixelHumanoid owner) { }
+            protected virtual EState onUpdate(PixelHumanoid owner) { return EState.None; }
+            protected virtual void onEnd(PixelHumanoid owner) { }
         }
 
         public class StateSet
@@ -37,11 +53,11 @@ namespace lee
             public State Searching;
             public State Chasing;
 
-            // TODO: DefaultAttacking으로 합치기
             public State MeleeAttacking;
             public State RangedAttacking;
             public State Delaying;
             public State Dead;
+            public State Skill;
 
             // maps between EState and State
             public State Get(EState state)
@@ -62,6 +78,8 @@ namespace lee
                         return RangedAttacking;
                     case EState.Delaying:
                         return Delaying;
+                    case EState.Skill:
+                        return Skill;
                     default:
                         Debug.LogError("FATAL: PixelHumanoid.State.Get() switch defatul case: INVALID MAPPING");
                         return null;
@@ -72,13 +90,14 @@ namespace lee
             {
                 return new StateSet()
                 {
-                    Waiting = StateFactory.GetWaitingState(), 
+                    Waiting = StateFactory.GetWaitingState(),
                     Searching = StateFactory.GetSearchingState(),
-                    Chasing = StateFactory.GetChasingState(), 
-                    MeleeAttacking = StateFactory.GetMeleeAttackingState(), 
+                    Chasing = StateFactory.GetChasingState(),
+                    MeleeAttacking = StateFactory.GetMeleeAttackingState(),
                     RangedAttacking = StateFactory.GetRangedAttackingState(),
                     Delaying = StateFactory.GetDelayingState(),
-                    Dead = StateFactory.GetDeadState()
+                    Dead = StateFactory.GetDeadState(),
+                    Skill = SkillFactory.GetLightingPillarSkill()
                 };
             }
         }
@@ -113,25 +132,25 @@ namespace lee
                 if (m_currentState == null)
                     return;
 
-                if (m_currentState.Update == null)
+                if (m_currentState.OnUpdate == null)
                     return;
 
                 EState newState = EState.Dead;
                 if (!m_transitionToDead)
-                    newState = m_currentState.Update(owner);
+                    newState = m_currentState.OnUpdate(owner);
                 if (m_transitionToSearching)
                     newState = EState.Searching;
 
                 if (newState != EState.None)
                 {
-                    if (m_currentState.End != null)
-                        m_currentState.End(owner);
+                    if (m_currentState.OnEnd != null)
+                        m_currentState.OnEnd(owner);
 
                     m_currentEState = newState;
                     m_currentState = m_stateSet.Get(newState);
 
-                    if (m_currentState.Start != null)
-                        m_currentState.Start(owner);
+                    if (m_currentState.OnEnter != null)
+                        m_currentState.OnEnter(owner);
                 }
             }
 
