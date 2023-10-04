@@ -10,7 +10,7 @@ namespace deck{
     /// </summary>
     public abstract class PixelCharacter
     {
-        protected string characterNickName;
+        public string characterNickName { get; protected set; }
         public string characterName { get; set; }
         public EquipItem[] Inventory;
         protected CommonStats characterStat; 

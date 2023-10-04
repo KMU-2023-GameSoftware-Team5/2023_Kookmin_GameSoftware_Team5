@@ -39,7 +39,16 @@ namespace deck
         /// <summary>
         /// placement Character(캐릭터 배치 오브젝트) 프리펩
         /// </summary>
-        [SerializeField]GameObject placementCharacterPrefap;
+        [SerializeField]GameObject placementCharacterPrefab;
+
+        /// <summary>
+        /// Placement - 캐릭터 헤드 네임이 위치할 캔버스
+        /// </summary>
+        public Transform characterHeadNameCanvas;
+        /// <summary>
+        /// Placement - 배치시 캐릭터 위에 이름 달아줄 프리펩
+        /// </summary>
+        [SerializeField] GameObject characterHeadNamePrefab;
 
         void Start()
         {
@@ -93,7 +102,7 @@ namespace deck
 
             Vector3 worldPosition = character.worldPosition;
 
-            GameObject characterGo = Instantiate(placementCharacterPrefap, Vector3.zero, Quaternion.identity, parent);
+            GameObject characterGo = Instantiate(placementCharacterPrefab, Vector3.zero, Quaternion.identity, parent);
 
             characterGo.transform.position = worldPosition;
 
@@ -110,6 +119,14 @@ namespace deck
 
             PlacementCharacter ret = characterGo.GetComponent<PlacementCharacter>();
             ret.Initialize(character);
+
+            // head name
+            GameObject headNameGo = Instantiate(characterHeadNamePrefab, Vector3.zero, Quaternion.identity, characterHeadNameCanvas);
+
+            PlacementCharacterHeadName headName = headNameGo.GetComponent<PlacementCharacterHeadName>();
+            headName.Initialize(ret, character.characterNickName);
+            ret.headName = headName;
+
             return ret;
         }
 

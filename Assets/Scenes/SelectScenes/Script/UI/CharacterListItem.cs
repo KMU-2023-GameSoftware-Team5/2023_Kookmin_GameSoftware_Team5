@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Services.Analytics.Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,7 +38,13 @@ namespace deck
         /// </summary>
         [SerializeField]
         CharacterBuilderControl characterImage;
-       
+
+        /// <summary>
+        /// 캐릭터 이름
+        /// </summary>
+        [SerializeField] TextMeshProUGUI characterName;
+
+
         public PixelCharacter getCharacter()
         {
             return character;
@@ -63,6 +70,7 @@ namespace deck
             // TODO 
             this.character = character;
             characterImage.buildCharacter(this.character.characterName);
+            characterName.text = character.characterNickName;
             // characterImg.color = this.character.playerColor; 
             rect = GetComponent<RectTransform>(); 
             canvasGroup = GetComponent<CanvasGroup>(); 

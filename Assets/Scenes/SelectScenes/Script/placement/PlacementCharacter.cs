@@ -20,6 +20,12 @@ namespace placement
         /// </summary>
         PixelCharacter pixelCharacter;
 
+        /// <summary>
+        /// 배치시 캐릭터 위에 위치할 이름
+        /// </summary>
+        public PlacementCharacterHeadName headName;
+
+
         // Drag가능한 영역
         // TODO 어딘가로 뺴둘 것
         float maxX = 0.0f;
@@ -38,7 +44,6 @@ namespace placement
                 10);
             characterPosition.position = Camera.main.ScreenToWorldPoint(mousePosition);
             characterPosition.position = setDragAbleArea(characterPosition.position);
-            Debug.Log(characterPosition.position);
         }
         
         /// <summary>
@@ -91,6 +96,7 @@ namespace placement
         /// </summary>
         public void unSelect()
         {
+            headName.unSelect();
             Destroy(pixelHumanoid);
         }
     }
