@@ -21,7 +21,7 @@ namespace GSC
 	/// </summary>
 	public delegate void ButtonCleaner();
 
-	public class GSCController : UnityEngine.Object
+	public class GSCController
 	{
 		readonly List<GSCScriptLine> m_scripts;
 		readonly List<GSCCallback> m_callbacks;
@@ -30,10 +30,8 @@ namespace GSC
 		readonly ButtonCreator m_buttonCreator;
 		readonly ButtonCleaner m_buttonCleaner;
 
-		readonly List<GameObject> m_buttonObjects = new();
-
-		// The cursor that points to script line to be executed next
-		IEnumerator<GSCScriptLine> m_scriptCursor;
+		// The index of script line to be executed next
+		int m_scriptLineIndex;
 
 		// When a button is pressed, the value is set
 		string m_branchTarget = null;
@@ -60,13 +58,13 @@ namespace GSC
 		public GSCScriptLine Next()
 		{
 			// End of script
-			if (!m_scriptCursor.MoveNext())
+			if (m_scriptLineIndex >= m_scripts.Count)
 			{
 				m_textbox.StartTyping();
 				return null;
 			}
 
-			return m_scriptCursor.Current;
+			return m_scripts[m_scriptLineIndex];
 		}
 
 		public void AddText(string text) =>
@@ -74,11 +72,11 @@ namespace GSC
 
 		public void BranchTo(string nodeName)
 		{
-			m_scriptCursor = m_scripts.GetEnumerator();
+			m_scriptLineIndex = 0;
 
-			while (m_scriptCursor.MoveNext())
+			while (m_scriptLineIndex < m_scripts.Count)
 			{
-				var now = m_scriptCursor.Current;
+				var now = m_scripts[m_scriptLineIndex];
 				if (now.Command == GSCCommand.Node && now.Args[0] == nodeName)
 					return;
 			}
@@ -94,8 +92,6 @@ namespace GSC
 
 			if (textbox != null)
 				textbox.SetText(description);
-
-			m_buttonObjects.Add(button.gameObject);
 		}
 
 		public IEnumerator BranchConditional()
