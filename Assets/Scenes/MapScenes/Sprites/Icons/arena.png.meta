@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d516ee3c07e0eef48924f8ffce533e6a
+guid: 83a4433d52e882b4383ed2f0197e5685
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -39,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -65,7 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -94,7 +94,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Server
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -107,7 +107,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Android
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -123,22 +123,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chest
+      name: arena
       rect:
         serializedVersion: 2
-        x: 131
-        y: 164
-        width: 249
-        height: 182
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 134
+        y: 134
+        width: 244
+        height: 245
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 943307944e2da644cbeec020792d6f22
-      internalID: -289275078
+      spriteID: 98668f7edf4509741b43308898d5247c
+      internalID: -857545844
       vertices: []
       indices: 
       edges: []
@@ -154,13 +154,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      chest: -289275078
-      chest_1: 1247217641
-      chest_2: -525214814
-      chest_3: 1128880034
-      chest_4: 1076234620
-      chest_5: 823102225
-      chest_6: -2078993092
+      arena: -857545844
+      arena_1: -1234603587
+      arena_2: 1641964382
+      arena_3: 307911926
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
