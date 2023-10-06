@@ -1,3 +1,5 @@
+using data;
+using lee;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ namespace deck
         /// <summary>
         /// 현재 플레이어가 가지고 있는 캐릭터의 집합
         /// </summary>
-        public PixelCharacter[] characters;
+        public List<PixelCharacter> characters;
         /// <summary>
         /// 현재 플레이어가 선택한 캐릭터의 집합
         /// </summary>
@@ -89,22 +91,45 @@ namespace deck
         /// </summary>
         public bool isPlacementMode { get; private set; }
 
+        /// <summary>
+        /// 임시속성 - 캐릭터 배치 오브젝트의 parent canvas
+        /// </summary>
+        public Transform placementCanvas;
+
+        /// <summary>
+        /// placement Character(캐릭터 배치 오브젝트) 프리펩
+        /// </summary>
+        [SerializeField] GameObject placementCharacterPrefab;
+
+        /// <summary>
+        /// Placement - 캐릭터 헤드 네임이 위치할 캔버스
+        /// </summary>
+        public Transform characterHeadNameCanvas;
+        /// <summary>
+        /// Placement - 배치시 캐릭터 위에 이름 달아줄 프리펩
+        /// </summary>
+        [SerializeField] GameObject characterHeadNamePrefab;
+
+
+
         void Start()
         {
-            isPlacementMode = false; 
+            isPlacementMode = false;
 
-            // 임시 데이터 생성
-            characters = new PixelCharacter[6];
+            // 더미데이터 생성
+            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+            System.Random random = new System.Random();
+            for(int i = 0; i<7; i++)
+            {
+                PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
+            }
             
-            characters[0] = MyDeckFactory.Instance().buildPixelCharacter("blue");
-            characters[1] = MyDeckFactory.Instance().buildPixelCharacter("magenta");
-            characters[2] = MyDeckFactory.Instance().buildPixelCharacter("cyan");
-            characters[3] = MyDeckFactory.Instance().buildPixelCharacter("yellow");
-            characters[4] = MyDeckFactory.Instance().buildPixelCharacter("red");
-            characters[5] = MyDeckFactory.Instance().buildPixelCharacter("green");
+
+            // 플레이어매니저에게서 보유 캐릭터 받아오기
+            characters = PlayerManager.Instance().playerCharacters;
 
             // 현재 보유중인 캐릭터 출력
-            for (int i = 0; i < characters.Length; i++)
+            for (int i = 0; i < characters.Count; i++)
             {
                 createCharacterInventoryPrefeb(i, characters[i]); 
             }
@@ -124,7 +149,7 @@ namespace deck
         /// <summary>
         /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
         /// </summary>
-        /// <param name="i">추후 제거 필요(미사용)</param>
+        /// <param name="i">TODO - 추후 제거 필요(미사용)</param>
         /// <param name="character">플레이어의 캐릭터 정보</param>
         void createCharacterInventoryPrefeb(int i, PixelCharacter character)
         {
@@ -162,7 +187,7 @@ namespace deck
         public void selectCharacter(int selectId, PixelCharacter character)
         {
             selectCharacters[selectId] = character;
-            placementUIs[selectId] = MyDeckFactory.Instance().buildPixelHumanoidByPixelCharacter(
+            placementUIs[selectId] = buildPixelHumanoidByPixelCharacter(
                 (PixelHumanoid)selectCharacters[selectId]
             );
         }
@@ -216,6 +241,42 @@ namespace deck
             }
         }
 
-        
+        /// <summary>
+        /// 배치할 캐릭터를 생성하는 메서드
+        /// </summary>
+        /// <param name="character">캐릭터 셀렉트 매니저가 가진 캐릭터 정보</param>
+        /// <returns>캐릭터셀렉트매니저가 관리할 수 있는 캐릭터 배치 컴포넌트</returns>
+        public PlacementCharacter buildPixelHumanoidByPixelCharacter(deck.PixelHumanoid character)
+        {
+            Vector3 worldPosition = character.worldPosition;
+
+            GameObject characterGo = Instantiate(placementCharacterPrefab, Vector3.zero, Quaternion.identity, placementCanvas);
+
+            characterGo.transform.position = worldPosition;
+
+            lee.PixelHumanoid go = characterGo.GetComponent<lee.PixelHumanoid>();
+
+            // build
+            go.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
+            go.builder.SpriteLibrary = go.spriteLibrary;
+            PixelHumanoidData data = MyDeckFactory.Instance().getPixelHumanoidData(character.characterName);
+            data.SetOutToBuilder(go.builder);
+            go.builder.Rebuild();
+
+            go.Initilize(data);
+
+            PlacementCharacter ret = characterGo.GetComponent<PlacementCharacter>();
+            ret.Initialize(character);
+
+            // head name
+            GameObject headNameGo = Instantiate(characterHeadNamePrefab, Vector3.zero, Quaternion.identity, characterHeadNameCanvas);
+
+            PlacementCharacterHeadName headName = headNameGo.GetComponent<PlacementCharacterHeadName>();
+            headName.Initialize(ret, character.characterNickName);
+            ret.headName = headName;
+
+            return ret;
+        }
+
     }
 }

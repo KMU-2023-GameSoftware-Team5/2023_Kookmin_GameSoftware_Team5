@@ -28,17 +28,6 @@ namespace deck
         /// </summary>
         public void updateStat()
         {
-            Debug.Log("Update Stat");
-            int logs = 0;
-            foreach(EquipItem item in this.character.Inventory)
-            {
-                if(item != null)
-                {
-                    logs++;
-                    Debug.Log($"energy : {item.itemStat.energy.ToString()}");
-                }
-            }
-            Debug.Log(logs);
             CommonStats itemStat = character.getEquipItemStats();
             CommonStats characterStat = character.getCharacterStats();
             setStatText(characterStat, itemStat);

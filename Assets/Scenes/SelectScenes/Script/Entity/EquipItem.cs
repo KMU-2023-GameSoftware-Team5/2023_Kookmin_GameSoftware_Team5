@@ -47,8 +47,6 @@ namespace deck
                 attackDelay = itemData.attackDelay,
                 criticalRate = itemData.criticalRate
             };
-
-            Debug.Log($"itemData : {itemData.energy} / itemStat : {itemStat.energy}");
         }
 
         public EquipItem(ItemData itemData)
@@ -57,9 +55,8 @@ namespace deck
             copyStat();
         }
 
-
         public EquipItem(string itemName) {
-            this.itemData = MyDeckFactory.Instance().GetItemData(itemName);
+            this.itemData = MyDeckFactory.Instance().getItemData(itemName);
             copyStat();
         }
 
