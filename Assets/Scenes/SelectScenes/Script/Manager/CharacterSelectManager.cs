@@ -116,17 +116,20 @@ namespace deck
         {
             isPlacementMode = false;
 
-            // 더미데이터 생성
-            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
-            System.Random random = new System.Random();
-            for(int i = 0; i<7; i++)
-            {
-                PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
-            }
-            
-
             // 플레이어매니저에게서 보유 캐릭터 받아오기
             characters = PlayerManager.Instance().playerCharacters;
+
+
+            // 더미데이터 생성
+            if(characters.Count == 0)
+            {
+                string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+                System.Random random = new System.Random();
+                for (int i = 0; i < 7; i++)
+                {
+                    PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
+                }
+            }
 
             // 현재 보유중인 캐릭터 출력
             for (int i = 0; i < characters.Count; i++)

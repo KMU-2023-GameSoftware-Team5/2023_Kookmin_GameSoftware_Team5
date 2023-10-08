@@ -54,20 +54,23 @@ namespace deck
         EquipItemDetails equipItemDetail;
 
         void Start()
-        { 
-            // 임시 데이터 생성
-            PlayerManager.Instance().addEquipItemByName("sheild");
-            PlayerManager.Instance().addEquipItemByName("sword");
-            PlayerManager.Instance().addEquipItemByName("scroll");
-            PlayerManager.Instance().addEquipItemByName("ring");
-            PlayerManager.Instance().addEquipItemByName("wand");
-            PlayerManager.Instance().addEquipItemByName("saber");
-
+        {
             // 플레이어 매니저에게서 아이템 보유목록 받기
             items = PlayerManager.Instance().playerEquipItems;
+            
+            if(items.Count == 0)
+            {
+                // 임시 데이터 생성
+                PlayerManager.Instance().addEquipItemByName("sheild");
+                PlayerManager.Instance().addEquipItemByName("sword");
+                PlayerManager.Instance().addEquipItemByName("scroll");
+                PlayerManager.Instance().addEquipItemByName("ring");
+                PlayerManager.Instance().addEquipItemByName("wand");
+                PlayerManager.Instance().addEquipItemByName("saber");
+            }
 
             // 플레이어 보유 아이템에 대한 UI 생성
-            foreach(EquipItem item in items)
+            foreach (EquipItem item in items)
             {
                 createEquipItemInventoryPrefeb(item);
             }
