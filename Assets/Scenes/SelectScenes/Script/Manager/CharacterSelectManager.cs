@@ -37,11 +37,12 @@ namespace deck
         /// 현재 플레이어가 선택한 캐릭터의 집합
         /// </summary>
         public PixelCharacter[] selectCharacters;
+
         /// <summary>
         /// 캐릭터 선택 슬롯에 대한 배열
         /// </summary>
         public CharacterSelector[] selectors;
-        
+
         /// <summary>
         /// 캐릭터 선택 이벤트 처리를 위한 임시변수
         /// </summary>
@@ -53,6 +54,7 @@ namespace deck
         [SerializeField]
         GameObject selectUICanvas;
 
+        [Header("Character List")]
         /// <summary>
         /// 플레이어가 현재 가지고 있는 캐릭터들을 보여주는 리스트의 위치
         /// </summary>
@@ -62,8 +64,9 @@ namespace deck
         /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
         /// </summary>
         [SerializeField]
-        GameObject characterInventoryItemPrefeb; 
+        GameObject characterInventoryItemPrefeb;
 
+        [Header("Character Selector UI")]
         /// <summary>
         /// 캐릭터 선택창 위치
         /// </summary>
@@ -75,6 +78,7 @@ namespace deck
         [SerializeField]
         GameObject characterSelectorPrefeb;
 
+        [Header("Character Details")]
         /// <summary>
         /// 캐릭터 세부 정보창 UI
         /// </summary>
@@ -91,6 +95,7 @@ namespace deck
         /// </summary>
         public bool isPlacementMode { get; private set; }
 
+        [Header("Character Placement")]
         /// <summary>
         /// 임시속성 - 캐릭터 배치 오브젝트의 parent canvas
         /// </summary>
@@ -101,6 +106,7 @@ namespace deck
         /// </summary>
         [SerializeField] GameObject placementCharacterPrefab;
 
+        [Header("Character Placement Head Bar")]
         /// <summary>
         /// Placement - 캐릭터 헤드 네임이 위치할 캔버스
         /// </summary>
@@ -251,35 +257,38 @@ namespace deck
         /// <returns>캐릭터셀렉트매니저가 관리할 수 있는 캐릭터 배치 컴포넌트</returns>
         public PlacementCharacter buildPixelHumanoidByPixelCharacter(deck.PixelHumanoid character)
         {
+            // Instantiate pixel humanoid
             Vector3 worldPosition = character.worldPosition;
-
             GameObject characterGo = Instantiate(placementCharacterPrefab, Vector3.zero, Quaternion.identity, placementCanvas);
-
             characterGo.transform.position = worldPosition;
 
-            lee.PixelHumanoid go = characterGo.GetComponent<lee.PixelHumanoid>();
-
-            // build
-            go.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
-            go.builder.SpriteLibrary = go.spriteLibrary;
+            // build battle.PixelHumaniod
+            lee.PixelHumanoid battlPixelHumanoid = characterGo.GetComponent<lee.PixelHumanoid>();
+            battlPixelHumanoid.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
+            battlPixelHumanoid.builder.SpriteLibrary = battlPixelHumanoid.spriteLibrary;
             PixelHumanoidData data = MyDeckFactory.Instance().getPixelHumanoidData(character.characterName);
-            data.SetOutToBuilder(go.builder);
-            go.builder.Rebuild();
+            data.SetOutToBuilder(battlPixelHumanoid.builder);
+            battlPixelHumanoid.builder.Rebuild();
+            battlPixelHumanoid.Initilize(data);
 
-            go.Initilize(data);
-
+            // PlacementCharacter build
             PlacementCharacter ret = characterGo.GetComponent<PlacementCharacter>();
             ret.Initialize(character);
 
-            // head name
-            GameObject headNameGo = Instantiate(characterHeadNamePrefab, Vector3.zero, Quaternion.identity, characterHeadNameCanvas);
+            // Instantiate head Bar
+            GameObject headBarGo = Instantiate(characterHeadNamePrefab, Vector3.zero, Quaternion.identity, characterHeadNameCanvas);
 
-            PlacementCharacterHeadName headName = headNameGo.GetComponent<PlacementCharacterHeadName>();
-            headName.Initialize(ret, character.characterNickName);
+            // head bar setting
+            PixelCharacterHeadBar headBar = headBarGo.GetComponent<PixelCharacterHeadBar>();
+            headBar.Initialize(battlPixelHumanoid);
+            battlPixelHumanoid.headBar = headBar;
+
+            // head name setting
+            PlacementCharacterHeadName headName = headBarGo.GetComponent<PlacementCharacterHeadName>();
+            headName.Initialize(character.characterNickName);
             ret.headName = headName;
 
             return ret;
         }
-
     }
 }

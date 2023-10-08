@@ -2104,6 +2104,7 @@ GameObject:
   - component: {fileID: 789893208}
   - component: {fileID: 789893207}
   - component: {fileID: 789893206}
+  - component: {fileID: 789893210}
   m_Layer: 5
   m_Name: HeadNameCanvas
   m_TagString: Untagged
@@ -2169,7 +2170,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -2193,6 +2194,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &789893210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789893205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4091116bb36b704882c5afa37a2464c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: {fileID: 0}
+  hp: {fileID: 0}
+  mp: {fileID: 0}
 --- !u!1001 &797216977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3995,6 +4011,7 @@ MonoBehaviour:
   defaultArrowPrefap: {fileID: 3484203600360959584, guid: e62cfc5a062735240ba5a596d2a920e8, type: 3}
   pixelCharacterHeadBarPrefap: {fileID: 0}
   floatingTextPrefap: {fileID: 0}
+  lightningPillar: {fileID: 0}
   myCharacterBuilder: {fileID: 8711637165520072842}
   pixeHumanoidDatas:
   - {fileID: 11400000, guid: dae5869a46e0a11469cf4bc08fddac8e, type: 2}
@@ -4778,7 +4795,7 @@ MonoBehaviour:
   placementCanvas: {fileID: 1221245244}
   placementCharacterPrefab: {fileID: 4253726400164379171, guid: d5887ad67790f71459ac03a63f630117, type: 3}
   characterHeadNameCanvas: {fileID: 789893209}
-  characterHeadNamePrefab: {fileID: 6058955166055591420, guid: 7c306f30b9c2ecc408f874cd276b3ec9, type: 3}
+  characterHeadNamePrefab: {fileID: 5092363147269052747, guid: fd5d0cefdeb1e6a40bb2f634f47082c6, type: 3}
 --- !u!114 &1963001153
 MonoBehaviour:
   m_ObjectHideFlags: 0
