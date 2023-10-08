@@ -12,16 +12,13 @@ namespace deck
         public static int MAX_INVENTORY_SIZE = 2;
 
         private static EquipItemManager instance;
-        public static EquipItemManager Instance
+        public static EquipItemManager Instance()
         {
-            get
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<EquipItemManager>();
-                }
-                return instance;
+                instance = FindObjectOfType<EquipItemManager>();
             }
+            return instance;
         }
 
         /// <summary>

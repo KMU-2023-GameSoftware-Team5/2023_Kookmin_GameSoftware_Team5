@@ -580,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4091116bb36b704882c5afa37a2464c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headName: {fileID: 6846661293338475068}
   characterName: {fileID: 8879854413339208551}
   hp: {fileID: 6219572523585752101}
   mp: {fileID: 4515819699000680785}

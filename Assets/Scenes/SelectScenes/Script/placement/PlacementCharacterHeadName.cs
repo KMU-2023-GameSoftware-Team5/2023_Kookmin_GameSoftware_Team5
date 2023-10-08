@@ -12,6 +12,7 @@ namespace placement
     /// </summary>
     public class PlacementCharacterHeadName : MonoBehaviour
     {
+        public GameObject headName;
         public TextMeshProUGUI characterName;
         public GameObject hp;
         public GameObject mp;
@@ -28,10 +29,11 @@ namespace placement
             Destroy(gameObject);
         }
 
-        void battleStart()
+        public void battleStart()
         {
             hp.SetActive(true);
             mp.SetActive(true);
+            Destroy(headName);
             Destroy(this);
         }
     }

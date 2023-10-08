@@ -102,6 +102,7 @@ namespace placement
 
         public void battleStart()
         {
+            headName.battleStart();
             Destroy(this);
         }
     }

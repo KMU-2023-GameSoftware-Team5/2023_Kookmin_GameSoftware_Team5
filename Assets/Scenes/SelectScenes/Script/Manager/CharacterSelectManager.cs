@@ -16,17 +16,13 @@ namespace deck
     public class CharacterSelectManager : MonoBehaviour
     {
         private static CharacterSelectManager instance;
-        public static CharacterSelectManager Instance
+        public static CharacterSelectManager Instance()
         {
-            get
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<CharacterSelectManager>();
-                }
-                return instance;
+                instance = FindObjectOfType<CharacterSelectManager>();
             }
-             
+            return instance;             
         }
 
         /// <summary>
@@ -289,6 +285,17 @@ namespace deck
             ret.headName = headName;
 
             return ret;
+        }
+
+        public void battleStart()
+        {
+            foreach(PlacementCharacter target in placementUIs)
+            {
+                if(target != null)
+                {
+                    target.battleStart();
+                }
+            }
         }
     }
 }
