@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
   m_Name: Demon Data
   m_EditorClassIdentifier: 
+  sheild: 0
+  hp: 30
+  mp: 0
+  energy: 0
+  walkSpeed: 5
+  damage: 1
+  attackDelay: 0.3
+  criticalRate: 0.5
   characterName: Demon
+  attackRange: 1
   Head: Demon#FFFFFF/0:0:0
   Ears: Demon#FFFFFF/0:0:0
   Eyes: Demon#FFFFFF/0:0:0
@@ -26,9 +35,3 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 0
-  hp: 10
-  damage: 2
-  walkSpeed: 5
-  attackRange: 1
-  attackDelay: 0.3
-  criticalRate: 0.5

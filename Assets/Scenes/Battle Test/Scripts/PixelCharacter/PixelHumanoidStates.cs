@@ -17,13 +17,13 @@ namespace lee
             // 상태 객체를 하나만 만들어 레퍼런스를 공유한다. 
             private static State s_watingState = new State()
             {
-                Start = (PixelHumanoid owner) =>
+                OnEnter = (PixelHumanoid owner) =>
                 {
                     owner.m_animator.SetBool("Dead", false);
                     owner.m_animator.SetBool("Walking", false);
                     owner.m_animator.SetBool("Idle", true);
                 },
-                Update = (PixelHumanoid owner) =>
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     return EState.None;
                 }
@@ -32,7 +32,7 @@ namespace lee
 
             private static State s_searchingState = new State()
             {
-                Start = (PixelHumanoid owner) =>
+                OnEnter = (PixelHumanoid owner) =>
                 {
                     // 안하면 무한루프
                     owner.m_fsm.SetTransitionToSearch(false);
@@ -40,8 +40,8 @@ namespace lee
                     owner.m_animator.SetBool("Idle", false);
                     owner.m_animator.SetBool("Dead", false);
                     owner.m_animator.SetBool("Walking", true);
-                }, 
-                Update = (PixelHumanoid owner) =>
+                },
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     float distance;
                     PixelHumanoid enemy = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
@@ -81,7 +81,7 @@ namespace lee
 
             private static State s_chasingState = new State()
             {
-                Update = (PixelHumanoid owner) =>
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     float distance;
 
@@ -142,7 +142,7 @@ namespace lee
 
             private static State s_meleeAttackingState = new State()
             {
-                Update = (PixelHumanoid owner) =>
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     owner.m_animator.SetBool("Idle", false);
                     owner.m_animator.SetBool("Walking", false);
@@ -155,7 +155,7 @@ namespace lee
                     else
                     {
                         owner.m_animator.SetTrigger("Slash");
-                        owner.bm.HandleDefaultAttack(owner, target);
+                        owner.bm.ApplyDefaultAttack(owner, target);
 
                         owner.leftAttackDelay = owner.stats.attackDelay;
                         return EState.Delaying;
@@ -166,7 +166,7 @@ namespace lee
 
             public static State s_rangedAttackingState = new State()
             {
-                Update = (PixelHumanoid owner) =>
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     owner.m_animator.SetBool("Idle", false);
                     owner.m_animator.SetBool("Walking", false);
@@ -213,7 +213,7 @@ namespace lee
 
             private static State s_deadState = new State()
             {
-                Start = (PixelHumanoid owner) =>
+                OnEnter = (PixelHumanoid owner) =>
                 {
                     owner.m_fsm.SetTransitionToDead(false);
 
@@ -226,13 +226,13 @@ namespace lee
 
             private static State s_delayingState = new State()
             {
-                Start = (PixelHumanoid owner) =>
+                OnEnter = (PixelHumanoid owner) =>
                 {
                     owner.m_animator.SetBool("Idle", true);
                     owner.m_animator.SetBool("Dead", false);
                     owner.m_animator.SetBool("Walking", false);
                 },
-                Update = (PixelHumanoid owner) =>
+                OnUpdate = (PixelHumanoid owner) =>
                 {
                     owner.leftAttackDelay -= Time.deltaTime;
 
@@ -241,7 +241,10 @@ namespace lee
                         return EState.Chasing;
                     }
 
-                    return EState.None;
+                    if (owner.stats.mp >= 100)
+                        return EState.Skill;
+                    else
+                        return EState.None;
                 }
             };
             public static State GetDelayingState() {  return s_delayingState; }
