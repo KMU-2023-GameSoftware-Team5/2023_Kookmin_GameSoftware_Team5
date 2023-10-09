@@ -72,7 +72,7 @@ namespace lee
             m_team0Characters = team0;
             m_team1Characters = team1;
 
-            uint lastEntityNumber = 0;  // 1ºÎÅÍ ½ÃÀÛ
+            uint lastEntityNumber = 0;  // 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             foreach (PixelCharacter character in m_team0Characters)
             {
                 character.entityId = lastEntityNumber++;
@@ -165,7 +165,7 @@ namespace lee
                 ret.Add(iCharacter);
             }
 
-            // ¿À¸§Â÷¼ø
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             ret.Sort((PixelCharacter x, PixelCharacter y) =>
                 {
                     float distX = (from.transform.position - x.transform.position).sqrMagnitude;
@@ -185,7 +185,7 @@ namespace lee
 
         public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical)
         {
-            // ÀÌ¹Ì Á×¾úÀ¸¸é ¾Æ¹« Ã³¸®µµ ÇÏÁö ¾Ê´Â´Ù. 
+            // ï¿½Ì¹ï¿½ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½. 
             if (to.IsDead())
                 return;
 
@@ -227,7 +227,7 @@ namespace lee
             }
 
             // callback if dead
-            // »óÅÂ °ü¸®´Â PixelCharacter¿¡¼­ ¾Ë¾Æ¼­ ÇÏ´Ï±î ÄÝ¹é¸¸ È£ÃâÇÑ´Ù. 
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PixelCharacterï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½Ï´Ï±ï¿½ ï¿½Ý¹é¸¸ È£ï¿½ï¿½ï¿½Ñ´ï¿½. 
             if (to.stats.hp <= 0)
             {
                 // call victim's callback

@@ -60,7 +60,7 @@ namespace deck
         /// <returns>캐릭터의 초기 worldspace 좌표</returns>
         Vector3 characterInitPosition()
         {
-            Vector3 ret = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 10); 
+            Vector3 ret = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 0); 
             return ret;
         }
     }

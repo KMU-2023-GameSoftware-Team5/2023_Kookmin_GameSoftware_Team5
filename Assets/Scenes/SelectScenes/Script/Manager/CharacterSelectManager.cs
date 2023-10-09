@@ -112,7 +112,7 @@ namespace deck
         /// </summary>
         [SerializeField] GameObject characterHeadNamePrefab;
 
-
+        lee.PixelCharacter[] battlePixelCharacters;
 
         void Start()
         {
@@ -149,6 +149,7 @@ namespace deck
             }
 
             placementUIs = new PlacementCharacter[5];
+            battlePixelCharacters = new lee.PixelCharacter[5];
         }
 
         /// <summary>
@@ -195,6 +196,7 @@ namespace deck
             placementUIs[selectId] = buildPixelHumanoidByPixelCharacter(
                 (PixelHumanoid)selectCharacters[selectId]
             );
+            battlePixelCharacters[selectId] =  placementUIs[selectId].GetComponent<lee.PixelCharacter>();
         }
 
         /// <summary>
@@ -204,6 +206,7 @@ namespace deck
         public void unSelectCharacter(int selectId)
         {
             selectCharacters[selectId] = null;
+            battlePixelCharacters[selectId] = null;
             placementUIs[selectId].unSelect();
             placementUIs[selectId] = null;
             //logSelectors();
@@ -287,7 +290,7 @@ namespace deck
             return ret;
         }
 
-        public void battleStart()
+        public lee.PixelCharacter[] battleStart()
         {
             foreach(PlacementCharacter target in placementUIs)
             {
@@ -296,6 +299,8 @@ namespace deck
                     target.battleStart();
                 }
             }
+
+            return battlePixelCharacters;
         }
     }
 }

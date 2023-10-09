@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace lee
 {
-    public class BattleTest : MonoBehaviour
+    public class BattleTest : StaticGetter<BattleTest>
     {
         [Serializable]
         public class BuildTarget
@@ -84,6 +84,39 @@ namespace lee
                 m_team1Humanoids.Add(humanoid);
             }
         }
+
+        public void SetTeam0(PixelCharacter[] characters)
+        {
+            List<PixelCharacter> team0 = new List<PixelCharacter>();
+
+            foreach(var character in characters)
+            {
+                if (!character)
+                    continue;
+
+                team0.Add(character);
+                character.bm = BattleManager.Instance();
+                character.SetDirection(Utility.Direction2.Right);
+            }
+
+            m_team0Humanoids = team0;
+        }
+
+        public void SetTeam1(PixelCharacter[] characters)
+        {
+            List<PixelCharacter> team1 = new List<PixelCharacter>();
+
+            foreach (var character in characters)
+            {
+                if (!character)
+                    continue;
+
+                team1.Add(character);
+            }
+
+            m_team1Humanoids = team1;
+        }
+
 
         public void StartBattle()
         {

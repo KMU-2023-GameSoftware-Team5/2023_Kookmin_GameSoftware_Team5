@@ -2665,6 +2665,7 @@ MonoBehaviour:
   defaultArrowPrefap: {fileID: 3484203600360959584, guid: e62cfc5a062735240ba5a596d2a920e8, type: 3}
   pixelCharacterHeadBarPrefap: {fileID: 0}
   floatingTextPrefap: {fileID: 0}
+  lightningPillar: {fileID: 0}
   myCharacterBuilder: {fileID: 1895877504}
   pixeHumanoidDatas:
   - {fileID: 11400000, guid: dae5869a46e0a11469cf4bc08fddac8e, type: 2}
