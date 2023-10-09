@@ -70,7 +70,7 @@ namespace deck
             characterListItem = newCharacterListItem;
             characterListItem.selectCharacter(this);
             characterListItem.setTransform(rectTransform);
-            CharacterSelectManager.Instance.selectCharacter(selectId, characterListItem.getCharacter());
+            CharacterSelectManager.Instance().selectCharacter(selectId, characterListItem.getCharacter());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace deck
         public void unSelectCharacter()
         {
             characterListItem = null;
-            CharacterSelectManager.Instance.unSelectCharacter(selectId);
+            CharacterSelectManager.Instance().unSelectCharacter(selectId);
         }
 
         /// <summary>

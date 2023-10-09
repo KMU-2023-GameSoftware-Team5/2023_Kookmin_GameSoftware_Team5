@@ -11,24 +11,57 @@ namespace deck
     /// </summary>
     public class PixelHumanoid : PixelCharacter
     {
-        public PixelHumanoid(string nickname)
+        /// <summary>
+        /// 임시로 모아놓은 캐릭터 닉네임들
+        /// </summary>
+        static string[] characterNickNames = {
+                "blue",
+                "magenta",
+                "yellow",
+                "cyan",
+                "red",
+                "green",
+            };
+
+        /// <summary>
+        /// 픽셀 캐릭터 생성자
+        /// </summary>
+        /// <param name="characterName">픽셀 캐릭터의 이름(유니크한)</param>
+        public PixelHumanoid(string characterName, CommonStats characterStat)
         {
-            // 더미데이터 생성
-            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
-            System.Random random = new System.Random();
-            
-            characterName = characterNames[random.Next(0, characterNames.Length)];
-            characterNickName = nickname;
+            this.characterName = characterName;
+            characterNickName = nickNameMaker();
 
-            worldPosition = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 10);
+            // 캐릭터 초기 위치 설정
+            worldPosition = characterInitPosition();
 
-            // 캐릭터 스텟정보 추출
-            characterStat = new CommonStats();
-            characterStat.CopyFrom(MyDeckFactory.Instance().getPixelHumanoidData(characterName));
+            // 캐릭터 설정
+            this.characterStat = characterStat;
             
             // 아이템 인벤토리
             Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
         }
 
+        /// <summary>
+        /// 임시로 닉네임 만드는 메서드
+        /// </summary>
+        /// <returns>캐릭터 닉네임</returns>
+        string nickNameMaker()
+        {
+            System.Random random = new System.Random();
+
+            string ret = characterNickNames[random.Next(0, characterNickNames.Length)];
+            return ret;
+        }
+
+        /// <summary>
+        /// TODO : 캐릭터 초기위치 설정
+        /// </summary>
+        /// <returns>캐릭터의 초기 worldspace 좌표</returns>
+        Vector3 characterInitPosition()
+        {
+            Vector3 ret = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 10); 
+            return ret;
+        }
     }
 }

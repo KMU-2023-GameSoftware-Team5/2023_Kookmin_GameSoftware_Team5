@@ -99,5 +99,11 @@ namespace placement
             headName.unSelect();
             Destroy(pixelHumanoid);
         }
+
+        public void battleStart()
+        {
+            headName.battleStart();
+            Destroy(this);
+        }
     }
 }

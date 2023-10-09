@@ -110,7 +110,7 @@ namespace deck
         /// <param name="item">장착할 아이템</param>
         public bool equip(int equipId, EquipItem item)
         {
-            bool equipSuccess = CharacterSelectManager.Instance.equip(character, equipId,item);
+            bool equipSuccess = CharacterSelectManager.Instance().equip(character, equipId,item);
             characterStats.updateStat();
             return equipSuccess;
         }
@@ -121,7 +121,7 @@ namespace deck
         /// <param name="equipId">아이템 해제할 인벤토리 슬롯</param>
         public bool unEquip(int equipId)
         {
-            bool unEquipSuccess = CharacterSelectManager.Instance.unEquip(character, equipId);
+            bool unEquipSuccess = CharacterSelectManager.Instance().unEquip(character, equipId);
             characterStats.updateStat();
             return unEquipSuccess;
         }
