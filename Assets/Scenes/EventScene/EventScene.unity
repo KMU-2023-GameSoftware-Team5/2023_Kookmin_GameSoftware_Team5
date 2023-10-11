@@ -833,8 +833,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: This is description.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
+  m_sharedMaterial: {fileID: 3355029736662346468, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1346,6 +1346,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_image
+      value: 
+      objectReference: {fileID: 67596750}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_textBox
       value: 
       objectReference: {fileID: 0}
@@ -1353,6 +1357,10 @@ PrefabInstance:
       propertyPath: m_textbox
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScript
+      value: 
+      objectReference: {fileID: 11400000, guid: 886f48100339ef041b9629d78b4fe9c9, type: 2}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_GSCTextbox
       value: 
