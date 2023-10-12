@@ -127,7 +127,7 @@ namespace deck
             {
                 string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
                 System.Random random = new System.Random();
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
                 }
