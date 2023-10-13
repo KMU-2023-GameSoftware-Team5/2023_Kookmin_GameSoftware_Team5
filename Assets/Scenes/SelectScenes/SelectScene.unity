@@ -2222,7 +2222,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &742378149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5503,6 +5503,7 @@ MonoBehaviour:
   selectors: []
   nowSelectorId: 0
   UIDragCanvas: {fileID: 1346255322}
+  selectCanvas: {fileID: 742378147}
   characterInventoryGrid: {fileID: 1575555589}
   characterInventoryItemPrefeb: {fileID: 6749334836876386046, guid: 6ecfb5fb55d548b4aa2eb011f563890f, type: 3}
   characterSelectorGrid: {fileID: 1762884144}
@@ -6402,14 +6403,14 @@ SceneRoots:
   m_Roots:
   - {fileID: 970789928}
   - {fileID: 1186594120}
+  - {fileID: 1368877074}
+  - {fileID: 1221245244}
+  - {fileID: 789893209}
   - {fileID: 730422473}
   - {fileID: 691369129}
   - {fileID: 742378151}
   - {fileID: 265490286}
   - {fileID: 1346255326}
-  - {fileID: 1368877074}
-  - {fileID: 1221245244}
-  - {fileID: 789893209}
   - {fileID: 1905067679}
   - {fileID: 1734933255}
   - {fileID: 8674559548652445374}

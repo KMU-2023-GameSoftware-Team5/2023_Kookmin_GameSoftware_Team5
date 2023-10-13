@@ -49,6 +49,10 @@ namespace deck
         /// </summary>
         [SerializeField]
         GameObject UIDragCanvas;
+        /// <summary>
+        /// Select UI
+        /// </summary>
+        [SerializeField]GameObject selectCanvas;
 
         [Header("Character List")]
         /// <summary>
@@ -234,12 +238,12 @@ namespace deck
         }
 
         /// <summary>
-        /// 캐릭터 배치 모드로 만들기. TODO
+        /// PlacementCharacter 버튼을 누르면 실행됨. 캐릭터 배치 모드로 만들기
         /// </summary>
         public void togglePlacementMode()
         {
             isPlacementMode = isPlacementMode ? false : true;
-            UIDragCanvas.SetActive(!isPlacementMode);
+            selectCanvas.SetActive(!isPlacementMode);
             foreach(PlacementCharacter ui in placementUIs)
             {
                 if(ui != null)
@@ -248,7 +252,7 @@ namespace deck
                 }
             }
         }
-
+        
         /// <summary>
         /// 배치할 캐릭터를 생성하는 메서드
         /// </summary>
