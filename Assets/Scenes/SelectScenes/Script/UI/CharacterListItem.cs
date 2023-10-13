@@ -37,7 +37,7 @@ namespace deck
         /// 캐릭터 이미지 출력 UI
         /// </summary>
         [SerializeField]
-        CharacterBuilderControl characterImage;
+        SpriteBuilderForUI characterImage;
 
         /// <summary>
         /// 캐릭터 이름
@@ -62,9 +62,9 @@ namespace deck
         /// 1. 캐릭터에 대한 정보받아서 처리
         /// 2. 드래그 처리를 위한 UI의 Transform 설정
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="canvas"></param>
-        /// <param name="characterList"></param>
+        /// <param name="character">이 UI가 보여줄 캐릭터객체</param>
+        /// <param name="canvas">drag하는 동안 위치해있을 canvas</param>
+        /// <param name="characterList">캐릭터 객체가 원래 위치할 리스트</param>
         public void Initialize(PixelCharacter character, Transform canvas, Transform characterList)
         {
             // TODO 
@@ -175,6 +175,8 @@ namespace deck
 
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = false;
+
+            characterImage.setDragMode(true);
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)
@@ -198,7 +200,9 @@ namespace deck
             }
             
             canvasGroup.alpha = 1.0f;
-            canvasGroup.blocksRaycasts = true; 
+            canvasGroup.blocksRaycasts = true;
+
+            characterImage.setDragMode(false);
         }
     }
 

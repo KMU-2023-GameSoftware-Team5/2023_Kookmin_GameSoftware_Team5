@@ -48,7 +48,7 @@ namespace deck
         /// Drag 이벤트 처리를 위한 canvas레퍼런스
         /// </summary>
         [SerializeField]
-        GameObject selectUICanvas;
+        GameObject UIDragCanvas;
 
         [Header("Character List")]
         /// <summary>
@@ -160,7 +160,7 @@ namespace deck
         void createCharacterInventoryPrefeb(int i, PixelCharacter character)
         {
             GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
-            newPrefab.GetComponent<CharacterListItem>().Initialize(character, selectUICanvas.transform, characterInventoryGrid.transform);
+            newPrefab.GetComponent<CharacterListItem>().Initialize(character, UIDragCanvas.transform, characterInventoryGrid.transform);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace deck
         public void togglePlacementMode()
         {
             isPlacementMode = isPlacementMode ? false : true;
-            selectUICanvas.SetActive(!isPlacementMode);
+            UIDragCanvas.SetActive(!isPlacementMode);
             foreach(PlacementCharacter ui in placementUIs)
             {
                 if(ui != null)
