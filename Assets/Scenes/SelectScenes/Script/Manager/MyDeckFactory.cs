@@ -1,6 +1,6 @@
-using Assets.PixelHeroes.Scripts.CollectionScripts;
+﻿using Assets.PixelHeroes.Scripts.CollectionScripts;
 using data;
-using lee;
+using battle;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,8 +42,8 @@ namespace deck
 
         void Initialize()
         {
-            m_humanoidDataMap =  lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
-            collection = lee.StaticLoader.Instance().GetCollection();
+            m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
+            collection = battle.StaticLoader.Instance().GetCollection();
             itemDataMap = new Dictionary<string, ItemData>();
             foreach (var itemData in itemDatas)
             {
@@ -87,10 +87,51 @@ namespace deck
         /// <summary>
         /// 아이템 생성기
         /// </summary>
+<<<<<<< Updated upstream
         /// <param name="itemName"></param>
         /// <returns>생성한 아이템</returns>
         public EquipItem buildEquipItem(string itemName) {
             EquipItem ret = new EquipItem(getItemData(itemName));
+=======
+        /// <param name="character">캐릭터 셀렉트 매니저가 가진 캐릭터 정보</param>
+        /// <returns>캐릭터셀렉트매니저가 관리할 수 있는 캐릭터 배치 컴포넌트</returns>
+        public PlacementCharacter buildPixelHumanoidByPixelCharacter(deck.PixelHumanoid character)
+        {
+            // string name, Vector3 worldPosition, Transform parent
+            if (!m_humanoidDataMap.ContainsKey(character.characterName))
+            {
+                Debug.LogError("There is no Pixel Humanoid Data. Register it in Static Loader: " + name);
+                return null;
+            }
+
+            Vector3 worldPosition = character.worldPosition;
+
+            GameObject characterGo = Instantiate(placementCharacterPrefab, Vector3.zero, Quaternion.identity, parent);
+
+            characterGo.transform.position = worldPosition;
+
+            battle.PixelHumanoid go = characterGo.GetComponent<battle.PixelHumanoid>();
+
+            // build
+            go.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
+            go.builder.SpriteLibrary = go.spriteLibrary;
+            PixelHumanoidData data = m_humanoidDataMap[character.characterName];
+            data.SetOutToBuilder(go.builder);
+            go.builder.Rebuild();
+
+            go.Initilize(data);
+
+            PlacementCharacter ret = characterGo.GetComponent<PlacementCharacter>();
+            ret.Initialize(character);
+
+            // head name
+            GameObject headNameGo = Instantiate(characterHeadNamePrefab, Vector3.zero, Quaternion.identity, characterHeadNameCanvas);
+
+            PlacementCharacterHeadName headName = headNameGo.GetComponent<PlacementCharacterHeadName>();
+            headName.Initialize(ret, character.characterNickName);
+            ret.headName = headName;
+
+>>>>>>> Stashed changes
             return ret;
 
         }
