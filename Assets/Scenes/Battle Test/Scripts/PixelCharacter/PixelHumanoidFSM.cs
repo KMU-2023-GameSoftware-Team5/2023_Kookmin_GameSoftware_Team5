@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace battle
+namespace lee
 {
     public partial class PixelHumanoid
     {
         public enum EState
         {
             Waiting,
-            Searching, 
-            Chasing,
+            Searching, // 바라보고 있는 방향으로 이동하면서 범위 안의 적을 찾는다. 
+            Chasing, // 공격 타깃에 공격 범위 밖에 있어서 따라간다. 
             MeleeAttacking,
             RangedAttacking,
             Delaying,
@@ -23,11 +23,16 @@ namespace battle
         {
             public State() { }
 
+            // 이 부분을 상속으로 구현하면 상태 하나마다 클래스 하나가 되는데, 코드가 길어지는 것이 싫다. 
+            // 그래서 대리자로 했다. 
+            // 대리자 구현은 PixelHumnaoid.StateFactory에서 확인할 수 있다.
             public Action<PixelHumanoid> OnEnter;
             public Func<PixelHumanoid, EState> OnUpdate;
             public Action<PixelHumanoid> OnEnd;
         }
 
+        // 기존 State에 멤버 변수가 필요한 경우, ExtendedState를 상속 받아 onEnter, onUpdate, onEnd를 구현한다. 
+        // delegate가 아닌 메서드를 사용하기 때문에 this를 사용할 수 있다. 
         public abstract partial class ExtendedState : State
         {
             public ExtendedState() 
@@ -81,20 +86,18 @@ namespace battle
                 }
             }
 
-            public static StateSet StateSetWithSkill(ESkill skill)
+            public static StateSet CreateTestStateSet0()
             {
-                StateFactory stateFactory = StateFactory.Instance();
-
                 return new StateSet()
                 {
-                    Waiting = stateFactory.GetWaitingState(),
-                    Searching = stateFactory.GetSearchingState(),
-                    Chasing = stateFactory.GetChasingState(),
-                    MeleeAttacking = stateFactory.GetMeleeAttackingState(),
-                    RangedAttacking = stateFactory.GetRangedAttackingState(),
-                    Delaying = stateFactory.GetDelayingState(),
-                    Dead = stateFactory.GetDeadState(),
-                    Skill = SkillFactory.Instance().GetSkill(skill)
+                    Waiting = StateFactory.GetWaitingState(),
+                    Searching = StateFactory.GetSearchingState(),
+                    Chasing = StateFactory.GetChasingState(),
+                    MeleeAttacking = StateFactory.GetMeleeAttackingState(),
+                    RangedAttacking = StateFactory.GetRangedAttackingState(),
+                    Delaying = StateFactory.GetDelayingState(),
+                    Dead = StateFactory.GetDeadState(),
+                    Skill = SkillFactory.GetLightingPillarSkill()
                 };
             }
         }

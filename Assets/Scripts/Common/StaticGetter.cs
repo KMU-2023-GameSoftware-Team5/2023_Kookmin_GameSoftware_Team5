@@ -1,29 +1,34 @@
-using battle;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StaticGetter<T> where T : new()
+namespace lee
 {
-    protected static T s_instance;
-
-    public static T Instance()
+    interface IOnStaticFound
     {
-        if (s_instance == null)
+        bool OnStaticFound();
+    }
+
+    public class StaticGetter<T> : MonoBehaviour where T : UnityEngine.Object
+    {
+        protected static T s_instance;
+
+        public static T Instance()
         {
-            s_instance = new T();
             if (s_instance == null)
-                Debug.LogError("StaticGetter new() returned NULL: " + typeof(T).ToString());
-            else if (s_instance is IOnStaticFound)
             {
-                IOnStaticFound onStaticFound = (IOnStaticFound)s_instance;
-                if (!onStaticFound.OnStaticFound())
+                s_instance = FindAnyObjectByType<T>();
+                if (s_instance == null)
+                    Debug.LogError("StaticGetter FindObject returned NULL: " + typeof(T).ToString());
+                else if (s_instance is IOnStaticFound)
                 {
-                    Debug.LogError("OnStaticFound failed: " + typeof(T).ToString());
+                    IOnStaticFound onStaticFound = (IOnStaticFound)s_instance;
+                    if (!onStaticFound.OnStaticFound())
+                    {
+                        Debug.LogError("OnStaticFound failed: " + typeof(T).ToString());
+                    }
                 }
             }
-        }
 
-        return s_instance;
+            return s_instance;
+        }
     }
 }

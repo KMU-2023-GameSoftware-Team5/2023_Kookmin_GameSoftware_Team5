@@ -2,13 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace battle
+namespace lee
 {
-<<<<<<< Updated upstream
     public class BattleTest : StaticGetter<BattleTest>
-=======
-    public class BattleTest : StaticComponentGetter<BattleTest>
->>>>>>> Stashed changes
     {
         [Serializable]
         public class BuildTarget
@@ -18,7 +14,6 @@ namespace battle
         }
 
         public bool doRandom;
-        public bool loadTeam1FromMobSet;
         public BuildTarget[] team0Characters;
         public BuildTarget[] team1Characters;
 
@@ -26,29 +21,8 @@ namespace battle
         {
             if (doRandom)
                 spawnCharactersRandom();
-            else if (loadTeam1FromMobSet)
-                spawnFromMobSet(SceneParamter.Instance().MobSet);
             else
                 spawnCharacters();
-        }
-
-        private void spawnFromMobSet(MobSetData mobset)
-        {
-            if (mobset == null)
-            {
-                Debug.LogError("mobset is NULL");
-                return;
-            }
-
-            for (int i = 0; i < mobset.mobs.Length; i++)
-            {
-                PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(mobset.mobs[i].CharacterName, mobset.mobs[i].Position, transform);
-                humanoid.SetDirection(Utility.Direction2.Left);
-                humanoid.teamIndex = 1;
-                humanoid.bm = BattleManager.Instance();
-
-                m_team1Humanoids.Add(humanoid);
-            }
         }
 
         List<PixelCharacter> m_team0Humanoids = new List<PixelCharacter>();

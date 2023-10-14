@@ -1,11 +1,10 @@
 using Assets.PixelHeroes.Scripts.CollectionScripts;
-using System.Collections.Generic;
 using UnityEngine;
 using data;
 
-namespace battle
+namespace lee
 {
-    public class StaticLoader : StaticComponentGetter<StaticLoader>
+    public class StaticLoader : StaticGetter<StaticLoader>
     {
         [SerializeField] private SpriteCollection collection;
         public SpriteCollection GetCollection() { return collection; }
@@ -26,16 +25,15 @@ namespace battle
         [SerializeField] private GameObject lightningPillar;
         public GameObject GetLightningPillar() {  return lightningPillar; }
 
-        [SerializeField] private GameObject fireOrbit;
-        public GameObject GetFireOrbit() { return fireOrbit; }
+        [Header("Reference")]
+        [SerializeField] private MyCharacterFactory myCharacterBuilder;
 
         [Header("Humanoid")]
-        [SerializeField] private List<PixelHumanoidData> pixelHumanoidDatas = new List<PixelHumanoidData>();
-        public int GetPixelHumanoidCount() { return pixelHumanoidDatas.Count; }
-        public List<PixelHumanoidData> GetPixelHumanoidDatas() { return pixelHumanoidDatas;  }
+        [SerializeField] private PixelHumanoidData[] pixeHumanoidDatas;
+        public int GetPixelHumanoidCount() { return pixeHumanoidDatas.Length; }
         public PixelHumanoidData GetPixelHumanoidData(int index) 
         {
-            if (index >= pixelHumanoidDatas.Count)
+            if (index >= pixeHumanoidDatas.Length)
             {
                 Debug.LogError("invalid index: over the length");
                 return null;
@@ -46,7 +44,14 @@ namespace battle
                 return null;
             }
                 
-            return pixelHumanoidDatas[index]; 
+            return pixeHumanoidDatas[index]; 
+        }
+
+
+        private void Awake()
+        {
+            myCharacterBuilder.Initialize(pixeHumanoidDatas);
+            BattleManager.Instance().Initialize();
         }
     }
 }

@@ -8,10 +8,10 @@ using UnityEngine;
 namespace deck
 {
     /// <summary>
-    /// 筌?Ŧ????醫뤾문 ?온??揶쏆빘猿?
+    /// 캐릭터 선택 관리 객체
     /// </summary>
     /// <remarks>
-    /// 筌?Ŧ????醫뤾문 ??肉??筌?Ŧ????온????끦®몴?筌ｌ꼶??? ?곕???筌?Ŧ????袁⑥뺘?怨몄뵥 ?온?귐됱쨮 ?類ㅼ삢?醫?????깆벥 ?袁⑹뒄
+    /// 캐릭터 선택 씬에서 캐릭터 관련 업무를 처리함. 추후 캐릭터 전반적인 관리로 확장할지는 논의 필요
     /// </remarks>
     public class CharacterSelectManager : MonoBehaviour
     {
@@ -26,68 +26,68 @@ namespace deck
         }
 
         /// <summary>
-        /// ?袁⑹삺 ???쟿??곷선揶쎛 揶쎛筌왖????덈뮉 筌?Ŧ??怨쀬벥 筌욌쵑鍮
+        /// 현재 플레이어가 가지고 있는 캐릭터의 집합
         /// </summary>
         public List<PixelCharacter> characters;
         /// <summary>
-        /// ?袁⑹삺 ???쟿??곷선揶쎛 ?醫뤾문??筌?Ŧ??怨쀬벥 筌욌쵑鍮
+        /// 현재 플레이어가 선택한 캐릭터의 집합
         /// </summary>
         public PixelCharacter[] selectCharacters;
 
         /// <summary>
-        /// 筌?Ŧ????醫뤾문 ?????????獄쏄퀣肉?
+        /// 캐릭터 선택 슬롯에 대한 배열
         /// </summary>
         public CharacterSelector[] selectors;
 
         /// <summary>
-        /// 筌?Ŧ????醫뤾문 ??源??筌ｌ꼶?곭몴??袁る립 ?袁⑸뻻癰궰??
+        /// 캐릭터 선택 이벤트 처리를 위한 임시변수
         /// </summary>
         public int nowSelectorId;
         
         /// <summary>
-        /// Drag ??源??筌ｌ꼶?곭몴??袁る립 canvas??딅쓠?怨쀫뮞
+        /// Drag 이벤트 처리를 위한 canvas레퍼런스
         /// </summary>
         [SerializeField]
         GameObject selectUICanvas;
 
         [Header("Character List")]
         /// <summary>
-        /// ???쟿??곷선揶쎛 ?袁⑹삺 揶쎛筌왖????덈뮉 筌?Ŧ??怨뺣굶??癰귣똻肉т틠?곕뮉 ?귐딅뮞?紐꾩벥 ?袁⑺뒄
+        /// 플레이어가 현재 가지고 있는 캐릭터들을 보여주는 리스트의 위치
         /// </summary>
         [SerializeField]
         Transform characterInventoryGrid;
         /// <summary>
-        /// ???쟿??곷선揶쎛 ?袁⑹삺 揶쎛筌왖????덈뮉 筌?Ŧ??怨쀬젟癰??袁ⓥ봺??
+        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
         /// </summary>
         [SerializeField]
         GameObject characterInventoryItemPrefeb;
 
         [Header("Character Selector UI")]
         /// <summary>
-        /// 筌?Ŧ????醫뤾문筌??袁⑺뒄
+        /// 캐릭터 선택창 위치
         /// </summary>
         [SerializeField]
         Transform characterSelectorGrid;
         /// <summary>
-        /// 筌?Ŧ????醫뤾문 ??????????袁ⓥ봺??
+        /// 캐릭터 선택 슬롯에 대한 프리펩
         /// </summary>
         [SerializeField]
         GameObject characterSelectorPrefeb;
 
         [Header("Character Details")]
         /// <summary>
-        /// 筌?Ŧ????紐? ?類ｋ궖筌?UI
+        /// 캐릭터 세부 정보창 UI
         /// </summary>
         [SerializeField]
         CharacterDetails characterDetails;
 
         /// <summary>
-        /// 獄쏄퀣??UI 獄쏄퀣肉?
+        /// 배치 UI 배열
         /// /summary>
         PlacementCharacter[] placementUIs;
 
         /// <summary>
-        /// 筌?Ŧ???獄쏄퀣??筌뤴뫀諭? TODO
+        /// 캐릭터 배치 모드. TODO
         /// </summary>
         public bool isPlacementMode { get; private set; }
 
@@ -118,7 +118,6 @@ namespace deck
         {
             isPlacementMode = false;
 
-<<<<<<< Updated upstream
             // 플레이어매니저에게서 보유 캐릭터 받아오기
             characters = PlayerManager.Instance().playerCharacters;
 
@@ -136,25 +135,11 @@ namespace deck
 
             // 현재 보유중인 캐릭터 출력
             for (int i = 0; i < characters.Count; i++)
-=======
-            // ?袁⑸뻻 ?怨쀬뵠????밴쉐
-            characters = new PixelCharacter[6];
-            
-            characters[0] = MyDeckFactory.Instance().buildPixelCharacter("blue");
-            characters[1] = MyDeckFactory.Instance().buildPixelCharacter("magenta");
-            characters[2] = MyDeckFactory.Instance().buildPixelCharacter("cyan");
-            characters[3] = MyDeckFactory.Instance().buildPixelCharacter("yellow");
-            characters[4] = MyDeckFactory.Instance().buildPixelCharacter("red");
-            characters[5] = MyDeckFactory.Instance().buildPixelCharacter("green");
-
-            // ?袁⑹삺 癰귣똻?餓λ쵐??筌?Ŧ????곗뮆??
-            for (int i = 0; i < characters.Length; i++)
->>>>>>> Stashed changes
             {
                 createCharacterInventoryPrefeb(i, characters[i]); 
             }
 
-            // 筌?Ŧ????醫뤾문 ??????밴쉐
+            // 캐릭터 선택 슬롯 생성
             selectCharacters = new PixelCharacter[5]; 
             selectors = new CharacterSelector[5];
             for(int i=0; i < selectors.Length; i++)
@@ -168,15 +153,10 @@ namespace deck
         }
 
         /// <summary>
-        /// ???쟿??곷선揶쎛 ?袁⑹삺 癰귣똻? 餓λ쵐??筌?Ŧ????類ｋ궖 UI ??밴쉐
+        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
         /// </summary>
-<<<<<<< Updated upstream
         /// <param name="i">TODO - 추후 제거 필요(미사용)</param>
         /// <param name="character">플레이어의 캐릭터 정보</param>
-=======
-        /// <param name="i">?곕?????볤탢 ?袁⑹뒄(沃섎챷沅??</param>
-        /// <param name="character">???쟿??곷선??筌?Ŧ????類ｋ궖</param>
->>>>>>> Stashed changes
         void createCharacterInventoryPrefeb(int i, PixelCharacter character)
         {
             GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
@@ -184,9 +164,9 @@ namespace deck
         }
 
         /// <summary>
-        /// 筌?Ŧ????醫뤾문 ??????袁⑺뒄
+        /// 캐릭터 선택 슬롯의 위치
         /// </summary>
-        /// <param name="selectId">筌?Ŧ????醫뤾문 ??????⑥쥙? ID</param>
+        /// <param name="selectId">캐릭터 선택 슬롯의 고유 ID</param>
         /// <returns></returns>
         CharacterSelector createCharacterSelectorPrefeb(int selectId)
         {
@@ -197,19 +177,19 @@ namespace deck
         }
 
         /// <summary>
-        /// 筌?Ŧ????紐? ?類ｋ궖筌???용┛
+        /// 캐릭터 세부 정보창 열기
         /// </summary>
-        /// <param name="character">?紐? ?類ｋ궖筌≪럩????곷선??노릭??筌?Ŧ???/param>
+        /// <param name="character">세부 정보창을 열어야하는 캐릭터</param>
         public void openCharacterDetails(PixelCharacter character)
         {
             characterDetails.openCharacterDetails(character);
         }
 
         /// <summary>
-        /// 筌?Ŧ????醫뤾문 筌ｌ꼶??筌롫뗄苑??
+        /// 캐릭터 선택 처리 메서드
         /// </summary>
-        /// <param name="selectId">筌?Ŧ??怨? 筌뤿돃苡???醫뤾문??뤿??遺?</param>
-        /// <param name="character">?醫뤾문??筌?Ŧ????類ｋ궖</param>
+        /// <param name="selectId">캐릭터가 몇번에 선택되었는지</param>
+        /// <param name="character">선택된 캐릭터 정보</param>
         public void selectCharacter(int selectId, PixelCharacter character)
         {
             selectCharacters[selectId] = character;
@@ -220,9 +200,9 @@ namespace deck
         }
 
         /// <summary>
-        /// 筌?Ŧ????醫뤾문??곸젫 ??源??
+        /// 캐릭터 선택해제 이벤트
         /// </summary>
-        /// <param name="selectId">?醫뤾문??곸젫??筌?Ŧ??怨? 筌뤿돃苡???????醫뤾문??筌?Ŧ??怨쀬뵥揶쎛</param>
+        /// <param name="selectId">선택해제될 캐릭터가 몇번 슬롯에 선택된 캐릭터인가</param>
         public void unSelectCharacter(int selectId)
         {
             selectCharacters[selectId] = null;
@@ -233,28 +213,28 @@ namespace deck
         }
 
         /// <summary>
-        /// 筌?Ŧ??怨쀫퓠野??袁⑹뵠???關媛???源??
+        /// 캐릭터에게 아이템 장착 이벤트
         /// </summary>
-        /// <param name="character">?袁⑹뵠??뽰뱽 ?關媛??筌?Ŧ???/param>
-        /// <param name="equipId">筌?Ŧ??怨? 筌뤿돃苡??紐껉뭣?醫듼봺???袁⑹뵠??뽰뱽 ?關媛??野껉퍔?ㅿ쭪?</param>
-        /// <param name="item">?關媛???袁⑹뵠??/param>
+        /// <param name="character">아이템을 장착할 캐릭터</param>
+        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
+        /// <param name="item">장착할 아이템</param>
         public bool equip(PixelCharacter character, int equipId, EquipItem item)
         {
             return character.equip(equipId, item);
         }
 
         /// <summary>
-        /// 筌?Ŧ????袁⑹뵠???關媛???곸젫 ??源??
+        /// 캐릭터 아이템 장착 해제 이벤트
         /// </summary>
-        /// <param name="character">?袁⑹뵠??뽰뱽 ??곸젫??筌?Ŧ???/param>
-        /// <param name="equipId">??곸젫???袁⑹뵠??뽰벥 ?紐껉뭣?醫듼봺???袁⑺뒄</param>
+        /// <param name="character">아이템을 해제할 캐릭터</param>
+        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
         public bool unEquip(PixelCharacter character, int equipId)
         {
             return character.unEquip(equipId);
         }
 
         /// <summary>
-        /// 筌?Ŧ???獄쏄퀣??筌뤴뫀諭뜻에?筌띾슢諭얏묾? TODO
+        /// 캐릭터 배치 모드로 만들기. TODO
         /// </summary>
         public void togglePlacementMode()
         {

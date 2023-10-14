@@ -12,16 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
   m_Name: Skeleton Data
   m_EditorClassIdentifier: 
-  sheild: 0
-  hp: 100
-  mp: 0
-  energy: 0
-  walkSpeed: 4
-  damage: 1
-  attackDelay: 0.6
-  criticalRate: 0
   characterName: Skeleton
-  attackRange: 1
   Head: Skeleton#FFFFFF/0:0:0
   Ears: Skeleton#FFFFFF/0:0:0
   Eyes: Skeleton#FFFFFF/0:0:0
@@ -35,4 +26,9 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 0
-  skill: 1
+  hp: 10
+  damage: 1
+  walkSpeed: 2
+  attackRange: 1
+  attackDelay: 0.6
+  criticalRate: 0

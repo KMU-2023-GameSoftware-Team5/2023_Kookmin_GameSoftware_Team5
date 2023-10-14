@@ -9,11 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Battle Test/Battle Test.unity
     guid: b84fc70e344ffdb43be7fad31de47e0e
   - enabled: 1
-<<<<<<< Updated upstream
     path: Assets/Scenes/SelectScenes/SelectScene.unity
     guid: bced39031dc04e44ba5d33eb45f1d585
-=======
-    path: Assets/Scenes/CombineScenes/CombineScene.unity
-    guid: 8649ec31f3dcdae4a8b54d814cc0448c
->>>>>>> Stashed changes
   m_configObjects: {}

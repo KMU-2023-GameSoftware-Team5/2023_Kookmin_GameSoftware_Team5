@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.U2D.Animation;
 using data;
 
-namespace battle
+namespace lee
 {
     public partial class PixelHumanoid : PixelCharacter
     {
@@ -46,6 +46,7 @@ namespace battle
             }
         }
 
+        // TODO: PixelHumanoidData¿Í PixelCharacterData ±¸ºÐÇÏ±â
         public void Initilize(PixelHumanoidData data)
         {
             stats.walkSpeed = data.walkSpeed;
@@ -58,8 +59,7 @@ namespace battle
             stats.damage = data.damage;
             stats.criticalRate = data.criticalRate;
 
-            StateSet set = StateSet.StateSetWithSkill(data.skill);
-            m_fsm = new FSM(set, EState.Waiting);
+            m_fsm = new FSM(StateSet.CreateTestStateSet0(), EState.Waiting);
             m_isDead = false;
         }
 
@@ -77,7 +77,7 @@ namespace battle
         {
             if (Camera.main != null)
             {
-                m_sr.transform.rotation = Camera.main.transform.localRotation;
+                transform.rotation = Camera.main.transform.localRotation;
             }
 
             state = m_fsm.GetCurrentState();
@@ -87,8 +87,8 @@ namespace battle
                 float minZ = BattleManager.Instance().minZ;
                 float maxZ = BattleManager.Instance().maxZ;
                 float z = transform.position.z;
-                float scale = 1.0f - ((z - minZ) / (maxZ - minZ));   // max???? ëŸ¾?æ¿šë°¸Å¦?????æ¿?ÅŠ ?? ë£†??????œâ€?? min???? ëŸ¾?æ¿šë°¸Å¦?????æ¿?ÅŠ ?? ë£†??????? 
-                scale = 0.7f + scale * 0.3f;    // ??? 1.0f
+                float scale = 1.0f - ((z - minZ) / (maxZ - minZ));   // max¿¡ °¡±î¿ï ¼ö·Ï °ªÀÌ ÀÛ°í, min¿¡ °¡±î¿ï ¼ö·Ï °ªÀÌ Å©´Ù. 
+                scale = 0.7f + scale * 0.3f;    // ÇÕÀº 1.0f
                 m_bodyScaler.localScale = new Vector3(scale, scale, scale);
             }
             else

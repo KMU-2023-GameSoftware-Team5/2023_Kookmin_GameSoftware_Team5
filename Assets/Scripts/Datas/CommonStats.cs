@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace data
@@ -29,8 +30,7 @@ namespace data
         public float criticalRate;
 
         /// <summary>
-        /// ??쎈??곗뮆????袁る립 + ?怨쀪텦 ??살쒔嚥≪뮆逾?
-        /// ?쒓? 源⑥쭚. 
+        /// 스텟 출력을 위한 + 연산 오버로딩
         /// </summary>
         public static CommonStats operator +(CommonStats A, CommonStats B) {
             CommonStats ret = new CommonStats();
@@ -50,7 +50,6 @@ namespace data
     namespace scriptable
     {
         // scriptable version
-        [Serializable]
         public class CommonStats : ScriptableObject
         {
             public void CopyFrom(CommonStats other)
@@ -76,4 +75,5 @@ namespace data
             public float criticalRate;
         }
     }
+    
 }

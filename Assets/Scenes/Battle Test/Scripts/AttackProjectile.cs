@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace battle
+namespace lee
 {
     // TODO: line Renderer로 궤적 이쁘게 그리기
     public class AttackProjectile : MonoBehaviour

@@ -4,15 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace battle
+namespace lee
 {
-    public enum EPixelCharacter
-    {
-        GoblinArchor, 
-        Demon,
-        Skeleton
-    }
-
     // abstract: you can't make instance of PixelCharacter directly: it is for polymorphizm
     public abstract class PixelCharacter : MonoBehaviour
     {

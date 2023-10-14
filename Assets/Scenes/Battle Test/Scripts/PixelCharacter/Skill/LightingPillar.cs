@@ -1,47 +1,53 @@
-using battle;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LightingPillar : MonoBehaviour
+namespace lee
 {
-    public BattleManager bm;
-    public PixelHumanoid parent;
-    public uint targetId;
-    public int damage;
-
-    public void Initialize(BattleManager bm, PixelHumanoid parent, uint targetId, int damage)
+    public class LightingPillar: MonoBehaviour
     {
-        this.bm = bm;
-        this.parent = parent;
-        this.targetId = targetId;
-        this.damage = damage;
+        public BattleManager bm;
+        public PixelHumanoid parent;
+        public Vector3 birthPosition;
+        public uint targetId;
+        public int damage;
 
-        PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
-
-        if (target == null)
+        public void Initialize(BattleManager bm, PixelHumanoid parent, uint targetId, int dmamage)
         {
-            Destroy(gameObject);
+            this.bm = bm;
+            this.parent = parent;
+            this.targetId = targetId;
+            this.damage = dmamage;
+
+            PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
+
+            if (target == null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                bm.ApplyDamage(parent, target, damage, true);
+                transform.position = target.transform.position;
+            }
         }
-        else
+
+        [SerializeField]
+        private float m_leftTime;
+        private void Update()
         {
-            bm.ApplyDamage(parent, target, this.damage, true, Color.red);
-            transform.position = target.transform.position;
+            m_leftTime -= Time.deltaTime;
+            if (m_leftTime <= 0)
+                Destroy(gameObject);
         }
-    }
 
-    [SerializeField]
-    private float m_leftTime;
-    private void Update()
-    {
-        m_leftTime -= Time.deltaTime;
-        if (m_leftTime <= 0)
-            Destroy(gameObject);
-    }
-
-    private void LateUpdate()
-    {
-        if (Camera.main != null)
+        private void FixedUpdate()
         {
-            transform.rotation = Camera.main.transform.localRotation;
+            if (Camera.main != null)
+            {
+                transform.rotation = Camera.main.transform.localRotation;
+            }
         }
     }
 }

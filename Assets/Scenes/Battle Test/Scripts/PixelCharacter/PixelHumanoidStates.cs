@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using data;
 
-namespace battle
+// PixelHumanoid가 가질 수 있는 State를 정의하는 파일
+
+namespace lee
 {
     public partial class PixelHumanoid
     {
-        public partial class StateFactory: StaticGetter<StateFactory>
+        // StateFactory는 PixelHumanoid의 inner class이기 때문에 private member에 접근할 수 있다. 
+        // 만약 State 객체가 PixelHumanoid의 inner class이면 더 편할까? 
+        public partial class StateFactory
         {
-            private State s_watingState = new State()
+            // state 내부에 상태를 저장하지 않는 경우, 
+            // 상태 객체를 하나만 만들어 레퍼런스를 공유한다. 
+            private static State s_watingState = new State()
             {
                 OnEnter = (PixelHumanoid owner) =>
                 {
@@ -22,12 +28,13 @@ namespace battle
                     return EState.None;
                 }
             };
-            public State GetWaitingState() { return s_watingState; }
+            public static State GetWaitingState() { return s_watingState; }
 
-            private State s_searchingState = new State()
+            private static State s_searchingState = new State()
             {
                 OnEnter = (PixelHumanoid owner) =>
                 {
+                    // 안하면 무한루프
                     owner.m_fsm.SetTransitionToSearch(false);
 
                     owner.m_animator.SetBool("Idle", false);
@@ -38,15 +45,13 @@ namespace battle
                 {
                     float distance;
 
-<<<<<<< Updated upstream
                     Debug.Log("owner: " + owner);
                     Debug.Log("owner: " + owner.bm);
 
-=======
->>>>>>> Stashed changes
                     PixelHumanoid enemy = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
                     distance = Mathf.Sqrt(distance);
 
+                    // 범위 안의 적을 찾은 경우
                     if (distance <= owner.searchingRange)
                     {
                         owner.targetId = enemy.entityId;
@@ -76,19 +81,19 @@ namespace battle
                     return EState.None;
                 }
             };
-            public  State GetSearchingState() { return s_searchingState; }
+            public static State GetSearchingState() { return s_searchingState; }
 
-            private State s_chasingState = new State()
+            private static State s_chasingState = new State()
             {
                 OnUpdate = (PixelHumanoid owner) =>
                 {
                     float distance;
 
                     PixelCharacter target = owner.bm.GetEntity(owner.targetId, BattleManager.EDeadOrAlive.Alive);
-                    if (target == null) 
+                    if (target == null) // 새로운 타겟을 찾는다. 
                     {
                         target = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
-                        if (target == null) 
+                        if (target == null) // 새로운 타겟 찾기 실패
                         {
                             return EState.Waiting;
                         }
@@ -101,7 +106,7 @@ namespace battle
                     else
                     {
                         distance = Utility.GetDistanceBetween(owner.transform, target.transform);
-                        if (distance <= owner.attackRange)
+                        if (distance <= owner.attackRange) // 공격 가능 범위에 들어온 경우
                         {
                             if (owner.defaultAttackType == EDefualtAttackType.Melee)
                             {
@@ -137,9 +142,9 @@ namespace battle
                     }
                 }
             };
-            public State GetChasingState() { return s_chasingState; }
+            public static State GetChasingState() { return s_chasingState; }
 
-            private State s_meleeAttackingState = new State()
+            private static State s_meleeAttackingState = new State()
             {
                 OnUpdate = (PixelHumanoid owner) =>
                 {
@@ -161,9 +166,9 @@ namespace battle
                     }
                 }
             };
-            public State GetMeleeAttackingState() { return s_meleeAttackingState; }
+            public static State GetMeleeAttackingState() { return s_meleeAttackingState; }
 
-            public State s_rangedAttackingState = new State()
+            public static State s_rangedAttackingState = new State()
             {
                 OnUpdate = (PixelHumanoid owner) =>
                 {
@@ -208,9 +213,9 @@ namespace battle
                     }
                 }
             };
-            public State GetRangedAttackingState() { return s_rangedAttackingState; }
+            public static State GetRangedAttackingState() { return s_rangedAttackingState; }
 
-            private State s_deadState = new State()
+            private static State s_deadState = new State()
             {
                 OnEnter = (PixelHumanoid owner) =>
                 {
@@ -221,9 +226,9 @@ namespace battle
                     owner.m_animator.SetBool("Dead", true);
                 }
             };
-            public State GetDeadState() { return s_deadState; }
+            public static State GetDeadState() { return s_deadState; }
 
-            private State s_delayingState = new State()
+            private static State s_delayingState = new State()
             {
                 OnEnter = (PixelHumanoid owner) =>
                 {
@@ -246,7 +251,7 @@ namespace battle
                         return EState.None;
                 }
             };
-            public State GetDelayingState() {  return s_delayingState; }
+            public static State GetDelayingState() {  return s_delayingState; }
         }
     }
 }

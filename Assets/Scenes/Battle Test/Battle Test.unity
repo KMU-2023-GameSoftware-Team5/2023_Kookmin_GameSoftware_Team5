@@ -534,13 +534,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 434155845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &450419551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1685,40 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618590fc21385364d8229293461fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
-=======
-  doRandom: 0
-  loadTeam1FromMobSet: 0
-  team0Characters:
-  - name: Demon
-    position: {x: -6, y: 0, z: 0}
-  team1Characters:
-  - name: Goblin Archor
-    position: {x: 6, y: 0, z: 3}
-  - name: Goblin Archor
-    position: {x: 6, y: 0, z: 1}
-  - name: Goblin Archor
-    position: {x: 6, y: 0, z: 0}
-  - name: Goblin Archor
-    position: {x: 6, y: 0, z: -2}
-  - name: Goblin Archor
-    position: {x: 6, y: 0, z: -3}
---- !u!4 &1492391913
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492391911}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> Stashed changes
 --- !u!1 &1550339960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1792,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618693907}
   m_CullTransparentMesh: 1
-<<<<<<< Updated upstream
 --- !u!114 &1653942466 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5422195601022562813, guid: defb84b1fb9f8e243a0de1f551b0a9a5, type: 3}
@@ -1838,8 +1803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a569c9842c508b4081cbd4ce145ea69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-=======
->>>>>>> Stashed changes
 --- !u!1 &2086997156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1956,7 +1919,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
-<<<<<<< Updated upstream
 --- !u!1001 &4187333989689206362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2290,8 +2252,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c296b2c34789bfd41826708376aad78a, type: 3}
-=======
->>>>>>> Stashed changes
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2304,11 +2264,7 @@ SceneRoots:
   - {fileID: 871119538}
   - {fileID: 9039744254422442777}
   - {fileID: 1550339961}
-<<<<<<< Updated upstream
   - {fileID: 8485976916260659859}
   - {fileID: 7839985503792306926}
   - {fileID: 6809755902572502401}
-=======
->>>>>>> Stashed changes
   - {fileID: 657697574}
-  - {fileID: 1186330230}
