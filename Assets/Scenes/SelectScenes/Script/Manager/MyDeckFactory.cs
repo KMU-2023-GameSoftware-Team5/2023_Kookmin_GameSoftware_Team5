@@ -35,12 +35,18 @@ namespace deck
         [SerializeField] private ItemData[] itemDatas;
         public Dictionary<string, ItemData> itemDataMap;
 
+        /// <summary>
+        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
+        /// </summary>
+        [SerializeField]
+        GameObject characterInventoryItemPrefeb;
+
         void Start()
         {
             Initialize();
         }
 
-        void Initialize()
+        public void Initialize()
         {
             m_humanoidDataMap =  lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
             collection = lee.StaticLoader.Instance().GetCollection();
@@ -94,5 +100,20 @@ namespace deck
             return ret;
 
         }
+
+        /// <summary>
+        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
+        /// </summary>
+        /// <param name="character">플레이어의 캐릭터 정보</param>
+        /// <param name="targetParent">UI 배치할 transform</param>
+        /// <param name="initialize">초기화를 factory에서 할 것인지</param>
+        /// <returns></returns>
+        public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true)
+        {
+            GameObject go = Instantiate(characterInventoryItemPrefeb, targetParent);
+            go.GetComponent<LightCharacterListItem>().Initialize(character);
+            return go;
+        }
+
     }
 }

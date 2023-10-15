@@ -60,11 +60,6 @@ namespace deck
         /// </summary>
         [SerializeField]
         Transform characterInventoryGrid;
-        /// <summary>
-        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
-        /// </summary>
-        [SerializeField]
-        GameObject characterInventoryItemPrefeb;
 
         [Header("Character Selector UI")]
         /// <summary>
@@ -140,7 +135,8 @@ namespace deck
             // 현재 보유중인 캐릭터 출력
             for (int i = 0; i < characters.Count; i++)
             {
-                createCharacterInventoryPrefeb(i, characters[i]); 
+                GameObject go=  MyDeckFactory.Instance().createCharacterInventoryPrefeb(characters[i], characterInventoryGrid, false); 
+                go.GetComponent<LightCharacterListItem>().Initialize(characters[i], UIDragCanvas.transform, characterInventoryGrid.transform);
             }
 
             // 캐릭터 선택 슬롯 생성
@@ -154,17 +150,6 @@ namespace deck
 
             placementUIs = new PlacementCharacter[5];
             battlePixelCharacters = new lee.PixelCharacter[5];
-        }
-
-        /// <summary>
-        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
-        /// </summary>
-        /// <param name="i">TODO - 추후 제거 필요(미사용)</param>
-        /// <param name="character">플레이어의 캐릭터 정보</param>
-        void createCharacterInventoryPrefeb(int i, PixelCharacter character)
-        {
-            GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
-            newPrefab.GetComponent<CharacterListItem>().Initialize(character, UIDragCanvas.transform, characterInventoryGrid.transform);
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace deck
     /// <summary>
     /// 플레이어가 보유한 캐릭터 하나에 대한 정보를 보여주는 UI를 제어하는 객체
     /// </summary>
-    public class CharacterListItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class CharacterListItem: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         /// <summary>
         /// UI가 보여줄 캐릭터 객체
@@ -36,14 +36,7 @@ namespace deck
         /// <summary>
         /// 캐릭터 이미지 출력 UI
         /// </summary>
-        [SerializeField]
         SpriteBuilderForUI characterImage;
-
-        /// <summary>
-        /// 캐릭터 이름
-        /// </summary>
-        [SerializeField] TextMeshProUGUI characterName;
-
 
         public PixelCharacter getCharacter()
         {
@@ -65,17 +58,15 @@ namespace deck
         /// <param name="character">이 UI가 보여줄 캐릭터객체</param>
         /// <param name="canvas">drag하는 동안 위치해있을 canvas</param>
         /// <param name="characterList">캐릭터 객체가 원래 위치할 리스트</param>
-        public void Initialize(PixelCharacter character, Transform canvas, Transform characterList)
+        public void Initialize(PixelCharacter character, Transform canvas, Transform characterList, SpriteBuilderForUI characterImage)
         {
-            // TODO 
-            this.character = character;
-            characterImage.buildCharacter(this.character.characterName);
-            characterName.text = character.characterNickName;
             // characterImg.color = this.character.playerColor; 
             rect = GetComponent<RectTransform>(); 
             canvasGroup = GetComponent<CanvasGroup>(); 
+            this.character = character;
             this.characterList = characterList;
             this.canvas = canvas;
+            this.characterImage = characterImage;
         }
 
         /// <summary>

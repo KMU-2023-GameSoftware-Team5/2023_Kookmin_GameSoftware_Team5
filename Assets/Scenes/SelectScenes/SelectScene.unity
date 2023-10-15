@@ -683,6 +683,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 60b2641dfe24aee409fab59c8c752e7d, type: 2}
   - {fileID: 11400000, guid: 19bf4b8f060dbb340a0fa6405b14630c, type: 2}
   - {fileID: 11400000, guid: f116655cd23ca7446ad05c7238a79452, type: 2}
+  characterInventoryItemPrefeb: {fileID: 6749334836876386046, guid: 6ecfb5fb55d548b4aa2eb011f563890f, type: 3}
 --- !u!4 &227280082
 Transform:
   m_ObjectHideFlags: 0
@@ -5505,7 +5506,6 @@ MonoBehaviour:
   UIDragCanvas: {fileID: 1346255322}
   selectCanvas: {fileID: 742378147}
   characterInventoryGrid: {fileID: 1575555589}
-  characterInventoryItemPrefeb: {fileID: 6749334836876386046, guid: 6ecfb5fb55d548b4aa2eb011f563890f, type: 3}
   characterSelectorGrid: {fileID: 1762884144}
   characterSelectorPrefeb: {fileID: 758044846937784723, guid: 6ff2bae0ef1cd0747aecbc5b8ae62ea7, type: 3}
   characterDetails: {fileID: 403017685}
