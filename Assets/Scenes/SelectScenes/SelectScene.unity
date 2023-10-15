@@ -683,7 +683,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 60b2641dfe24aee409fab59c8c752e7d, type: 2}
   - {fileID: 11400000, guid: 19bf4b8f060dbb340a0fa6405b14630c, type: 2}
   - {fileID: 11400000, guid: f116655cd23ca7446ad05c7238a79452, type: 2}
-  characterInventoryItemPrefeb: {fileID: 6749334836876386046, guid: 6ecfb5fb55d548b4aa2eb011f563890f, type: 3}
+  characterInventoryItemPrefab: {fileID: 6749334836876386046, guid: 6ecfb5fb55d548b4aa2eb011f563890f, type: 3}
+  LigthEquipItemPrefab: {fileID: 6302780969460027485, guid: 46cc4dff4baaeb847b94afb1c0625f17, type: 3}
 --- !u!4 &227280082
 Transform:
   m_ObjectHideFlags: 0

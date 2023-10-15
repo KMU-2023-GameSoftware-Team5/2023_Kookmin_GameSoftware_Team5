@@ -16,6 +16,7 @@ namespace deck
             if (instance == null)
             {
                 instance = FindObjectOfType<MyDeckFactory>();
+                instance.Initialize();
             }
             return instance;
         }
@@ -39,16 +40,12 @@ namespace deck
         /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
         /// </summary>
         [SerializeField]
-        GameObject characterInventoryItemPrefeb;
+        GameObject characterInventoryItemPrefab;
 
-        void Start()
-        {
-            Initialize();
-        }
-
+        [SerializeField] GameObject LigthEquipItemPrefab;
         public void Initialize()
         {
-            m_humanoidDataMap =  lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
+            m_humanoidDataMap = lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
             collection = lee.StaticLoader.Instance().GetCollection();
             itemDataMap = new Dictionary<string, ItemData>();
             foreach (var itemData in itemDatas)
@@ -110,9 +107,22 @@ namespace deck
         /// <returns></returns>
         public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true)
         {
-            GameObject go = Instantiate(characterInventoryItemPrefeb, targetParent);
-            go.GetComponent<LightCharacterListItem>().Initialize(character);
+            GameObject go = Instantiate(characterInventoryItemPrefab, targetParent);
+            if(initialize)
+            {
+                go.GetComponent<LightCharacterListItem>().Initialize(character);
+            }
             return go;
+        }
+
+        /// <summary>
+        /// 플레이어 보유 아이템에 대한 UI 생성
+        /// </summary>
+        /// <param name="item">아이템 정보</param>
+        public void createLightEquipItemUI(EquipItem item, Transform targetParent)
+        {
+            GameObject newPrefab = Instantiate(LigthEquipItemPrefab, targetParent);
+            newPrefab.GetComponent<LightEquipItem>().Initialize(item);
         }
 
     }
