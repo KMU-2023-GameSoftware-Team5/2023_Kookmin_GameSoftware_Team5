@@ -2,18 +2,17 @@ using UnityEngine;
 using System.Collections.Generic;
 using data;
 
-namespace lee
+namespace battle
 {
-    // TODO:궂이 component여야 할까? 
-    public class MyCharacterFactory : StaticGetter<MyCharacterFactory>
+    public class MyCharacterFactory : StaticGetter<MyCharacterFactory>, IOnStaticFound
     {
         // find PixelCharacterData by characterName
         private Dictionary<string, PixelHumanoidData> m_humanoidDataMap;
 
-        public bool Initialize(PixelHumanoidData[] pixelHumanoidDatas)
+        public bool OnStaticFound()
         {
             m_humanoidDataMap = new Dictionary<string, PixelHumanoidData>();
-            foreach (var humanoidData in pixelHumanoidDatas)
+            foreach (var humanoidData in StaticLoader.Instance().GetPixelHumanoidDatas())
             {
                 if (humanoidData != null)
                     m_humanoidDataMap[humanoidData.characterName] = humanoidData;
@@ -31,7 +30,7 @@ namespace lee
             }
 
             GameObject characterPrefap = StaticLoader.Instance().GetPixelCharacterPrefap();
-            GameObject characterGo =Instantiate(characterPrefap, Vector3.zero, Quaternion.identity, parent);
+            GameObject characterGo =GameObject.Instantiate(characterPrefap, Vector3.zero, Quaternion.identity, parent);
 
             characterGo.transform.position = worldPosition;
             
@@ -48,7 +47,7 @@ namespace lee
 
             // head bar
             GameObject characterHeadBarPrefap = StaticLoader.Instance().GetPixelCharacterHeadBarPrefap();
-            GameObject characterHeadBarGo = Instantiate(characterHeadBarPrefap, Vector3.zero, Quaternion.identity, WorldCanvas.Instance().transform);
+            GameObject characterHeadBarGo = GameObject.Instantiate(characterHeadBarPrefap, Vector3.zero, Quaternion.identity, WorldCanvas.Instance().transform);
 
             PixelCharacterHeadBar bar = characterHeadBarGo.GetComponent<PixelCharacterHeadBar>();
             bar.Initialize(ret);

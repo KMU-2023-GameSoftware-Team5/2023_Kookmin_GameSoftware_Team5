@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace lee
+namespace battle
 {
     public partial class PixelHumanoid
     {
@@ -86,7 +86,7 @@ namespace lee
                 }
             }
 
-            public static StateSet CreateTestStateSet0()
+            public static StateSet CreateStateSetWithSkill(ESkill skill)
             {
                 return new StateSet()
                 {
@@ -97,7 +97,7 @@ namespace lee
                     RangedAttacking = StateFactory.GetRangedAttackingState(),
                     Delaying = StateFactory.GetDelayingState(),
                     Dead = StateFactory.GetDeadState(),
-                    Skill = SkillFactory.GetLightingPillarSkill()
+                    Skill = SkillFactory.Instance().GetSkill(skill)
                 };
             }
         }

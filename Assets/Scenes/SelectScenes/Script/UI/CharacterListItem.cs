@@ -86,7 +86,7 @@ namespace deck
         /// </remarks>
         public void openCharacterDetails()
         {
-            CharacterSelectManager.Instance.openCharacterDetails(character);
+            CharacterSelectManager.Instance().openCharacterDetails(character);
         }        
 
         /// <summary>

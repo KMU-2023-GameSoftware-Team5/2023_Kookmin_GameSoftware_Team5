@@ -1,4 +1,5 @@
-﻿using Assets.PixelHeroes.Scripts.CharacterScrips;
+using Assets.PixelHeroes.Scripts.CharacterScrips;
+using battle;
 using UnityEngine;
 
 namespace data
@@ -11,7 +12,7 @@ namespace data
         RangedFire2,    // 양손 총
     }
 
-    [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "data/PixelHumanoidData", order = 1)]
+    [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "data/PixelHumanoid", order = 1)]
     public class PixelHumanoidData: scriptable.CommonStats
     {
         [Header("PixelHumanoidData")]
@@ -35,6 +36,7 @@ namespace data
 
         [Header("Setting")]
         public EDefualtAttackType defualtAttackType;
+        public PixelHumanoid.ESkill skill;
 
         public void SetOutToBuilder(CharacterBuilder builder)
         {

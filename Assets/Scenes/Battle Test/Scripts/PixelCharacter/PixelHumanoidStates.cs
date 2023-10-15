@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using data;
 
 // PixelHumanoid가 가질 수 있는 State를 정의하는 파일
 
-namespace lee
+namespace battle
 {
     public partial class PixelHumanoid
     {
@@ -44,6 +44,10 @@ namespace lee
                 OnUpdate = (PixelHumanoid owner) =>
                 {
                     float distance;
+
+                    Debug.Log("owner: " + owner);
+                    Debug.Log("owner: " + owner.bm);
+
                     PixelHumanoid enemy = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
                     distance = Mathf.Sqrt(distance);
 

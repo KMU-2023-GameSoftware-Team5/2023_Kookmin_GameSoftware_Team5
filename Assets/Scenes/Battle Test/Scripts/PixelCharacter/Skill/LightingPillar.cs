@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace lee
+namespace battle
 {
     public class LightingPillar: MonoBehaviour
     {
@@ -28,7 +28,7 @@ namespace lee
             }
             else
             {
-                bm.ApplyDamage(parent, target, damage, true);
+                bm.ApplyDamage(parent, target, damage, true, Color.red);
                 transform.position = target.transform.position;
             }
         }
