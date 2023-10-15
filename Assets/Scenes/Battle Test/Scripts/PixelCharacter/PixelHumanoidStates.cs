@@ -5,7 +5,7 @@ using data;
 
 // PixelHumanoid가 가질 수 있는 State를 정의하는 파일
 
-namespace lee
+namespace battle
 {
     public partial class PixelHumanoid
     {

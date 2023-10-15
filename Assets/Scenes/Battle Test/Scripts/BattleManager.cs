@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace lee
+namespace battle
 {
-    public class BattleManager : StaticGetter<BattleManager>
+    public class BattleManager : StaticComponentGetter<BattleManager>
     {
         public float maxZ = 6.0f;
         public float minZ = -8.0f;
@@ -25,7 +25,7 @@ namespace lee
         [SerializeField] private EStatus status = EStatus.Waiting;
         public EStatus GetStatus() { return status; }
 
-        public void Initialize()
+        public void Awake()
         {
             status = EStatus.Waiting;
             m_entityMap = new Dictionary<uint, PixelCharacter>();
@@ -72,7 +72,7 @@ namespace lee
             m_team0Characters = team0;
             m_team1Characters = team1;
 
-            uint lastEntityNumber = 0;  // 1���� ����
+            uint lastEntityNumber = 0;  
             foreach (PixelCharacter character in m_team0Characters)
             {
                 character.entityId = lastEntityNumber++;
@@ -165,7 +165,6 @@ namespace lee
                 ret.Add(iCharacter);
             }
 
-            // ��������
             ret.Sort((PixelCharacter x, PixelCharacter y) =>
                 {
                     float distX = (from.transform.position - x.transform.position).sqrMagnitude;
@@ -183,9 +182,67 @@ namespace lee
             ApplyDamage(from, to, from.stats.damage, true);
         }
 
+        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical, Color color)
+        {
+            if (to.IsDead())
+                return;
+
+            to.stats.hp -= damage;
+
+            from.stats.mp += 10;
+            if (from.stats.mp > 100)
+            {
+                from.stats.mp = PixelCharacter.MaxMp;
+
+                // TODO: notify mp 100 maybe?
+            }
+
+            Color damageTextColor = color;
+
+            // creat damage text
+            GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
+            GameObject damageTextGo = Instantiate(damageTextPrefap, Vector3.zero, Quaternion.identity, to.transform);
+            damageTextGo.transform.localPosition = new Vector3(0.0f, 2.0f, 0.0f);
+            FloatingText floatingText = damageTextGo.GetComponent<FloatingText>();
+            floatingText.Initialize(damage.ToString(), damageTextColor);
+
+            // callback on damaged
+            if (to.teamIndex == 0)
+            {
+                to.OnDamaged(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
+            }
+            else if (to.teamIndex == 1)
+            {
+                to.OnDamaged(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
+            }
+
+            // callback if dead
+            if (to.stats.hp <= 0)
+            {
+                // call victim's callback
+                if (from.teamIndex == 0)
+                {
+                    to.OnDead(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
+                }
+                else if (from.teamIndex == 1)
+                {
+                    to.OnDead(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
+                }
+
+                // call killer's callback
+                if (from.teamIndex == 0)
+                {
+                    to.OnKill(to, m_team0Characters.ToArray(), m_team1Characters.ToArray());
+                }
+                else if (from.teamIndex == 1)
+                {
+                    to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
+                }
+            }
+        }
+
         public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical)
         {
-            // �̹� �׾����� �ƹ� ó���� ���� �ʴ´�. 
             if (to.IsDead())
                 return;
 
@@ -227,7 +284,6 @@ namespace lee
             }
 
             // callback if dead
-            // ���� ������ PixelCharacter���� �˾Ƽ� �ϴϱ� �ݹ鸸 ȣ���Ѵ�. 
             if (to.stats.hp <= 0)
             {
                 // call victim's callback

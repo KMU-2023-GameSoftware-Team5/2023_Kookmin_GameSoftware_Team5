@@ -50,8 +50,8 @@ MonoBehaviour:
   pixelCharacterHeadBarPrefap: {fileID: 8392388413763120322, guid: dc8c70c7101c6e447aeaf1b421c9768d, type: 3}
   floatingTextPrefap: {fileID: 8735041799268705100, guid: 84507d25bf134c743b0a1bed892ef43c, type: 3}
   lightningPillar: {fileID: 5980311250256988142, guid: 1eaaf01e0bb97254a9347289189019b4, type: 3}
-  myCharacterBuilder: {fileID: 0}
-  pixeHumanoidDatas:
-  - {fileID: 11400000, guid: dae5869a46e0a11469cf4bc08fddac8e, type: 2}
+  fireOrbit: {fileID: 8058714631891175303, guid: 9c77bfebc43a31340933ecd7c52a7b8c, type: 3}
+  pixelHumanoidDatas:
   - {fileID: 11400000, guid: b38685b0755aa474bb27d7651eed0885, type: 2}
   - {fileID: 11400000, guid: 4e4a00c9205d6994eb83f954b2504a19, type: 2}
+  - {fileID: 11400000, guid: dae5869a46e0a11469cf4bc08fddac8e, type: 2}

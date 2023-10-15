@@ -1,6 +1,6 @@
 using Assets.PixelHeroes.Scripts.CollectionScripts;
 using data;
-using lee;
+using battle;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,8 +42,8 @@ namespace deck
 
         void Initialize()
         {
-            m_humanoidDataMap =  lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
-            collection = lee.StaticLoader.Instance().GetCollection();
+            m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
+            collection = battle.StaticLoader.Instance().GetCollection();
             itemDataMap = new Dictionary<string, ItemData>();
             foreach (var itemData in itemDatas)
             {

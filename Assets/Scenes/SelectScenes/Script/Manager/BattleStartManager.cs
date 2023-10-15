@@ -1,5 +1,5 @@
 using deck;
-using lee;
+using battle;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using UnityEngine;
 public class BattleStartManager : MonoBehaviour
 {
     public GameObject[] destroyTarget;
-    public lee.PixelCharacter[] characters;
+    public battle.PixelCharacter[] characters;
 
     public void onClickBattleStart()
     {
