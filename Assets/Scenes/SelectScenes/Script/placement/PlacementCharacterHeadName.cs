@@ -12,19 +12,16 @@ namespace placement
     /// </summary>
     public class PlacementCharacterHeadName : MonoBehaviour
     {
-        public float deltaY;
-        public RectTransform rect;
-        public PlacementCharacter target;
+        public GameObject headName;
         public TextMeshProUGUI characterName;
+        public GameObject hp;
+        public GameObject mp;
 
-        public void Initialize(PlacementCharacter target,string characterNickname)
+        public void Initialize(string characterNickname)
         {
-            if (target == null)
-                return;
-
-            this.target = target;
             characterName.text  = characterNickname;
-            updatePositionAndRotationByTarget();
+            hp.SetActive(false);
+            mp.SetActive(false);
         }
 
         internal void unSelect()
@@ -32,21 +29,12 @@ namespace placement
             Destroy(gameObject);
         }
 
-        private void LateUpdate()
+        public void battleStart()
         {
-            if (target == null)
-                return;
-            updatePositionAndRotationByTarget();
-        }
-
-        private void updatePositionAndRotationByTarget()
-        {
-            // Vector3 tmpVector = target.transform.position + transform.up * deltaY;
-            rect.anchoredPosition3D = target.transform.position + transform.up * deltaY;
-
-            if (Camera.main != null)
-                rect.rotation = Camera.main.transform.rotation;
+            hp.SetActive(true);
+            mp.SetActive(true);
+            Destroy(headName);
+            Destroy(this);
         }
     }
-
 }

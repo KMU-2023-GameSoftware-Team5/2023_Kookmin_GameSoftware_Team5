@@ -58,7 +58,7 @@ namespace placement
                 position.y,
                 position.z
             );
-            ret.z = 10;
+            ret.z = 0;
             if(ret.x > maxX )
             {
                 ret.x = maxX;
@@ -98,6 +98,12 @@ namespace placement
         {
             headName.unSelect();
             Destroy(pixelHumanoid);
+        }
+
+        public void battleStart()
+        {
+            headName.battleStart();
+            Destroy(this);
         }
     }
 }

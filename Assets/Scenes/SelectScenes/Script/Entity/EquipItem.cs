@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using data;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace deck
@@ -11,10 +13,13 @@ namespace deck
     public class EquipItem
     {
 
+        [JsonProperty] string itemName;
+
         /// <summary>
         /// 아이템 정보 객체(scriptable)
         /// </summary>
         ItemData itemData;
+
         /// <summary>
         /// Item 스텟
         /// </summary>
@@ -23,7 +28,7 @@ namespace deck
         /// <summary>
         /// 아이템 주인에 대한 레퍼런스
         /// </summary>
-        private PixelCharacter itemOwner;
+        [JsonProperty] private PixelCharacter itemOwner;
         
         /// <summary>
         /// 아이템 주인의 인벤토리 몇번째 칸에 아이템이 저장되어 있는 지 확인하는 변수
@@ -47,19 +52,23 @@ namespace deck
                 attackDelay = itemData.attackDelay,
                 criticalRate = itemData.criticalRate
             };
+        }
 
-            Debug.Log($"itemData : {itemData.energy} / itemStat : {itemStat.energy}");
+        public EquipItem()
+        {
+
         }
 
         public EquipItem(ItemData itemData)
         {
             this.itemData = itemData;
+            this.itemName = itemData.itemName;
             copyStat();
         }
 
-
         public EquipItem(string itemName) {
-            this.itemData = MyDeckFactory.Instance().GetItemData(itemName);
+            this.itemName = itemName;
+            this.itemData = MyDeckFactory.Instance().getItemData(itemName);
             copyStat();
         }
 
@@ -70,7 +79,7 @@ namespace deck
         /// <returns> 아이템 이름 </returns>
         public string getItemName()
         {
-            return itemData.itemName;
+            return itemName;
         }
 
         /// <summary>
@@ -125,6 +134,15 @@ namespace deck
         public bool isEquip()
         {
             return itemOwner != null;
+        }
+
+        /// <summary>
+        /// save-load 업무 후 아이템 객체를 재건하는 작업
+        /// </summary>
+        public void loadForJson()
+        {
+            // itemData빼면 itemData만 복원
+            itemData = MyDeckFactory.Instance().getItemData(itemName);
         }
     }
 }

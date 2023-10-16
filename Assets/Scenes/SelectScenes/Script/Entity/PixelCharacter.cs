@@ -3,8 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using data;
+using Newtonsoft.Json;
 
 namespace deck{
+
+    /// <summary>
+    /// unity vector3가 json화 되지 않아서 json화용도로 만드는 자료형
+    /// </summary>
+    struct JsonableVector3
+    {
+        public float x; public float y; public float z;
+        public void setVector(Vector3 v)
+        {
+            x = v.x;
+            y = v.y;
+            z = v.z;
+        }
+
+        public Vector3 getVector()
+        {
+            Vector3 v = new Vector3(
+                x, y, z
+            );
+            return v;
+        }
+    }
+
     /// <summary>
     /// Deck 편집에서 관리하는 캐릭터 객체
     /// </summary>
@@ -13,9 +37,15 @@ namespace deck{
         public string characterNickName { get; protected set; }
         public string characterName { get; set; }
         public EquipItem[] Inventory;
-        protected CommonStats characterStat; 
+        [JsonProperty] protected CommonStats characterStat;
 
-        public Vector3 worldPosition {  get; set; }
+        /// <summary>
+        /// 캐릭터 배치시의 위치. 이해할 수는 없지만 Json화되지 않는 문제가 있음
+        /// </summary>
+        [JsonIgnore]
+        public Vector3 worldPosition;
+
+        [JsonProperty] JsonableVector3 worldPosirionForJson;
 
         /// <summary>
         /// 캐릭터에게 아이템 장착 메서드
@@ -93,6 +123,16 @@ namespace deck{
             CommonStats equipItemStat = getEquipItemStats();
             CommonStats ret = characterStat + equipItemStat;
             return ret;
+        }
+
+        public void saveForJson()
+        {
+            worldPosirionForJson.setVector(worldPosition);
+        }
+
+        public void loadForJson()
+        {
+            worldPosition = worldPosirionForJson.getVector();
         }
     }
 }

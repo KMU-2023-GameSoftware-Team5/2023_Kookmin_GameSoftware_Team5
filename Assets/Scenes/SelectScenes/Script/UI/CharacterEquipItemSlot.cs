@@ -128,7 +128,7 @@ namespace deck
         /// </summary>
         public void openItemDetail()
         {
-            EquipItemManager.Instance.openItemDetail(equipItem);
+            EquipItemManager.Instance().openItemDetail(equipItem);
         }
     }
 }

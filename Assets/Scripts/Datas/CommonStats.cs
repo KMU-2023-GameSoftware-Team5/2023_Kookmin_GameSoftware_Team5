@@ -29,9 +29,6 @@ namespace data
         public float attackDelay;
         public float criticalRate;
 
-        /// <summary>
-        /// 스텟 출력을 위한 + 연산 오버로딩
-        /// </summary>
         public static CommonStats operator +(CommonStats A, CommonStats B) {
             CommonStats ret = new CommonStats();
             ret.sheild = A.sheild + B.sheild;
@@ -75,5 +72,4 @@ namespace data
             public float criticalRate;
         }
     }
-    
 }
