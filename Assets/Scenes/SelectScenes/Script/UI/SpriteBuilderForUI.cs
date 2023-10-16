@@ -31,6 +31,11 @@ namespace deck
             resizeSprite();
         }
 
+        public void setSortingOrder(int sortingOrder)
+        {
+            spriteRenderer.sortingOrder = sortingOrder;
+        }
+
         /// <summary>
         /// 정해진 파라미터에 맞게 sprite 크기 재조정
         /// </summary>
@@ -45,14 +50,8 @@ namespace deck
         /// <param name="dragMode"></param>
         public void setDragMode(bool dragMode)
         {
-            if (dragMode)
-            {
-                spriteRenderer.sortingOrder = 3;
-            }
-            else
-            {
-                spriteRenderer.sortingOrder = 1;
-            }
+            int sortingOrder = dragMode ? 3 : 1;
+            setSortingOrder(sortingOrder);
         }
     }
 }

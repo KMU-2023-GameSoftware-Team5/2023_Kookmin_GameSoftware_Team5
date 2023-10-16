@@ -23,10 +23,6 @@ namespace deck
         /// </summary>
         [SerializeField] TextMeshProUGUI characterName;
 
-        private void Awake()
-        {
-        }
-
         public void Initialize(PixelCharacter character)
         {
             this.character = character;
@@ -44,6 +40,10 @@ namespace deck
             characterListItem = GetComponent<CharacterListItem>();
             characterListItem.Initialize(character, canvas, characterList, characterImage);
         }
-    }
 
+        public void setSortingOrder(int sortingOrder)
+        {
+            characterImage.setSortingOrder(sortingOrder);
+        }
+    }
 }

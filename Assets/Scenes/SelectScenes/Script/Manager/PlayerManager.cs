@@ -48,12 +48,38 @@ namespace deck
             playerEquipItems = new List<EquipItem>();
         }
 
-        public void Initialize(int playerGold, int playerLife, List<PixelHumanoid> characters, List<EquipItem> equipItems)
+        void Intialize(int playerGold, int playerLife,  List<EquipItem> equipItems)
         {
             this.playerGold = playerGold;
             this.playerLife = playerLife;
+            if (equipItems != null)
+            {
+                this.playerEquipItems = equipItems;
+            }
+        }
+
+        public void Initialize(int playerGold, int playerLife, List<PixelCharacter> characters, List<EquipItem> equipItems)
+        {
+            if (characters == null)
+            {
+                Debug.LogError("playerCharacters is NOT NULL");
+                return;
+            }
+
+            Intialize(playerGold, playerLife, equipItems);
+            this.playerCharacters = characters;
+        }
+
+        public void Initialize(int playerGold, int playerLife, List<PixelHumanoid> characters, List<EquipItem> equipItems)
+        {
+            if (characters == null)
+            {
+                Debug.LogError("playerCharacters is NOT NULL");
+                return;
+            }
+
+            Intialize(playerGold, playerLife, equipItems);
             this.playerCharacters = new List<PixelCharacter>(characters);
-            this.playerEquipItems = equipItems;
         }
 
         /// <summary>

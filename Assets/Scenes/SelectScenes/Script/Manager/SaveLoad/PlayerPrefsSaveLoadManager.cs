@@ -28,11 +28,17 @@ namespace deck
                 {
                     character.loadForJson();
                 }
-                foreach (EquipItem item in playerEquipItems)
+                if (playerEquipItems != null)
                 {
-                    item.loadForJson();   
+                    foreach (EquipItem item in playerEquipItems)
+                    {
+                        item.loadForJson();
+                    }
                 }
-
+                else
+                {
+                    playerEquipItems = new List<EquipItem>();
+                }
                 // 플레이어 돈
                 int playerGold = PlayerPrefs.GetInt("playerGold");
                 int playerLife = PlayerPrefs.GetInt("playerLife");

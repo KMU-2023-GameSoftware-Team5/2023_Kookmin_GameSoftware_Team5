@@ -105,12 +105,17 @@ namespace deck
         /// <param name="targetParent">UI 배치할 transform</param>
         /// <param name="initialize">초기화를 factory에서 할 것인지</param>
         /// <returns></returns>
-        public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true)
+        public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true, int sortingOrder = 1)
         {
             GameObject go = Instantiate(characterInventoryItemPrefab, targetParent);
             if(initialize)
             {
-                go.GetComponent<LightCharacterListItem>().Initialize(character);
+                LightCharacterListItem tmp = go.GetComponent<LightCharacterListItem>();
+                tmp.Initialize(character);
+                if(sortingOrder != 1)
+                {
+                    tmp.setSortingOrder(sortingOrder);
+                }
             }
             return go;
         }
@@ -123,6 +128,29 @@ namespace deck
         {
             GameObject newPrefab = Instantiate(LigthEquipItemPrefab, targetParent);
             newPrefab.GetComponent<LightEquipItem>().Initialize(item);
+        }
+
+
+        /// <summary>
+        /// 게임 시작할 때 캐릭터 고를 수 있게 해줌 
+        /// </summary>
+        /// <returns></returns>
+        public List<List<PixelCharacter>> getNGSelectos()
+        {
+            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+            System.Random random = new System.Random();
+
+            List<List<PixelCharacter>> ret = new List<List<PixelCharacter>>();
+            for(int i = 0; i < 5; i++)
+            {
+                ret.Add( new List<PixelCharacter>());
+                for(int j = 0; j < 5; j++)
+                {
+                    PixelCharacter character = buildPixelCharacter(characterNames[random.Next(0, characterNames.Length)]);
+                    ret[i].Add(character);
+                }
+            }
+            return ret;
         }
 
     }
