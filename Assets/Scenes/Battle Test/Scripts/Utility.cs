@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
-namespace lee
+namespace battle
 {
     public struct Vector3Bool
     {

@@ -1,6 +1,6 @@
 using Assets.PixelHeroes.Scripts.CollectionScripts;
 using data;
-using lee;
+using battle;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,8 +45,8 @@ namespace deck
         [SerializeField] GameObject LigthEquipItemPrefab;
         public void Initialize()
         {
-            m_humanoidDataMap = lee.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
-            collection = lee.StaticLoader.Instance().GetCollection();
+            m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
+            collection = battle.StaticLoader.Instance().GetCollection();
             itemDataMap = new Dictionary<string, ItemData>();
             foreach (var itemData in itemDatas)
             {
@@ -132,7 +132,7 @@ namespace deck
 
 
         /// <summary>
-        /// 게임 시작할 때 캐릭터 고를 수 있게 해줌 
+        /// 게임 시작할 때 캐릭터 고를 수 있게 해줌
         /// </summary>
         /// <returns></returns>
         public List<List<PixelCharacter>> getNGSelectos()

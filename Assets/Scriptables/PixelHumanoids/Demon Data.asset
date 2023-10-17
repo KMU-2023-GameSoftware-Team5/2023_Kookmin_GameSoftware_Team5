@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Demon Data
   m_EditorClassIdentifier: 
   sheild: 0
-  hp: 30
+  hp: 100
   mp: 0
   energy: 0
   walkSpeed: 5
@@ -35,3 +35,4 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 0
+  skill: 2

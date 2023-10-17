@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace lee
+namespace battle
 {
-    public class WorldCanvas : StaticGetter<WorldCanvas> 
+    public class WorldCanvas : StaticComponentGetter<WorldCanvas> 
     {
         public RectTransform rect;
 

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace lee
+namespace battle
 {
-    public class BattleTest : StaticGetter<BattleTest>
+    public class BattleTest : StaticComponentGetter<BattleTest>
     {
         [Serializable]
         public class BuildTarget
@@ -14,15 +14,37 @@ namespace lee
         }
 
         public bool doRandom;
+        public bool loadTeam1FromMobset;
         public BuildTarget[] team0Characters;
         public BuildTarget[] team1Characters;
 
         private void Start()
         {
-            if (doRandom)
+            if (loadTeam1FromMobset)
+                spawnFromMobSet(SceneParamter.Instance().MobSet);
+            else if (doRandom)
                 spawnCharactersRandom();
             else
                 spawnCharacters();
+        }
+
+        private void spawnFromMobSet(MobSetData mobset)
+        {
+            if (mobset == null)
+            {
+                Debug.LogError("mobset is NULL");
+                return;
+            }
+
+            for (int i = 0; i < mobset.mobs.Length; i++)
+            {
+                PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(mobset.mobs[i].CharacterName, mobset.mobs[i].Position, transform);
+                humanoid.SetDirection(Utility.Direction2.Left);
+                humanoid.teamIndex = 1;
+                humanoid.bm = BattleManager.Instance();
+
+                m_team1Humanoids.Add(humanoid);
+            }
         }
 
         List<PixelCharacter> m_team0Humanoids = new List<PixelCharacter>();
@@ -34,7 +56,8 @@ namespace lee
                 if (target == null)
                     continue;
 
-                PixelHumanoid humanoid = MyCharacterFactory.Instance().CreatePixelHumanoid(target.name, target.position, transform);
+                MyCharacterFactory factory = MyCharacterFactory.Instance();
+                PixelHumanoid humanoid = factory.CreatePixelHumanoid(target.name, target.position, transform);
                 humanoid.SetDirection(Utility.Direction2.Right);
                 humanoid.teamIndex = 0;
                 humanoid.bm = BattleManager.Instance();

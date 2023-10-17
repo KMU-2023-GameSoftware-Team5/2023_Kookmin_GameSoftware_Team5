@@ -1,5 +1,5 @@
 using data;
-using lee;
+using battle;
 using placement;
 using System.Collections;
 using System.Collections.Generic;
@@ -111,7 +111,7 @@ namespace deck
         /// </summary>
         [SerializeField] GameObject characterHeadNamePrefab;
 
-        lee.PixelCharacter[] battlePixelCharacters;
+        battle.PixelCharacter[] battlePixelCharacters;
 
         void Start()
         {
@@ -149,7 +149,7 @@ namespace deck
             }
 
             placementUIs = new PlacementCharacter[5];
-            battlePixelCharacters = new lee.PixelCharacter[5];
+            battlePixelCharacters = new battle.PixelCharacter[5];
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace deck
             placementUIs[selectId] = buildPixelHumanoidByPixelCharacter(
                 (PixelHumanoid)selectCharacters[selectId]
             );
-            battlePixelCharacters[selectId] =  placementUIs[selectId].GetComponent<lee.PixelCharacter>();
+            battlePixelCharacters[selectId] =  placementUIs[selectId].GetComponent<battle.PixelCharacter>();
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace deck
             characterGo.transform.position = worldPosition;
 
             // build battle.PixelHumaniod
-            lee.PixelHumanoid battlPixelHumanoid = characterGo.GetComponent<lee.PixelHumanoid>();
+            battle.PixelHumanoid battlPixelHumanoid = characterGo.GetComponent<battle.PixelHumanoid>();
             battlPixelHumanoid.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
             battlPixelHumanoid.builder.SpriteLibrary = battlPixelHumanoid.spriteLibrary;
             PixelHumanoidData data = MyDeckFactory.Instance().getPixelHumanoidData(character.characterName);
@@ -279,7 +279,7 @@ namespace deck
             return ret;
         }
 
-        public lee.PixelCharacter[] battleStart()
+        public battle.PixelCharacter[] battleStart()
         {
             foreach(PlacementCharacter target in placementUIs)
             {
