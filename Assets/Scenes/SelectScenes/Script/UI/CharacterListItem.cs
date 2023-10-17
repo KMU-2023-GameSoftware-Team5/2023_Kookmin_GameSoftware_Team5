@@ -90,6 +90,11 @@ namespace deck
         public void selectCharacter(CharacterSelector characterSelector)
         {
             this.characterSelector = characterSelector;
+
+            // for sprite mask
+            Debug.Log("i said order 2");
+            characterImage.setSortingOrder(2);
+
         }
 
         /// <summary>
@@ -106,6 +111,9 @@ namespace deck
             {
                 returnList();
             }
+
+            // for sprite mask
+            characterImage.setSortingOrder(1);
         }
 
 
@@ -157,6 +165,9 @@ namespace deck
             transform.SetParent(characterList);
             rect.position = characterList.position;
             //characterList.GetComponent<RectTransform>().position;
+
+            // for sprite maks
+            characterImage.setSortingOrder(1);
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
@@ -167,7 +178,8 @@ namespace deck
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = false;
 
-            characterImage.setDragMode(true);
+            // for sprite Mask
+            characterImage.setSortingOrder(3);
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)
@@ -192,8 +204,6 @@ namespace deck
             
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = true;
-
-            characterImage.setDragMode(false);
         }
     }
 
