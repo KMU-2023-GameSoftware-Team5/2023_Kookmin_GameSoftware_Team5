@@ -33,8 +33,7 @@ namespace deck
         /// <param name="canvas">드래그 이벤트 처리를 위한 canvas</param>
         public void Initialize(EquipItem item, Transform canvas)
         {
-            Transform myTransform = GetComponent<Transform>();
-            myEquipItemListItem.Initialize(item, myTransform, canvas);
+            myEquipItemListItem.Initialize(item, transform, canvas);
         }
     }
 }

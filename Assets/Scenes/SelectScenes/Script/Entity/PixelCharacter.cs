@@ -4,48 +4,26 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace deck{
-
-    /// <summary>
-    /// unity vector3가 json화 되지 않아서 json화용도로 만드는 자료형
-    /// </summary>
-    struct JsonableVector3
-    {
-        public float x; public float y; public float z;
-        public void setVector(Vector3 v)
-        {
-            x = v.x;
-            y = v.y;
-            z = v.z;
-        }
-
-        public Vector3 getVector()
-        {
-            Vector3 v = new Vector3(
-                x, y, z
-            );
-            return v;
-        }
-    }
 
     /// <summary>
     /// Deck 편집에서 관리하는 캐릭터 객체
     /// </summary>
     public abstract class PixelCharacter
     {
+        string id;
+        public string ID { get; protected set; }
         public string characterNickName { get; protected set; }
         public string characterName { get; set; }
         public EquipItem[] Inventory;
-        [JsonProperty] protected CommonStats characterStat;
+        protected CommonStats characterStat;
 
         /// <summary>
-        /// 캐릭터 배치시의 위치. 이해할 수는 없지만 Json화되지 않는 문제가 있음
+        /// 캐릭터 배치시의 위치
         /// </summary>
-        [JsonIgnore]
         public Vector3 worldPosition;
-
-        [JsonProperty] JsonableVector3 worldPosirionForJson;
 
         /// <summary>
         /// 캐릭터에게 아이템 장착 메서드
@@ -105,6 +83,10 @@ namespace deck{
             return ret;
         }
         
+        /// <summary>
+        /// 현재 장착한 아이템 스텟의 총합
+        /// </summary>
+        /// <returns>장착 아이템의 스텟 총합</returns>
         public CommonStats getEquipItemStats()
         {
             CommonStats ret = new CommonStats();
@@ -118,6 +100,10 @@ namespace deck{
             return ret;
         }
 
+        /// <summary>
+        /// 캐릭터 기본 스텟 + 아이템 스텟의 총합
+        /// </summary>
+        /// <returns>캐릭터 기본 스텟 + 아이템 스텟의 총합</returns>
         public CommonStats getCharacterStats()
         {
             CommonStats equipItemStat = getEquipItemStats();
@@ -125,14 +111,16 @@ namespace deck{
             return ret;
         }
 
-        public void saveForJson()
-        {
-            worldPosirionForJson.setVector(worldPosition);
-        }
-
-        public void loadForJson()
-        {
-            worldPosition = worldPosirionForJson.getVector();
-        }
+        /// <summary>
+        /// pixelCharacter 객체를 json화하는 함수
+        /// </summary>
+        /// <returns></returns>
+        public abstract JObject toJson();
+        /// <summary>
+        /// json to pixelCharacter
+        /// </summary>
+        /// <param name="json">저장된 pixelCharacter json</param>
+        /// <param name="itemMap">아이템 장착 처리를 위해 주인이 있는 아이템의 id값을 map에 저장 후 사용</param>
+        public abstract void fromJson(JObject json, Dictionary<string, EquipItem> itemMap);
     }
 }

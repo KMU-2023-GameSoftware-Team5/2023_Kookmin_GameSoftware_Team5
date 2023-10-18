@@ -48,7 +48,11 @@ namespace deck
         /// Drag 이벤트 처리를 위한 canvas레퍼런스
         /// </summary>
         [SerializeField]
-        GameObject selectUICanvas;
+        GameObject UIDragCanvas;
+        /// <summary>
+        /// Select UI
+        /// </summary>
+        [SerializeField]GameObject selectCanvas;
 
         [Header("Character List")]
         /// <summary>
@@ -56,11 +60,6 @@ namespace deck
         /// </summary>
         [SerializeField]
         Transform characterInventoryGrid;
-        /// <summary>
-        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
-        /// </summary>
-        [SerializeField]
-        GameObject characterInventoryItemPrefeb;
 
         [Header("Character Selector UI")]
         /// <summary>
@@ -95,7 +94,7 @@ namespace deck
         /// <summary>
         /// 임시속성 - 캐릭터 배치 오브젝트의 parent canvas
         /// </summary>
-        public Transform placementCanvas;
+        [SerializeField] Transform placementCanvas;
 
         /// <summary>
         /// placement Character(캐릭터 배치 오브젝트) 프리펩
@@ -106,16 +105,25 @@ namespace deck
         /// <summary>
         /// Placement - 캐릭터 헤드 네임이 위치할 캔버스
         /// </summary>
-        public Transform characterHeadNameCanvas;
+        [SerializeField] Transform characterHeadNameCanvas;
         /// <summary>
         /// Placement - 배치시 캐릭터 위에 이름 달아줄 프리펩
         /// </summary>
         [SerializeField] GameObject characterHeadNamePrefab;
 
+        /// <summary>
+        /// 세이브 로드 매니저
+        /// </summary>
+        SaveLoadManager saveLoadManager;
+        
+        /// <summary>
+        /// 배틀씬으로 전달해줄 pixelCharacter
+        /// </summary>
         battle.PixelCharacter[] battlePixelCharacters;
 
         void Start()
         {
+            saveLoadManager = GetComponent<SaveLoadManager>();
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
@@ -127,7 +135,7 @@ namespace deck
             {
                 string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
                 System.Random random = new System.Random();
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
                 }
@@ -136,7 +144,8 @@ namespace deck
             // 현재 보유중인 캐릭터 출력
             for (int i = 0; i < characters.Count; i++)
             {
-                createCharacterInventoryPrefeb(i, characters[i]); 
+                GameObject go=  MyDeckFactory.Instance().createCharacterInventoryPrefeb(characters[i], characterInventoryGrid, false); 
+                go.GetComponent<LightCharacterListItem>().Initialize(characters[i], UIDragCanvas.transform, characterInventoryGrid.transform);
             }
 
             // 캐릭터 선택 슬롯 생성
@@ -150,17 +159,6 @@ namespace deck
 
             placementUIs = new PlacementCharacter[5];
             battlePixelCharacters = new battle.PixelCharacter[5];
-        }
-
-        /// <summary>
-        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
-        /// </summary>
-        /// <param name="i">TODO - 추후 제거 필요(미사용)</param>
-        /// <param name="character">플레이어의 캐릭터 정보</param>
-        void createCharacterInventoryPrefeb(int i, PixelCharacter character)
-        {
-            GameObject newPrefab = Instantiate(characterInventoryItemPrefeb, characterInventoryGrid);
-            newPrefab.GetComponent<CharacterListItem>().Initialize(character, selectUICanvas.transform, characterInventoryGrid.transform);
         }
 
         /// <summary>
@@ -234,12 +232,12 @@ namespace deck
         }
 
         /// <summary>
-        /// 캐릭터 배치 모드로 만들기. TODO
+        /// PlacementCharacter 버튼을 누르면 실행됨. 캐릭터 배치 모드로 만들기
         /// </summary>
         public void togglePlacementMode()
         {
             isPlacementMode = isPlacementMode ? false : true;
-            selectUICanvas.SetActive(!isPlacementMode);
+            selectCanvas.SetActive(!isPlacementMode);
             foreach(PlacementCharacter ui in placementUIs)
             {
                 if(ui != null)
@@ -248,7 +246,7 @@ namespace deck
                 }
             }
         }
-
+        
         /// <summary>
         /// 배치할 캐릭터를 생성하는 메서드
         /// </summary>
@@ -302,5 +300,11 @@ namespace deck
 
             return battlePixelCharacters;
         }
+
+        public void save()
+        {
+            saveLoadManager.save();
+        }
+
     }
 }

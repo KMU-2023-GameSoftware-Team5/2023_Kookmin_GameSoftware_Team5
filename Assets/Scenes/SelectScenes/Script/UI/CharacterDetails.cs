@@ -25,7 +25,7 @@ namespace deck
         /// 캐릭터 이미지를 보여질 컴포넌트
         /// </summary>
         [SerializeField]
-        CharacterBuilderControl chracterImage;
+        SpriteBuilderForUI chracterImage;
 
         /// <summary>
         /// 캐릭터 이름보여줄 텍스트 컴포넌트

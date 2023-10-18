@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,31 +14,40 @@ namespace deck
             if (PlayerPrefs.HasKey("PlayerManager"))
             {
                 PlayerManager playerManager = new PlayerManager();
-                
-                // 캐릭터 목록 
-                string loadPlayerCharacters = PlayerPrefs.GetString("playerCharacters");
-                Debug.Log($"playerJson = {loadPlayerCharacters}");
-                List<PixelHumanoid> playerCharacters = JsonConvert.DeserializeObject<List<PixelHumanoid>>(loadPlayerCharacters);
+                JObject jplayerManager = JObject.Parse(PlayerPrefs.GetString("PlayerManager"));
 
-                // 아이템 목록
-                string loadPlayerEquipItems = PlayerPrefs.GetString("playerEquipItems");
-                Debug.Log($"itemJson = {loadPlayerEquipItems}");
-                List<EquipItem> playerEquipItems = JsonConvert.DeserializeObject<List<EquipItem>>(loadPlayerEquipItems);
+                // gold & life
+                int playerGold = (int)jplayerManager["playerGold"];
+                int playerLife = (int)jplayerManager["playerLife"];
 
-                foreach (PixelCharacter character in playerCharacters)
+                // 장착처리를 위한 map 
+                Dictionary<string, EquipItem> itemMap = new Dictionary<string, EquipItem>(); 
+
+                // 아이템 
+                JArray jitems = (JArray) jplayerManager["items"];
+
+                List<EquipItem> equipItems = new List<EquipItem>();
+                foreach(JObject jitem in jitems)
                 {
-                    character.loadForJson();
+                    EquipItem equipItem = new EquipItem();
+                    string ownerID = equipItem.fromJson(jitem);
+                    equipItems.Add(equipItem);
+                    if(ownerID != null)
+                    {
+                        itemMap[equipItem.id] = equipItem;
+                    }
                 }
-                foreach (EquipItem item in playerEquipItems)
+
+                // 캐릭터  
+                JArray jcharacters = (JArray)jplayerManager["characters"];
+                List<PixelCharacter> characters = new List<PixelCharacter>();
+                foreach (JObject jcharacter in jcharacters)
                 {
-                    item.loadForJson();   
+                    PixelHumanoid character = new PixelHumanoid();
+                    character.fromJson(jcharacter, itemMap);
+                    characters.Add(character);
                 }
-
-                // 플레이어 돈
-                int playerGold = PlayerPrefs.GetInt("playerGold");
-                int playerLife = PlayerPrefs.GetInt("playerLife");
-
-                playerManager.Initialize(playerGold, playerLife, playerCharacters, playerEquipItems);
+                playerManager.Initialize(playerGold, playerLife, characters, equipItems);
                 PlayerManager.Initialize(playerManager);
             }
             else
@@ -52,17 +62,30 @@ namespace deck
         public override void save()
         {
             PlayerManager playerManager = PlayerManager.Instance();
-            foreach (PixelCharacter character in playerManager.playerCharacters)
+            JObject jplayerManager = new JObject();
+
+            // gold & life
+            jplayerManager["playerGold"] = playerManager.playerGold;
+            jplayerManager["playerLife"] = playerManager.playerLife;
+
+            // item save
+            JArray itemArray = new JArray();
+            foreach (EquipItem item in playerManager.playerEquipItems)
             {
-                character.saveForJson();
+                itemArray.Add(item.toJson());
             }
-            PlayerPrefs.SetInt("playerGold", playerManager.playerGold);
-            PlayerPrefs.SetInt("playerLife", playerManager.playerLife);
+            jplayerManager["items"] = itemArray;
 
-            PlayerPrefs.SetString("playerCharacters", JsonConvert.SerializeObject(playerManager.playerCharacters));
-            PlayerPrefs.SetString("playerEquipItems", JsonConvert.SerializeObject(playerManager.playerEquipItems));
+            // character save
+            JArray characterArray = new JArray();
+            foreach(PixelCharacter character in playerManager.playerCharacters)
+            {
+                characterArray.Add(character.toJson());
+            }
+            jplayerManager["characters"] = characterArray;
 
-            PlayerPrefs.SetString("PlayerManager", "save");
+            Debug.Log(jplayerManager);
+            PlayerPrefs.SetString("PlayerManager", jplayerManager.ToString());
         }
 
         public override void delete()

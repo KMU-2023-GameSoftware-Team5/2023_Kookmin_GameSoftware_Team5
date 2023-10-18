@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using data;
 using System;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace deck
 {
@@ -23,12 +25,15 @@ namespace deck
                 "green",
             };
 
+        public PixelHumanoid() { }
+
         /// <summary>
         /// 픽셀 캐릭터 생성자
         /// </summary>
         /// <param name="characterName">픽셀 캐릭터의 이름(유니크한)</param>
         public PixelHumanoid(string characterName, CommonStats characterStat)
         {
+            ID = Guid.NewGuid().ToString();
             this.characterName = characterName;
             characterNickName = nickNameMaker();
 
@@ -62,6 +67,63 @@ namespace deck
         {
             Vector3 ret = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 0); 
             return ret;
+        }
+
+        public override JObject toJson()
+        {
+            JObject ret = new JObject();
+            ret["id"] = ID;
+            ret["name"] = characterName;
+            ret["nickname"] = characterNickName;
+            ret["stat"] = JsonConvert.SerializeObject(characterStat);
+            ret["position"] = new JObject { 
+                {"x", worldPosition.x },
+                {"y", worldPosition.y},
+                {"z", worldPosition.z},
+            };
+            JArray jInventory = new JArray();
+            foreach (EquipItem item in Inventory)
+            {
+                JObject tmp = new JObject();
+                if(item != null)
+                {
+                    tmp["item id"] = item.id;
+                }
+                else
+                {
+                    tmp["item id"] = "None";
+                }
+                jInventory.Add(tmp);
+            }
+            ret["inventory"] = jInventory;
+            return ret;
+        }
+
+        public override void fromJson(JObject json, Dictionary<string, EquipItem> itemMap)
+        {
+            ID = (string) json["id"];
+            characterName = (string)json["name"];
+            characterNickName = (string)json["nickname"];
+            characterStat = JsonConvert.DeserializeObject<CommonStats>((string)json["stat"]);
+            worldPosition = new Vector3(
+                (float)json["position"]["x"],
+                (float)json["position"]["y"],
+                (float)json["position"]["z"]
+            );
+
+            Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
+
+            JArray jInventory = (JArray)json["inventory"];
+            int cnt = 0;
+            foreach(JObject jItem in jInventory)
+            {
+                if ((string) jItem["item id"] != "None") // jItem["item id"] = null -> but not null. why?
+                {
+                    Inventory[cnt] = itemMap[(string)jItem["item id"]];
+                }
+                cnt++;
+            }
+
         }
     }
 }

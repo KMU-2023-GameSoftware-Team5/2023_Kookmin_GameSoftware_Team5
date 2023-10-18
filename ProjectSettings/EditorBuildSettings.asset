@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CombineScenes/CombineScene.unity
     guid: 8649ec31f3dcdae4a8b54d814cc0448c
+  - enabled: 1
+    path: Assets/Scenes/NewGameScenes/NewGameScene.unity
+    guid: 660d51d8cc6d433488979fd895bfb8e6
+  - enabled: 1
+    path: Assets/Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene.unity
+    guid: 278cc8f32806e684f9fa3a4e813934e4
   m_configObjects: {}
