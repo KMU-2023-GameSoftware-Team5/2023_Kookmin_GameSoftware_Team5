@@ -81,19 +81,21 @@ namespace deck
                 {"y", worldPosition.y},
                 {"z", worldPosition.z},
             };
-            JArray inventory = new JArray();
+            JArray jInventory = new JArray();
             foreach (EquipItem item in Inventory)
             {
+                JObject tmp = new JObject();
                 if(item != null)
                 {
-                    inventory.Add(item.id);
+                    tmp["item id"] = item.id;
                 }
                 else
                 {
-                    inventory.Add(null);
+                    tmp["item id"] = "None";
                 }
+                jInventory.Add(tmp);
             }
-            ret["inventory"] = inventory;
+            ret["inventory"] = jInventory;
             return ret;
         }
 
@@ -110,20 +112,18 @@ namespace deck
             );
 
             Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
-            /* 인벤토리 부분은 에러 발생 
+
             JArray jInventory = (JArray)json["inventory"];
             int cnt = 0;
-            Debug.Log(jInventory);
-            foreach(var whyError in jInventory)
+            foreach(JObject jItem in jInventory)
             {
-                JObject jitems = (JObject)whyError;
-                if (jItem != null)
+                if ((string) jItem["item id"] != "None") // jItem["item id"] = null -> but not null. why?
                 {
-                    Inventory[cnt] = itemMap[(string)jItem["id"]];
+                    Inventory[cnt] = itemMap[(string)jItem["item id"]];
                 }
                 cnt++;
             }
-            */
+
         }
     }
 }
