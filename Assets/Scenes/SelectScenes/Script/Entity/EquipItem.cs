@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace deck
@@ -12,8 +13,8 @@ namespace deck
     /// </summary>
     public class EquipItem
     {
-
-        [JsonProperty] string itemName;
+        public string id { get; private set; }
+        string itemName;
 
         /// <summary>
         /// 아이템 정보 객체(scriptable)
@@ -28,7 +29,7 @@ namespace deck
         /// <summary>
         /// 아이템 주인에 대한 레퍼런스
         /// </summary>
-        [JsonProperty] private PixelCharacter itemOwner;
+        private PixelCharacter itemOwner;
         
         /// <summary>
         /// 아이템 주인의 인벤토리 몇번째 칸에 아이템이 저장되어 있는 지 확인하는 변수
@@ -56,17 +57,18 @@ namespace deck
 
         public EquipItem()
         {
-
         }
 
         public EquipItem(ItemData itemData)
         {
+            id = System.Guid.NewGuid().ToString();
             this.itemData = itemData;
             this.itemName = itemData.itemName;
             copyStat();
         }
 
         public EquipItem(string itemName) {
+            id = System.Guid.NewGuid().ToString();
             this.itemName = itemName;
             this.itemData = MyDeckFactory.Instance().getItemData(itemName);
             copyStat();
@@ -137,12 +139,44 @@ namespace deck
         }
 
         /// <summary>
-        /// save-load 업무 후 아이템 객체를 재건하는 작업
+        /// JSON으로 부터 아이템 객체 생성
         /// </summary>
-        public void loadForJson()
+        /// <param name="json">저장된 equipItem에 대한 json</param>
+        /// <returns>아이템에 소유자가 있는 경우 반환(아이템 장착처리 관련)</returns>
+        public string fromJson(JObject json)
         {
-            // itemData빼면 itemData만 복원
+            id = (string) json["id"];
+            itemName = (string)json["name"];
             itemData = MyDeckFactory.Instance().getItemData(itemName);
+            itemStat = JsonConvert.DeserializeObject < CommonStats > ((string) json["stat"]);
+            if (json["owner"] == null)
+            {
+                return null;
+            }
+            else
+            {
+                return (string)json["owner"];
+            }
+        }
+
+        /// <summary>
+        /// EquipItem to Json
+        /// </summary>
+        /// <returns>JSON화한 아이템 객체</returns>
+        public JObject toJson()
+        {
+            JObject ret = new JObject();
+            ret["id"] = id;
+            ret["name"] = itemName;
+            if (itemOwner != null) {
+                ret["owner"] = itemOwner.ID;
+            }
+            else
+            {
+                ret["owner"] = null;    
+            }
+            ret["stat"] = JsonConvert.SerializeObject(itemStat);
+            return ret;
         }
     }
 }

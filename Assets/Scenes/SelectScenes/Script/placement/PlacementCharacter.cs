@@ -37,7 +37,9 @@ namespace placement
 
         void OnMouseDrag()
         {
-            if(!dragMode) return;
+            if (!dragMode) {
+                return;
+            }
             Vector3 mousePosition = new Vector3 (
                 Input.mousePosition.x,
                 Input.mousePosition.y,
@@ -45,7 +47,13 @@ namespace placement
             characterPosition.position = Camera.main.ScreenToWorldPoint(mousePosition);
             characterPosition.position = setDragAbleArea(characterPosition.position);
         }
-        
+
+        void OnMouseUp()
+        {
+            pixelCharacter.worldPosition = characterPosition.position;
+        }
+
+
         /// <summary>
         /// 배치가능한 영역으로 오브젝트의 위치를 제한함
         /// </summary>
@@ -77,11 +85,6 @@ namespace placement
             return ret;
         }
 
-        void OnMouseUp()
-        {
-            pixelCharacter.worldPosition = characterPosition.position;
-        }
-
         /// <summary>
         /// 캐릭터 배치 컴포넌트 초기화 
         /// </summary>
@@ -100,6 +103,9 @@ namespace placement
             Destroy(pixelHumanoid);
         }
 
+        /// <summary>
+        /// SelectScene에서만 사용하는 HeadName, PlacementCharacter 삭제
+        /// </summary>
         public void battleStart()
         {
             headName.battleStart();

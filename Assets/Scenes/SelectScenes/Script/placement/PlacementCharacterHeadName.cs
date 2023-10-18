@@ -29,6 +29,9 @@ namespace placement
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// HeadBar의 hp, mp 추가, HeadName삭제
+        /// </summary>
         public void battleStart()
         {
             hp.SetActive(true);
