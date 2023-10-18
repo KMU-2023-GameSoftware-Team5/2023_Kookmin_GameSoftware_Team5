@@ -57,7 +57,6 @@ namespace deck
 
         public EquipItem()
         {
-
         }
 
         public EquipItem(ItemData itemData)
@@ -139,13 +138,20 @@ namespace deck
             return itemOwner != null;
         }
 
-        /// <summary>
-        /// save-load 업무 후 아이템 객체를 재건하는 작업
-        /// </summary>
-        public void loadForJson()
+        public string fromJson(JObject json)
         {
-            // itemData빼면 itemData만 복원
+            id = (string) json["id"];
+            itemName = (string)json["name"];
             itemData = MyDeckFactory.Instance().getItemData(itemName);
+            itemStat = JsonConvert.DeserializeObject < CommonStats > ((string) json["stat"]);
+            if (json["owner"] == null)
+            {
+                return null;
+            }
+            else
+            {
+                return (string)json["owner"];
+            }
         }
 
         public JObject toJson()

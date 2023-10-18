@@ -5610,8 +5610,9 @@ GameObject:
   - component: {fileID: 1963001151}
   - component: {fileID: 1963001152}
   - component: {fileID: 1963001153}
+  - component: {fileID: 1963001154}
   m_Layer: 0
-  m_Name: PlayerDeckManager
+  m_Name: SelectSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5672,6 +5673,18 @@ MonoBehaviour:
   itemInventoryGrid: {fileID: 1052304894}
   itemInventoryItemPrefeb: {fileID: 3860832842316319932, guid: 3dfa8aa76c412db40a578e57ce83e2ba, type: 3}
   equipItemDetail: {fileID: 1635981763}
+--- !u!114 &1963001154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963001150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf0c84459dd0a841b9f52996d546007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1963147153
 GameObject:
   m_ObjectHideFlags: 0

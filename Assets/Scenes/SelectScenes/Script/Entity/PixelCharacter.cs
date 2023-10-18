@@ -139,5 +139,6 @@ namespace deck{
         }
 
         public abstract JObject toJson();
+        public abstract void fromJson(JObject json, Dictionary<string, EquipItem> itemMap);
     }
 }

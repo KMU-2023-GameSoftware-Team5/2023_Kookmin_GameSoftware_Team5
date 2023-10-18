@@ -94,7 +94,7 @@ namespace deck
         /// <summary>
         /// 임시속성 - 캐릭터 배치 오브젝트의 parent canvas
         /// </summary>
-        public Transform placementCanvas;
+        [SerializeField] Transform placementCanvas;
 
         /// <summary>
         /// placement Character(캐릭터 배치 오브젝트) 프리펩
@@ -105,16 +105,25 @@ namespace deck
         /// <summary>
         /// Placement - 캐릭터 헤드 네임이 위치할 캔버스
         /// </summary>
-        public Transform characterHeadNameCanvas;
+        [SerializeField] Transform characterHeadNameCanvas;
         /// <summary>
         /// Placement - 배치시 캐릭터 위에 이름 달아줄 프리펩
         /// </summary>
         [SerializeField] GameObject characterHeadNamePrefab;
 
+        /// <summary>
+        /// 세이브 로드 매니저
+        /// </summary>
+        SaveLoadManager saveLoadManager;
+        
+        /// <summary>
+        /// 배틀씬으로 전달해줄 pixelCharacter
+        /// </summary>
         battle.PixelCharacter[] battlePixelCharacters;
 
         void Start()
         {
+            saveLoadManager = GetComponent<SaveLoadManager>();
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
@@ -291,5 +300,11 @@ namespace deck
 
             return battlePixelCharacters;
         }
+
+        public void save()
+        {
+            saveLoadManager.save();
+        }
+
     }
 }

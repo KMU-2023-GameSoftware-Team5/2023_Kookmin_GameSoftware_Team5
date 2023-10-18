@@ -14,7 +14,7 @@ namespace deck
             if (PlayerPrefs.HasKey("PlayerManager"))
             {
                 PlayerManager playerManager = new PlayerManager();
-                
+                /*
                 // 캐릭터 목록 
                 string loadPlayerCharacters = PlayerPrefs.GetString("playerCharacters");
                 Debug.Log($"playerJson = {loadPlayerCharacters}");
@@ -46,7 +46,44 @@ namespace deck
 
                 playerManager.Initialize(playerGold, playerLife, playerCharacters, playerEquipItems);
                 PlayerManager.Initialize(playerManager);
-                
+                */
+
+                // 아래부터 신버전
+                JObject jplayerManager = JObject.Parse(PlayerPrefs.GetString("PlayerManager"));
+                int playerGold = (int)jplayerManager["playerGold"];
+                int playerLife = (int)jplayerManager["playerLife"];
+
+                // 장착처리를 위한 map 
+                Dictionary<string, EquipItem> itemMap = new Dictionary<string, EquipItem>(); 
+
+                // 아이템 
+                JArray jitems = (JArray) jplayerManager["items"];
+
+                List<EquipItem> equipItems = new List<EquipItem>();
+                foreach(JObject jitem in jitems)
+                {
+                    EquipItem equipItem = new EquipItem();
+                    string ownerID = equipItem.fromJson(jitem);
+                    equipItems.Add(equipItem);
+                    if(ownerID != null)
+                    {
+                        itemMap[equipItem.id] = equipItem;
+                    }
+                }
+
+                // 캐릭터  
+                JArray jcharacters = (JArray)jplayerManager["characters"];
+                List<PixelCharacter> characters = new List<PixelCharacter>();
+                foreach (JObject jcharacter in jcharacters)
+                {
+                    PixelHumanoid character = new PixelHumanoid();
+                    character.fromJson(jcharacter, itemMap);
+                    characters.Add(character);
+                }
+                playerManager.Initialize(playerGold, playerLife, characters, equipItems);
+                PlayerManager.Initialize(playerManager);
+
+
             }
             else
             {

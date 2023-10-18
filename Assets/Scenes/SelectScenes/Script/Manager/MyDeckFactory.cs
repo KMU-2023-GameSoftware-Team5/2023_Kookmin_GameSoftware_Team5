@@ -42,7 +42,11 @@ namespace deck
         [SerializeField]
         GameObject characterInventoryItemPrefab;
 
+        /// <summary>
+        /// 플레이어가 현재 가지고 있는 아이템 정보 프리펩
+        /// </summary>
         [SerializeField] GameObject LigthEquipItemPrefab;
+
         public void Initialize()
         {
             m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
@@ -152,6 +156,7 @@ namespace deck
             }
             return ret;
         }
+
 
     }
 }

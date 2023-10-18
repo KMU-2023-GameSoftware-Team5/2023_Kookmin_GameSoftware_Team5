@@ -92,7 +92,6 @@ namespace deck
             this.characterSelector = characterSelector;
 
             // for sprite mask
-            Debug.Log("i said order 2");
             characterImage.setSortingOrder(2);
 
         }

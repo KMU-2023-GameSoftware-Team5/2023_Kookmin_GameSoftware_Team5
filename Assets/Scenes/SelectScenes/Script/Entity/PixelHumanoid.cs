@@ -25,6 +25,8 @@ namespace deck
                 "green",
             };
 
+        public PixelHumanoid() { }
+
         /// <summary>
         /// 픽셀 캐릭터 생성자
         /// </summary>
@@ -93,6 +95,35 @@ namespace deck
             }
             ret["inventory"] = inventory;
             return ret;
+        }
+
+        public override void fromJson(JObject json, Dictionary<string, EquipItem> itemMap)
+        {
+            ID = (string) json["id"];
+            characterName = (string)json["name"];
+            characterNickName = (string)json["nickname"];
+            characterStat = JsonConvert.DeserializeObject<CommonStats>((string)json["stat"]);
+            worldPosition = new Vector3(
+                (float)json["position"]["x"],
+                (float)json["position"]["y"],
+                (float)json["position"]["z"]
+            );
+
+            Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
+            /* 인벤토리 부분은 에러 발생 
+            JArray jInventory = (JArray)json["inventory"];
+            int cnt = 0;
+            Debug.Log(jInventory);
+            foreach(var whyError in jInventory)
+            {
+                JObject jitems = (JObject)whyError;
+                if (jItem != null)
+                {
+                    Inventory[cnt] = itemMap[(string)jItem["id"]];
+                }
+                cnt++;
+            }
+            */
         }
     }
 }
