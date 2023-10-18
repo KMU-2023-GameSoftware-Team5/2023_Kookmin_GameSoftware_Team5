@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace deck{
 
@@ -34,6 +35,8 @@ namespace deck{
     /// </summary>
     public abstract class PixelCharacter
     {
+        string id;
+        public string ID { get; protected set; }
         public string characterNickName { get; protected set; }
         public string characterName { get; set; }
         public EquipItem[] Inventory;
@@ -134,5 +137,7 @@ namespace deck{
         {
             worldPosition = worldPosirionForJson.getVector();
         }
+
+        public abstract JObject toJson();
     }
 }

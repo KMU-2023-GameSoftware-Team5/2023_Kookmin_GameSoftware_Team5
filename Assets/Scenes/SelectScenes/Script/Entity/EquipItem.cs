@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace deck
@@ -12,8 +13,8 @@ namespace deck
     /// </summary>
     public class EquipItem
     {
-
-        [JsonProperty] string itemName;
+        public string id { get; private set; }
+        string itemName;
 
         /// <summary>
         /// 아이템 정보 객체(scriptable)
@@ -28,7 +29,7 @@ namespace deck
         /// <summary>
         /// 아이템 주인에 대한 레퍼런스
         /// </summary>
-        [JsonProperty] private PixelCharacter itemOwner;
+        private PixelCharacter itemOwner;
         
         /// <summary>
         /// 아이템 주인의 인벤토리 몇번째 칸에 아이템이 저장되어 있는 지 확인하는 변수
@@ -61,12 +62,14 @@ namespace deck
 
         public EquipItem(ItemData itemData)
         {
+            id = System.Guid.NewGuid().ToString();
             this.itemData = itemData;
             this.itemName = itemData.itemName;
             copyStat();
         }
 
         public EquipItem(string itemName) {
+            id = System.Guid.NewGuid().ToString();
             this.itemName = itemName;
             this.itemData = MyDeckFactory.Instance().getItemData(itemName);
             copyStat();
@@ -143,6 +146,22 @@ namespace deck
         {
             // itemData빼면 itemData만 복원
             itemData = MyDeckFactory.Instance().getItemData(itemName);
+        }
+
+        public JObject toJson()
+        {
+            JObject ret = new JObject();
+            ret["id"] = id;
+            ret["name"] = itemName;
+            if (itemOwner != null) {
+                ret["owner"] = itemOwner.ID;
+            }
+            else
+            {
+                ret["owner"] = null;    
+            }
+            ret["stat"] = JsonConvert.SerializeObject(itemStat);
+            return ret;
         }
     }
 }

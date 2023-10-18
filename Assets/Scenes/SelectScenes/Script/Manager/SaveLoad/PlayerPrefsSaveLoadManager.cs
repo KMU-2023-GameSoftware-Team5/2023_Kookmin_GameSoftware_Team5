@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,6 +46,7 @@ namespace deck
 
                 playerManager.Initialize(playerGold, playerLife, playerCharacters, playerEquipItems);
                 PlayerManager.Initialize(playerManager);
+                
             }
             else
             {
@@ -58,17 +60,39 @@ namespace deck
         public override void save()
         {
             PlayerManager playerManager = PlayerManager.Instance();
+            // 구버전
             foreach (PixelCharacter character in playerManager.playerCharacters)
             {
                 character.saveForJson();
             }
             PlayerPrefs.SetInt("playerGold", playerManager.playerGold);
             PlayerPrefs.SetInt("playerLife", playerManager.playerLife);
-
             PlayerPrefs.SetString("playerCharacters", JsonConvert.SerializeObject(playerManager.playerCharacters));
             PlayerPrefs.SetString("playerEquipItems", JsonConvert.SerializeObject(playerManager.playerEquipItems));
 
-            PlayerPrefs.SetString("PlayerManager", "save");
+
+            // item save
+            JArray itemArray = new JArray();
+            foreach (EquipItem item in playerManager.playerEquipItems)
+            {
+                itemArray.Add(item.toJson());
+            }
+
+            // character save
+            JArray characterArray = new JArray();
+            foreach(PixelCharacter character in playerManager.playerCharacters)
+            {
+                characterArray.Add(character.toJson());
+            }
+
+            // 통합
+            JObject jplayerManager = new JObject();
+            jplayerManager["characters"] = characterArray;
+            jplayerManager["items"] = itemArray;
+            jplayerManager["playerGold"] = playerManager.playerGold;
+            jplayerManager["playerLife"] = playerManager.playerLife;
+            Debug.Log(jplayerManager);
+            PlayerPrefs.SetString("PlayerManager", jplayerManager.ToString());
         }
 
         public override void delete()

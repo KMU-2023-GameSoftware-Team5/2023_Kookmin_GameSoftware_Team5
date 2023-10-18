@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using data;
 using System;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace deck
 {
@@ -29,6 +31,7 @@ namespace deck
         /// <param name="characterName">픽셀 캐릭터의 이름(유니크한)</param>
         public PixelHumanoid(string characterName, CommonStats characterStat)
         {
+            ID = Guid.NewGuid().ToString();
             this.characterName = characterName;
             characterNickName = nickNameMaker();
 
@@ -61,6 +64,34 @@ namespace deck
         Vector3 characterInitPosition()
         {
             Vector3 ret = new Vector3(UnityEngine.Random.Range(-6, -0), UnityEngine.Random.Range(3, -4), 0); 
+            return ret;
+        }
+
+        public override JObject toJson()
+        {
+            JObject ret = new JObject();
+            ret["id"] = ID;
+            ret["name"] = characterName;
+            ret["nickname"] = characterNickName;
+            ret["stat"] = JsonConvert.SerializeObject(characterStat);
+            ret["position"] = new JObject { 
+                {"x", worldPosition.x },
+                {"y", worldPosition.y},
+                {"z", worldPosition.z},
+            };
+            JArray inventory = new JArray();
+            foreach (EquipItem item in Inventory)
+            {
+                if(item != null)
+                {
+                    inventory.Add(item.id);
+                }
+                else
+                {
+                    inventory.Add(null);
+                }
+            }
+            ret["inventory"] = inventory;
             return ret;
         }
     }
