@@ -56,6 +56,10 @@ namespace deck
             {
                 this.playerEquipItems = equipItems;
             }
+            else
+            {
+                playerEquipItems = new List<EquipItem>();
+            }
         }
 
         public void Initialize(int playerGold, int playerLife, List<PixelCharacter> characters, List<EquipItem> equipItems)

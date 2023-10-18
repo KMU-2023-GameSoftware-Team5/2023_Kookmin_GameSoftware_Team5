@@ -14,42 +14,9 @@ namespace deck
             if (PlayerPrefs.HasKey("PlayerManager"))
             {
                 PlayerManager playerManager = new PlayerManager();
-                /*
-                // 캐릭터 목록 
-                string loadPlayerCharacters = PlayerPrefs.GetString("playerCharacters");
-                Debug.Log($"playerJson = {loadPlayerCharacters}");
-                List<PixelHumanoid> playerCharacters = JsonConvert.DeserializeObject<List<PixelHumanoid>>(loadPlayerCharacters);
-
-                // 아이템 목록
-                string loadPlayerEquipItems = PlayerPrefs.GetString("playerEquipItems");
-                Debug.Log($"itemJson = {loadPlayerEquipItems}");
-                List<EquipItem> playerEquipItems = JsonConvert.DeserializeObject<List<EquipItem>>(loadPlayerEquipItems);
-
-                foreach (PixelCharacter character in playerCharacters)
-                {
-                    character.loadForJson();
-                }
-                if (playerEquipItems != null)
-                {
-                    foreach (EquipItem item in playerEquipItems)
-                    {
-                        item.loadForJson();
-                    }
-                }
-                else
-                {
-                    playerEquipItems = new List<EquipItem>();
-                }
-                // 플레이어 돈
-                int playerGold = PlayerPrefs.GetInt("playerGold");
-                int playerLife = PlayerPrefs.GetInt("playerLife");
-
-                playerManager.Initialize(playerGold, playerLife, playerCharacters, playerEquipItems);
-                PlayerManager.Initialize(playerManager);
-                */
-
-                // 아래부터 신버전
                 JObject jplayerManager = JObject.Parse(PlayerPrefs.GetString("PlayerManager"));
+
+                // gold & life
                 int playerGold = (int)jplayerManager["playerGold"];
                 int playerLife = (int)jplayerManager["playerLife"];
 
@@ -82,8 +49,6 @@ namespace deck
                 }
                 playerManager.Initialize(playerGold, playerLife, characters, equipItems);
                 PlayerManager.Initialize(playerManager);
-
-
             }
             else
             {
@@ -97,16 +62,11 @@ namespace deck
         public override void save()
         {
             PlayerManager playerManager = PlayerManager.Instance();
-            // 구버전
-            foreach (PixelCharacter character in playerManager.playerCharacters)
-            {
-                character.saveForJson();
-            }
-            PlayerPrefs.SetInt("playerGold", playerManager.playerGold);
-            PlayerPrefs.SetInt("playerLife", playerManager.playerLife);
-            PlayerPrefs.SetString("playerCharacters", JsonConvert.SerializeObject(playerManager.playerCharacters));
-            PlayerPrefs.SetString("playerEquipItems", JsonConvert.SerializeObject(playerManager.playerEquipItems));
+            JObject jplayerManager = new JObject();
 
+            // gold & life
+            jplayerManager["playerGold"] = playerManager.playerGold;
+            jplayerManager["playerLife"] = playerManager.playerLife;
 
             // item save
             JArray itemArray = new JArray();
@@ -114,6 +74,7 @@ namespace deck
             {
                 itemArray.Add(item.toJson());
             }
+            jplayerManager["items"] = itemArray;
 
             // character save
             JArray characterArray = new JArray();
@@ -121,13 +82,8 @@ namespace deck
             {
                 characterArray.Add(character.toJson());
             }
-
-            // 통합
-            JObject jplayerManager = new JObject();
             jplayerManager["characters"] = characterArray;
-            jplayerManager["items"] = itemArray;
-            jplayerManager["playerGold"] = playerManager.playerGold;
-            jplayerManager["playerLife"] = playerManager.playerLife;
+
             Debug.Log(jplayerManager);
             PlayerPrefs.SetString("PlayerManager", jplayerManager.ToString());
         }

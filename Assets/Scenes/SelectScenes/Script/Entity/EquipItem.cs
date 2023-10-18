@@ -138,6 +138,11 @@ namespace deck
             return itemOwner != null;
         }
 
+        /// <summary>
+        /// JSON으로 부터 아이템 객체 생성
+        /// </summary>
+        /// <param name="json">저장된 equipItem에 대한 json</param>
+        /// <returns>아이템에 소유자가 있는 경우 반환(아이템 장착처리 관련)</returns>
         public string fromJson(JObject json)
         {
             id = (string) json["id"];
@@ -154,6 +159,10 @@ namespace deck
             }
         }
 
+        /// <summary>
+        /// EquipItem to Json
+        /// </summary>
+        /// <returns>JSON화한 아이템 객체</returns>
         public JObject toJson()
         {
             JObject ret = new JObject();
