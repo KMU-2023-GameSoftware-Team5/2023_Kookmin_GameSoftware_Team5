@@ -28,8 +28,6 @@ namespace deck
 
         private void Start()
         {
-            saveLoadManager.GetComponent<SaveLoadManager>();
-            saveLoadManager.load();
             playerManager = PlayerManager.Instance();
 
             List<PixelCharacter> characters = playerManager.playerCharacters;
@@ -48,22 +46,32 @@ namespace deck
             newGameSelector.Initialize(this);
         } 
 
+        /// <summary>
+        /// 새 게임 시작하기 
+        /// </summary>
+        /// <param name="characters">새로 시작할 캐릭터 세트</param>
         public void newGameStart(List<PixelCharacter> characters)
         {
-            saveLoadManager.delete();
-            PlayerManager pm = new PlayerManager();
-            pm.Initialize(playerGold, playerLife, characters, null);
-            PlayerManager.Initialize(pm);
-            saveLoadManager.save();
+            // 플레이어매니저 대체하기
+            PlayerManager playerManager = new PlayerManager(characters, playerGold, playerLife);
+            PlayerManager.replace(playerManager);
+
+            // 다음씬으로 넘어가 게임 시작하기
             onClickGameStart();
         }
 
+        /// <summary>
+        /// 게임 시작 즉 다음 씬으로 넘어가기
+        /// </summary>
         public void onClickGameStart()
         {
             // 다음씬으로 점프 
             SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
         }
 
+        /// <summary>
+        /// 뉴게임 버튼 클릭시의 작동 
+        /// </summary>
         public void onClickNewGame()
         {
             newGameSelector.openNGSelector();

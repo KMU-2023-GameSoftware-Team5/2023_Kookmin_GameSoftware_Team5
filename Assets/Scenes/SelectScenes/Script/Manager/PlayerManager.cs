@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,21 +7,74 @@ namespace deck
 {
     public class PlayerManager
     {
+        ///////////////////
+        /* start of static */
+        ///////////////////
+
+        /// <summary>
+        /// 싱글턴 객체 
+        /// </summary>
         private static PlayerManager instance;
-        public static void Initialize(PlayerManager playerManager)
+
+        /// <summary>
+        /// playerManager를 저장=불러오기하는 객체
+        /// </summary>
+        private static SaveLoadManager saveLoadManager;
+
+        /// <summary>
+        /// PlayerManager 저장
+        /// </summary>
+        public static void save()
+        {
+            saveLoadManager.save(instance);
+        }
+
+        /// <summary>
+        /// PlayerManager 불러오기 
+        /// </summary>
+        /// <returns>새로 갱신된 playerManager</returns>
+        public static PlayerManager load()
+        {
+            saveLoadManager.load(instance);
+            return instance;
+        }
+
+        /// <summary>
+        /// Save 파일 삭제 및 현재 플레이어 객체 초기화
+        /// <returns>새로 갱신된 playerManager</returns>
+        /// </summary>
+        public static PlayerManager delete()
+        {
+            saveLoadManager.delete(instance);
+            instance = new PlayerManager();
+            return instance;
+        }
+
+        public static void replace(PlayerManager playerManager)
         {
             instance = playerManager;
-            // Debug.Log($"singleton : {playerManager.playerCharacters.Count}");
+            saveLoadManager.save(instance);
         }
+
         public static PlayerManager Instance()
         {
             if(instance == null)
             {
+                // 인스턴스가 없으면 새로 만들기 
                 instance = new PlayerManager();
-                instance.Initialize();
+
+                // SaveLoadManager도 같이 만들기 
+                saveLoadManager = new JsonFileSaveLoadManager();
+
+                // player상태 불러오기
+                saveLoadManager.load(instance);
             }
             return instance;
         }
+
+        ///////////////////
+        /* end of static */
+        ///////////////////
 
         /// <summary>
         /// 플레이어가 가지고 있는 캐릭터 모음
@@ -42,11 +96,30 @@ namespace deck
         /// </summary>
         public int playerLife;
 
-        public void Initialize()
+        /* 생성자 모음 */
+        public PlayerManager()
         {
             playerCharacters = new List<PixelCharacter>();
             playerEquipItems = new List<EquipItem>();
         }
+
+        public PlayerManager(List<PixelCharacter> playerCharacters, List<EquipItem> playerEquipItems, int playerGold, int playerLife)
+        {
+            this.playerCharacters = playerCharacters;
+            this.playerEquipItems = playerEquipItems;
+            this.playerGold = playerGold;
+            this.playerLife = playerLife;
+        }
+
+        public PlayerManager(List<PixelCharacter> playerCharacters, int playerGold, int playerLife)
+        {
+            this.playerGold = playerGold;
+            this.playerLife = playerLife;
+            this.playerCharacters = playerCharacters;
+        }
+
+
+        // 쓸데없이 많은 Initialze 삭제 
 
         void Intialize(int playerGold, int playerLife,  List<EquipItem> equipItems)
         {
@@ -133,8 +206,88 @@ namespace deck
             return ret; 
         }
 
-        // TODO ?- remove 캐릭터, remove 아이템
+        /// <summary>
+        /// Save-Load 로직을 위해 Json화하는 메서드
+        /// </summary>
+        /// <returns>JSON화된 플레이어 매니저 객체</returns>
+        public JObject toJson()
+        {
+            JObject saveJson = new JObject();
 
-        // TODO - save, load
+            // gold & life
+            saveJson["playerGold"] = playerGold;
+            saveJson["playerLife"] = playerLife;
+
+            // item save
+            JArray itemArray = new JArray();
+            if(playerEquipItems != null)
+            {
+                foreach (EquipItem item in playerEquipItems)
+                {
+                    itemArray.Add(item.toJson());
+                }
+                saveJson["items"] = itemArray;
+            }
+            else
+            {
+                saveJson["items"] = itemArray;
+            }
+
+            // character save
+            JArray characterArray = new JArray();
+            foreach (PixelCharacter character in playerCharacters)
+            {
+                characterArray.Add(character.toJson());
+            }
+            saveJson["characters"] = characterArray;
+
+            return saveJson;
+        }
+
+        /// <summary>
+        /// Save-Load 로직을 위해 Json을 입력받아 객체를 복원하는 메서드
+        /// </summary>
+        public void fromJson(JObject json)
+        {
+            if(json == null)// 불러올 거 없으면 return
+            {
+                return;
+            }
+
+            // gold & life 불러오기 
+            playerGold = (int)json["playerGold"];
+            playerLife = (int)json["playerLife"];
+
+            // 아이템 장착처리를 위한 map 
+            Dictionary<string, EquipItem> itemMap = new Dictionary<string, EquipItem>();
+
+            // 아이템 불러오기
+            List<EquipItem> equipItems = new List<EquipItem>();
+            JArray jitems = (JArray)json["items"];
+            foreach (JObject jitem in jitems)
+            {
+                EquipItem equipItem = new EquipItem();
+                string ownerID = equipItem.fromJson(jitem);
+                equipItems.Add(equipItem);
+                if (ownerID != null)
+                {
+                    itemMap[equipItem.id] = equipItem;
+                }
+            }
+
+            // 캐릭터 불러오기
+            JArray jcharacters = (JArray)json["characters"];
+            List<PixelCharacter> characters = new List<PixelCharacter>();
+            foreach (JObject jcharacter in jcharacters)
+            {
+                PixelHumanoid character = new PixelHumanoid();
+                character.fromJson(jcharacter, itemMap);
+                characters.Add(character);
+            }
+
+            // 아이템-캐릭터를 manager로 반영하기 
+            playerEquipItems = equipItems;
+            playerCharacters = characters;
+        }
     }
 }

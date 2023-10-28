@@ -123,7 +123,6 @@ namespace deck
 
         void Start()
         {
-            saveLoadManager = GetComponent<SaveLoadManager>();
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
@@ -303,7 +302,7 @@ namespace deck
 
         public void save()
         {
-            saveLoadManager.save();
+            PlayerManager.save();
         }
 
     }
