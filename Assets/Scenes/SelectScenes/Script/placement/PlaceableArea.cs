@@ -27,8 +27,7 @@ namespace deck
                     Input.mousePosition.y,
                 0);
                 mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-                
-                characterListItem.isPlaced = CharacterSelectManager.Instance().placeCharacter(characterListItem.getCharacter(), mousePosition);
+                CharacterSelectManager.Instance().placeCharacter(characterListItem, mousePosition);
             }
         }
 

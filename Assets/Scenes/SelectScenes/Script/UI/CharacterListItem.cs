@@ -1,3 +1,4 @@
+using battle;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -28,20 +29,27 @@ namespace deck
         Transform characterList;
         RectTransform rect;
         CanvasGroup canvasGroup;
-        /// <summary>
-        /// 캐릭터가 선택된 경우 그에 따른 캐릭터 선택 슬롯
-        /// </summary>
-        CharacterSelector characterSelector;
 
         /// <summary>
         /// 캐릭터 이미지 출력 UI
         /// </summary>
         SpriteBuilderForUI characterImage;
 
+        [SerializeField]GameObject placeMark;
+
         /// <summary>
         /// select Scene에서 이 캐릭터가 이미 배치되어 있는지 
         /// </summary>
-        public bool isPlaced = false;
+        bool placeFlag = false;
+        public bool isPlaced
+        {
+            get {  return placeFlag; }
+            set
+            {
+                placeFlag = value;
+                placeMark.SetActive(value);
+            }
+        }
 
         public PixelCharacter getCharacter()
         {
@@ -84,73 +92,7 @@ namespace deck
         {
             CharacterSelectManager.Instance().openCharacterDetails(character);
         }        
-
-        /// <summary>
-        /// 캐릭터 선택 처리 메서드
-        /// </summary>
-        /// <remarks>
-        /// 캐릭터 선택 로직에 의해 호출
-        /// </remarks>
-        /// <param name="characterSelector">캐릭터가 선택된 위치의 캐릭터 선택 슬롯</param>
-        public void selectCharacter(CharacterSelector characterSelector)
-        {
-            this.characterSelector = characterSelector;
-
-            // for sprite mask
-            characterImage.setSortingOrder(2);
-
-        }
-
-        /// <summary>
-        /// 캐릭터 선택 해제
-        /// </summary>
-        /// <remarks>
-        /// 캐릭터 선택 해제 로직에서 호출
-        /// </remarks>
-        /// <param name="needReturn">캐릭터 인벤토리로 위치를 복귀해야하는 지에 대한 정보</param>
-        public void unSelectChracter(bool needReturn)
-        {
-            characterSelector = null;
-            if (needReturn)
-            {
-                returnList();
-            }
-
-            // for sprite mask
-            characterImage.setSortingOrder(1);
-        }
-
-
-        /// <summary>
-        /// 캐릭터가 선택된 상태인지 출력
-        /// </summary>
-        /// <returns>캐릭터가 선택된 상태인지 boolean값</returns>
-        public bool hasSelector()
-        {
-            return characterSelector != null;
-        }
-
-        /// <summary>
-        /// 캐릭터 swap 처리를 위한 메서드
-        /// </summary>
-        /// <remarks>
-        /// CharacterSelector객체에서 사용됨
-        /// </remarks>
-        /// <param name="characterListItem"></param>
-        public void swapCharacter(CharacterListItem characterListItem)
-        {
-            characterSelector.swapCharacter(characterListItem);
-        }
         
-        /// <summary>
-        /// 캐릭터 선택창에서 캐릭터를 치우는 경우 호출하는 메서드
-        /// </summary>
-        public void removeCharacter()
-        {
-            characterSelector.unSelectCharacter();
-            unSelectChracter(true);
-        }
-
         /// <summary>
         /// 캐릭터의 위치를 캐릭터 선택 슬롯으로 옮기는 메서드
         /// </summary>
@@ -195,20 +137,16 @@ namespace deck
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
-            
-            if(transform.parent == canvas) // 최종위치가 캔버스면 복귀
-            {
-                returnList();
-                if (characterSelector != null) // 선택창에서 드래그해서 캐릭터를 해제하는 경우
-                {
-                    characterSelector.unSelectCharacter();
-                    unSelectChracter(false);
-                }
-            }
-            
+            returnList();
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = true;
         }
+
+        public bool compareCharacter(PixelCharacter character)
+        {
+            return this.character.ID == character.ID;
+        }
+
     }
 
 }

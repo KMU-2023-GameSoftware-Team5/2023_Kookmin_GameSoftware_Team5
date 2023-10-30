@@ -112,5 +112,10 @@ namespace placement
             headName.battleStart();
             Destroy(this);
         }
+
+        public bool compareCharacter(PixelCharacter character)
+        {
+            return pixelCharacter.ID == character.ID;
+        }
     }
 }
