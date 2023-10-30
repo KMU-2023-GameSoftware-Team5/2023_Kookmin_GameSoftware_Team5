@@ -38,6 +38,11 @@ namespace deck
         /// </summary>
         SpriteBuilderForUI characterImage;
 
+        /// <summary>
+        /// select Scene에서 이 캐릭터가 이미 배치되어 있는지 
+        /// </summary>
+        public bool isPlaced = false;
+
         public PixelCharacter getCharacter()
         {
             return character;

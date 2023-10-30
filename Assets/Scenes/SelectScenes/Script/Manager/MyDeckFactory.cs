@@ -109,7 +109,7 @@ namespace deck
         /// <param name="targetParent">UI 배치할 transform</param>
         /// <param name="initialize">초기화를 factory에서 할 것인지</param>
         /// <returns></returns>
-        public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true, int sortingOrder = 1)
+        public GameObject createCharacterInventoryPrefab(PixelCharacter character, Transform targetParent, bool initialize=true, int sortingOrder = 1)
         {
             GameObject go = Instantiate(characterInventoryItemPrefab, targetParent);
             if(initialize)
