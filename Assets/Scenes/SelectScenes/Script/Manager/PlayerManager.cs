@@ -96,11 +96,14 @@ namespace deck
         /// </summary>
         public int playerLife;
 
+        public JArray selectedCharacters;
+
         /* 생성자 모음 */
         public PlayerManager()
         {
             playerCharacters = new List<PixelCharacter>();
             playerEquipItems = new List<EquipItem>();
+            selectedCharacters = new JArray();
         }
 
         public PlayerManager(List<PixelCharacter> playerCharacters, List<EquipItem> playerEquipItems, int playerGold, int playerLife)
@@ -241,6 +244,8 @@ namespace deck
             }
             saveJson["characters"] = characterArray;
 
+            // 캐릭터 배치정보 저장
+            saveJson["selectedCharacterInfo"] = selectedCharacters;
             return saveJson;
         }
 
@@ -288,6 +293,13 @@ namespace deck
             // 아이템-캐릭터를 manager로 반영하기 
             playerEquipItems = equipItems;
             playerCharacters = characters;
+
+            // 캐릭터 배치 정보
+            selectedCharacters = (JArray) json["selectedCharacterInfo"];
+            if(selectedCharacters == null)
+            {
+                selectedCharacters = new JArray();
+            }
         }
     }
 }

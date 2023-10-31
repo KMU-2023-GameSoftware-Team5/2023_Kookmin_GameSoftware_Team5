@@ -4,6 +4,9 @@ using placement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json.Linq;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace deck
 {
@@ -83,9 +86,14 @@ namespace deck
         /// </summary>
         List<CharacterListItem> characterUIs;
         /// <summary>
-        /// 현재 선택된 CharacterLI. 좌측에 뜨는 SelectedCharacter와는 관련이 없다.
+        /// 현재 선택된 CharacterLI. 좌측에 생성된 SelectedCharacter와는 관련이 없다.
         /// </summary>
         List<CharacterListItem> selectedCharacters;
+        /// <summary>
+        /// 플레이어가 배치한 캐릭터 저장
+        /// </summary>
+        JArray selectedCharacterSaveList;
+        
 
         /////////////////////////////////////////////////////////////////////////////////
 
@@ -120,13 +128,6 @@ namespace deck
         /// </summary>
         SaveLoadManager saveLoadManager;
         
-        void loadPlacementInfo()
-        {
-            // TODO 저장된 배치 정보 가져오기
-            placementUIs = new List<PlacementCharacter>();
-            selectedCharacters = new List<CharacterListItem>();
-        }
-
         /// <summary>
         /// new characterLI for select scene
         /// </summary>
@@ -167,8 +168,19 @@ namespace deck
                 */
             }
 
-            // TODO
-            loadPlacementInfo();
+            // TODO 저장된 배치 정보 가져오기
+            placementUIs = new List<PlacementCharacter>();
+            selectedCharacters = new List<CharacterListItem>();
+            if (PlayerManager.Instance().selectedCharacters == null || PlayerManager.Instance().selectedCharacters.Count == 0) // 배치 프리셋 정보가 없으면 초기화
+            {
+                selectedCharacterSaveList = new JArray();
+                PlayerManager.Instance().selectedCharacters.Add(selectedCharacterSaveList);
+            }
+            else // 있으면 0번째를 사용함. 0번째 인덱스는 가장 최근에 플레이어의 배치를 의미함
+            {
+                selectedCharacterSaveList = (JArray)PlayerManager.Instance().selectedCharacters[0];
+                loadSelectedCharacterInfo(selectedCharacterSaveList);
+            }
         }
 
         /// <summary>
@@ -227,10 +239,15 @@ namespace deck
         {
             if(placementUIs.Count +1 <= 5) // TODO - 상수화. 최대 배치가능 캐릭터 수 이하면 허용
             {
+                // 자신이 배치한 캐릭터 정보 받기 
                 PixelCharacter character = characterLI.getCharacter();
                 character.worldPosition = characterPosition;
+
+                // 캐릭터 배치 객체 생성
                 PlacementCharacter ret =  buildPixelHumanoidByPixelCharacter((PixelHumanoid)character);
                 placementUIs.Add(ret);
+
+                // 선택된 캐릭터 정보 저장
                 createSelectedCharacterLI(character);
                 characterLI.isPlaced = true;
                 selectedCharacters.Add(characterLI);
@@ -244,6 +261,7 @@ namespace deck
 
         public void unPlaceCharacter(PixelCharacter character)
         {
+            // 배치된 캐릭터의 게임 오브젝트 삭제
             for(int i = placementUIs.Count - 1; i >= 0; i--)
             {
                 if (placementUIs[i].compareCharacter(character))
@@ -251,16 +269,19 @@ namespace deck
                     PlacementCharacter pm = placementUIs[i];
                     placementUIs.RemoveAt(i);
                     pm.unSelect();
-                }
-            }
-            foreach(CharacterListItem characterListItem in selectedCharacters)
-            {
-                if (characterListItem.compareCharacter(character))
-                {
-                    characterListItem.isPlaced = false;
                     break;
                 }
             }
+            // 배치된 캐릭터 정보 객체 삭제 
+            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
+            {
+                if (selectedCharacters[i].compareCharacter(character))
+                {
+                    selectedCharacters[i].isPlaced = false;
+                    selectedCharacters.RemoveAt(i);
+                    break;
+                }
+            }            
         }
 
         /// <summary>
@@ -344,8 +365,71 @@ namespace deck
             return ret;
         }
 
+        public JArray saveSelectedCharacterInfo()
+        {
+            JArray ret = new JArray ();
+            foreach(var characterLI in selectedCharacters)
+            {
+                PixelCharacter character = characterLI.getCharacter();
+                JObject tmp = new JObject();
+                tmp["id"] = character.ID;
+                tmp["position"] = new JObject {
+                    {"x", character.worldPosition.x },
+                    {"y", character.worldPosition.y},
+                    {"z", character.worldPosition.z},
+                };
+                ret.Add(tmp);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// JSON 형태로 저장해둔 캐릭터 배치정보 불러오기
+        /// </summary>
+        /// <param name="selecterCharacterInfo">JSON형태로 저장해둔 캐릭터 배치정보</param>
+        public void loadSelectedCharacterInfo(JArray selecterCharacterInfo)
+        {
+            List<CharacterListItem> tmp = new List<CharacterListItem>();
+            List<Vector3> tmpPosition = new List<Vector3>();
+
+            for (int i = selecterCharacterInfo.Count - 1; i >= 0; i--)
+            {
+                bool tmpFlag = false;
+                foreach (var character in characterUIs)
+                {
+                    if (character.getCharacter().ID == selecterCharacterInfo[i]["id"].ToString())
+                    {
+                        tmpFlag = true;
+                        tmp.Add(character);
+                        tmpPosition.Add(
+                            new Vector3(
+                                (float)selecterCharacterInfo[i]["position"]["x"],
+                                (float)selecterCharacterInfo[i]["position"]["y"],
+                                (float)selecterCharacterInfo[i]["position"]["z"]
+                            )
+                        );
+                        break;
+                    }
+                }
+                if (tmpFlag)
+                {
+                    continue;
+                }
+                else
+                {
+                    // 캐릭터가 삭제되었다면 제거
+                    selecterCharacterInfo.RemoveAt(i);
+                }
+            }
+            for (int i = tmp.Count - 1; i >= 0; i--)
+            {
+                placeCharacter(tmp[i], tmpPosition[i]);
+            }
+        }
+
         public void save()
         {
+            PlayerManager.Instance().selectedCharacters[0] = saveSelectedCharacterInfo();
             PlayerManager.save();
         }
 
