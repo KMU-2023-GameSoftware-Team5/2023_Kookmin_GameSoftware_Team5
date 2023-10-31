@@ -48,15 +48,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 295d3d54bd7b3c34d8ba5adf98a278d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_mobSetDatas:
+  - {fileID: 11400000, guid: 5926767df8f388f45a9d3c27cb2650c8, type: 2}
+  - {fileID: 11400000, guid: ea2ee0fdbd9ea044ebac56bdcadf325f, type: 2}
   m_iconGroupLayout: {fileID: 0}
   m_iconPrefab: {fileID: 9101710550927767454, guid: 5b0f3289ad469ff43993d65283151cb4, type: 3}
   m_areaData:
-  - {fileID: 11400000, guid: 7e77aba5023bd6442a929e8763cbe998, type: 2}
   - {fileID: 11400000, guid: c0f33d1dd02cace449ead785151f9998, type: 2}
   - {fileID: 11400000, guid: 00c0494e565b44447b9278cc15be4166, type: 2}
-  - {fileID: 11400000, guid: 70a0fd97e6548244b9c9bb266b25daa4, type: 2}
-  - {fileID: 11400000, guid: a5d6f5ecb9303ea48be1fd7e27b85548, type: 2}
-  - {fileID: 11400000, guid: 60fc1b9f9a5dfec47a16de6ea337a020, type: 2}
   m_canditiateGroup: {fileID: 0}
   m_bossArea: {fileID: 0}
   m_bossData: {fileID: 11400000, guid: 00c0494e565b44447b9278cc15be4166, type: 2}

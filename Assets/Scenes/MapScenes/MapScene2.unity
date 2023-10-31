@@ -598,11 +598,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3365125249135543112, guid: d90b17a7d697a674eb60c2a3490ea8e2, type: 3}
   m_PrefabInstance: {fileID: 207784505}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &207784507 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7407533105053168903, guid: d90b17a7d697a674eb60c2a3490ea8e2, type: 3}
-  m_PrefabInstance: {fileID: 207784505}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &303195037
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1588,7 +1583,7 @@ PrefabInstance:
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_canditiateGroup
       value: 
-      objectReference: {fileID: 207784507}
+      objectReference: {fileID: 207784506}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_iconGroupLayout
       value: 
@@ -1601,6 +1596,18 @@ PrefabInstance:
       propertyPath: m_nearbyStandardB
       value: 
       objectReference: {fileID: 399870838}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_mobSetDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_mobSetDatas.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ea2ee0fdbd9ea044ebac56bdcadf325f, type: 2}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_mobSetDatas.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5926767df8f388f45a9d3c27cb2650c8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

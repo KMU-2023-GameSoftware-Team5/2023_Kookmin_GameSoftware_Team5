@@ -551,7 +551,7 @@ PrefabInstance:
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_canditiateGroup
       value: 
-      objectReference: {fileID: 5646277209786334998}
+      objectReference: {fileID: 5646277209786334997}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_iconGroupLayout
       value: 
@@ -1231,11 +1231,6 @@ PrefabInstance:
 --- !u!224 &5646277209786334997 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3365125249135543112, guid: d90b17a7d697a674eb60c2a3490ea8e2, type: 3}
-  m_PrefabInstance: {fileID: 5646277209786334996}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5646277209786334998 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7407533105053168903, guid: d90b17a7d697a674eb60c2a3490ea8e2, type: 3}
   m_PrefabInstance: {fileID: 5646277209786334996}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
