@@ -73,5 +73,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # debug save file in Assets(디버그용으로 임시로 Assets 내에 생성한 세이브파일 폴더)
-/[Aa]ssets/Scenes/SelectScenes/SaveFile
+/[Aa]ssets/Scenes/SelectScenes/SaveFile/*
 /[Aa]ssets/Scenes/SelectScenes/SaveFile.meta

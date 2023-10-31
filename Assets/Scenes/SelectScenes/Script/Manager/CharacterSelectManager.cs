@@ -7,6 +7,8 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 using static Unity.Burst.Intrinsics.X86.Avx;
+using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 namespace deck
 {
@@ -93,7 +95,8 @@ namespace deck
         /// 플레이어가 배치한 캐릭터 저장
         /// </summary>
         JArray selectedCharacterSaveList;
-        
+
+        public UnityEvent initializePlaecmentEvent;
 
         /////////////////////////////////////////////////////////////////////////////////
 
@@ -168,7 +171,7 @@ namespace deck
                 */
             }
 
-            // TODO 저장된 배치 정보 가져오기
+            // 저장된 배치 정보 가져오기
             placementUIs = new List<PlacementCharacter>();
             selectedCharacters = new List<CharacterListItem>();
             if (PlayerManager.Instance().selectedCharacters == null || PlayerManager.Instance().selectedCharacters.Count == 0) // 배치 프리셋 정보가 없으면 초기화
@@ -230,61 +233,6 @@ namespace deck
         }
 
         /// <summary>
-        /// 좌표를 받아서 캐릭터 배치
-        /// </summary>
-        /// <param name="chracter">배치할 캐릭터</param>
-        /// <param name="characterPosition">캐릭터 배치 위치</param>
-        /// <returns>배치 성공여부</returns>
-        public bool placeCharacter(CharacterListItem characterLI, Vector3 characterPosition)
-        {
-            if(placementUIs.Count +1 <= 5) // TODO - 상수화. 최대 배치가능 캐릭터 수 이하면 허용
-            {
-                // 자신이 배치한 캐릭터 정보 받기 
-                PixelCharacter character = characterLI.getCharacter();
-                character.worldPosition = characterPosition;
-
-                // 캐릭터 배치 객체 생성
-                PlacementCharacter ret =  buildPixelHumanoidByPixelCharacter((PixelHumanoid)character);
-                placementUIs.Add(ret);
-
-                // 선택된 캐릭터 정보 저장
-                createSelectedCharacterLI(character);
-                characterLI.isPlaced = true;
-                selectedCharacters.Add(characterLI);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void unPlaceCharacter(PixelCharacter character)
-        {
-            // 배치된 캐릭터의 게임 오브젝트 삭제
-            for(int i = placementUIs.Count - 1; i >= 0; i--)
-            {
-                if (placementUIs[i].compareCharacter(character))
-                {
-                    PlacementCharacter pm = placementUIs[i];
-                    placementUIs.RemoveAt(i);
-                    pm.unSelect();
-                    break;
-                }
-            }
-            // 배치된 캐릭터 정보 객체 삭제 
-            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
-            {
-                if (selectedCharacters[i].compareCharacter(character))
-                {
-                    selectedCharacters[i].isPlaced = false;
-                    selectedCharacters.RemoveAt(i);
-                    break;
-                }
-            }            
-        }
-
-        /// <summary>
         /// 현재 배치된 캐릭터 보여주기
         /// </summary>
         /// <param name="character">현재 배치된 캐릭터</param>
@@ -334,21 +282,8 @@ namespace deck
 
             return ret;
         }
-        
-        /*
-        public battle.PixelCharacter[] battleStart()
-        {
-            foreach(PlacementCharacter target in placementUIs)
-            {
-                if(target != null)
-                {
-                    target.battleStart();
-                }
-            }
 
-            return battlePixelCharacters;
-        }
-        */
+        /*** 캐릭터 배치 및 배치 해제 ***/
 
         /// <summary>
         /// 배틀씬으로 보내줌
@@ -364,7 +299,89 @@ namespace deck
             }
             return ret;
         }
+        /// <summary>
+        /// 좌표를 받아서 캐릭터 배치
+        /// </summary>
+        /// <param name="chracter">배치할 캐릭터</param>
+        /// <param name="characterPosition">캐릭터 배치 위치</param>
+        /// <returns>배치 성공여부</returns>
+        public bool placeCharacter(CharacterListItem characterLI, Vector3 characterPosition)
+        {
+            if (placementUIs.Count + 1 <= 5) // TODO - 상수화. 최대 배치가능 캐릭터 수 이하면 허용
+            {
+                // 자신이 배치한 캐릭터 정보 받기 
+                PixelCharacter character = characterLI.getCharacter();
+                character.worldPosition = characterPosition;
 
+                // 캐릭터 배치 객체 생성
+                PlacementCharacter ret = buildPixelHumanoidByPixelCharacter((PixelHumanoid)character);
+                placementUIs.Add(ret);
+
+                // 선택된 캐릭터 정보 저장
+                createSelectedCharacterLI(character);
+                characterLI.isPlaced = true;
+                selectedCharacters.Add(characterLI);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 캐릭터 배치해제
+        /// </summary>
+        /// <param name="character">배치해제할 캐릭터</param>
+        public void unPlaceCharacter(PixelCharacter character)
+        {
+            // 배치된 캐릭터의 게임 오브젝트 삭제
+            for (int i = placementUIs.Count - 1; i >= 0; i--)
+            {
+                if (placementUIs[i].compareCharacter(character))
+                {
+                    PlacementCharacter pm = placementUIs[i];
+                    placementUIs.RemoveAt(i);
+                    pm.unSelect();
+                    break;
+                }
+            }
+            // 배치된 캐릭터 정보 객체 삭제 
+            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
+            {
+                if (selectedCharacters[i].compareCharacter(character))
+                {
+                    selectedCharacters[i].isPlaced = false;
+                    selectedCharacters.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 배치된 캐릭터 초기화
+        /// </summary>
+        public void initializePlacement()
+        {
+            for(int i=placementUIs.Count - 1;i >= 0; i--)
+            {
+                placementUIs[i].unSelect();
+                placementUIs.RemoveAt(i);
+            }
+            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
+            {
+                selectedCharacters[i].isPlaced = false;
+                selectedCharacters.RemoveAt(i);
+            }
+            initializePlaecmentEvent.Invoke();
+        }
+
+        /*** 배치된 캐릭터 정보 저장 및 불러오기 ***/
+
+        /// <summary>
+        /// JSON 형태로 배치된 캐릭터 배치정보 저장하기
+        /// </summary>
+        /// <returns>JArray로 배치된 캐릭터 배치정보</returns>
         public JArray saveSelectedCharacterInfo()
         {
             JArray ret = new JArray ();
