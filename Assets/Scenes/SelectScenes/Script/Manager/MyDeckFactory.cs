@@ -16,6 +16,7 @@ namespace deck
             if (instance == null)
             {
                 instance = FindObjectOfType<MyDeckFactory>();
+                instance.Initialize();
             }
             return instance;
         }
@@ -35,12 +36,18 @@ namespace deck
         [SerializeField] private ItemData[] itemDatas;
         public Dictionary<string, ItemData> itemDataMap;
 
-        void Start()
-        {
-            Initialize();
-        }
+        /// <summary>
+        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
+        /// </summary>
+        [SerializeField]
+        GameObject characterInventoryItemPrefab;
 
-        void Initialize()
+        /// <summary>
+        /// 플레이어가 현재 가지고 있는 아이템 정보 프리펩
+        /// </summary>
+        [SerializeField] GameObject LigthEquipItemPrefab;
+
+        public void Initialize()
         {
             m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
             collection = battle.StaticLoader.Instance().GetCollection();
@@ -94,5 +101,62 @@ namespace deck
             return ret;
 
         }
+
+        /// <summary>
+        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
+        /// </summary>
+        /// <param name="character">플레이어의 캐릭터 정보</param>
+        /// <param name="targetParent">UI 배치할 transform</param>
+        /// <param name="initialize">초기화를 factory에서 할 것인지</param>
+        /// <returns></returns>
+        public GameObject createCharacterInventoryPrefeb(PixelCharacter character, Transform targetParent, bool initialize=true, int sortingOrder = 1)
+        {
+            GameObject go = Instantiate(characterInventoryItemPrefab, targetParent);
+            if(initialize)
+            {
+                LightCharacterListItem tmp = go.GetComponent<LightCharacterListItem>();
+                tmp.Initialize(character);
+                if(sortingOrder != 1)
+                {
+                    tmp.setSortingOrder(sortingOrder);
+                }
+            }
+            return go;
+        }
+
+        /// <summary>
+        /// 플레이어 보유 아이템에 대한 UI 생성
+        /// </summary>
+        /// <param name="item">아이템 정보</param>
+        public void createLightEquipItemUI(EquipItem item, Transform targetParent)
+        {
+            GameObject newPrefab = Instantiate(LigthEquipItemPrefab, targetParent);
+            newPrefab.GetComponent<LightEquipItem>().Initialize(item);
+        }
+
+
+        /// <summary>
+        /// 게임 시작할 때 캐릭터 고를 수 있게 해줌
+        /// </summary>
+        /// <returns></returns>
+        public List<List<PixelCharacter>> getNGSelectos()
+        {
+            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+            System.Random random = new System.Random();
+
+            List<List<PixelCharacter>> ret = new List<List<PixelCharacter>>();
+            for(int i = 0; i < 5; i++)
+            {
+                ret.Add( new List<PixelCharacter>());
+                for(int j = 0; j < 5; j++)
+                {
+                    PixelCharacter character = buildPixelCharacter(characterNames[random.Next(0, characterNames.Length)]);
+                    ret[i].Add(character);
+                }
+            }
+            return ret;
+        }
+
+
     }
 }

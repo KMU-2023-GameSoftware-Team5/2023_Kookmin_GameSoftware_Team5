@@ -11,7 +11,7 @@ namespace deck
     /// <summary>
     /// 플레이어가 보유한 캐릭터 하나에 대한 정보를 보여주는 UI를 제어하는 객체
     /// </summary>
-    public class CharacterListItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class CharacterListItem: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         /// <summary>
         /// UI가 보여줄 캐릭터 객체
@@ -36,14 +36,7 @@ namespace deck
         /// <summary>
         /// 캐릭터 이미지 출력 UI
         /// </summary>
-        [SerializeField]
-        CharacterBuilderControl characterImage;
-
-        /// <summary>
-        /// 캐릭터 이름
-        /// </summary>
-        [SerializeField] TextMeshProUGUI characterName;
-
+        SpriteBuilderForUI characterImage;
 
         public PixelCharacter getCharacter()
         {
@@ -62,20 +55,18 @@ namespace deck
         /// 1. 캐릭터에 대한 정보받아서 처리
         /// 2. 드래그 처리를 위한 UI의 Transform 설정
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="canvas"></param>
-        /// <param name="characterList"></param>
-        public void Initialize(PixelCharacter character, Transform canvas, Transform characterList)
+        /// <param name="character">이 UI가 보여줄 캐릭터객체</param>
+        /// <param name="canvas">drag하는 동안 위치해있을 canvas</param>
+        /// <param name="characterList">캐릭터 객체가 원래 위치할 리스트</param>
+        public void Initialize(PixelCharacter character, Transform canvas, Transform characterList, SpriteBuilderForUI characterImage)
         {
-            // TODO 
-            this.character = character;
-            characterImage.buildCharacter(this.character.characterName);
-            characterName.text = character.characterNickName;
             // characterImg.color = this.character.playerColor; 
             rect = GetComponent<RectTransform>(); 
             canvasGroup = GetComponent<CanvasGroup>(); 
+            this.character = character;
             this.characterList = characterList;
             this.canvas = canvas;
+            this.characterImage = characterImage;
         }
 
         /// <summary>
@@ -99,6 +90,10 @@ namespace deck
         public void selectCharacter(CharacterSelector characterSelector)
         {
             this.characterSelector = characterSelector;
+
+            // for sprite mask
+            characterImage.setSortingOrder(2);
+
         }
 
         /// <summary>
@@ -115,6 +110,9 @@ namespace deck
             {
                 returnList();
             }
+
+            // for sprite mask
+            characterImage.setSortingOrder(1);
         }
 
 
@@ -166,6 +164,9 @@ namespace deck
             transform.SetParent(characterList);
             rect.position = characterList.position;
             //characterList.GetComponent<RectTransform>().position;
+
+            // for sprite maks
+            characterImage.setSortingOrder(1);
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
@@ -175,6 +176,9 @@ namespace deck
 
             canvasGroup.alpha = 1.0f;
             canvasGroup.blocksRaycasts = false;
+
+            // for sprite Mask
+            characterImage.setSortingOrder(3);
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)
@@ -198,7 +202,7 @@ namespace deck
             }
             
             canvasGroup.alpha = 1.0f;
-            canvasGroup.blocksRaycasts = true; 
+            canvasGroup.blocksRaycasts = true;
         }
     }
 

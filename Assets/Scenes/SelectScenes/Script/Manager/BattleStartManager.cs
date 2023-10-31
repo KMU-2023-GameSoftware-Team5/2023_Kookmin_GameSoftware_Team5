@@ -12,8 +12,13 @@ public class BattleStartManager : MonoBehaviour
 
     public void onClickBattleStart()
     {
+        // 씬 넘어가기 전 저장
+        CharacterSelectManager selectSceneManager = CharacterSelectManager.Instance();
+        selectSceneManager.save();
+        Debug.Log("select Scene 저장 완료");
+
         // 아군
-        characters = CharacterSelectManager.Instance().battleStart();
+        characters = selectSceneManager.battleStart();
         
         foreach (GameObject target in destroyTarget)
         {

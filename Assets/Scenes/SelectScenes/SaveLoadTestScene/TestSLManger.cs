@@ -117,6 +117,7 @@ namespace testSL
         public void onClickGameStart()
         {
             SceneManager.LoadScene("Scenes/SelectScenes/SelectScene");
+            // SceneManager.LoadScene("Scenes/CombineScenes/CombineScene");
         }
     }
 }
