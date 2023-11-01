@@ -8,7 +8,7 @@ using UnityEngine;
 public class BattleStartManager : MonoBehaviour
 {
     public GameObject[] destroyTarget;
-    public battle.PixelCharacter[] characters;
+    public List<battle.PixelCharacter> characters;
 
     public void onClickBattleStart()
     {

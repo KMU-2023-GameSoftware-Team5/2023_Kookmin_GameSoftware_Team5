@@ -17,40 +17,41 @@ namespace testSL
         List<TestCharacterLI> characters;
         List<TestItemLI> items;
 
-        public SaveLoadManager saveLoadManager;
 
         private void Awake()
         {
             items = new List<TestItemLI>();
             characters = new List<TestCharacterLI>();
-            PlayerManager playerManager = new PlayerManager();
-            playerManager.Initialize();
-            PlayerManager.Initialize(playerManager);
+
+            PlayerManager pm = PlayerManager.Instance();
+            /*
+                PlayerManager playerManager = new PlayerManager();
+                PlayerManager.Initialize(playerManager);
+            */
         }
 
         public void onClickDestroy()
         {
             destroyUI();
-            saveLoadManager.delete();
-            saveLoadManager.load();
+            PlayerManager.delete();
         }
 
         public void onClickSave()
         {
-            saveLoadManager.save();
+            PlayerManager.save();
         }
 
         public void onClickLoad()
         {
-            saveLoadManager.load();
             destroyUI();
+            PlayerManager pm = PlayerManager.load();
 
-            List<PixelCharacter> tmpCharacter = PlayerManager.Instance().playerCharacters;
+            List<PixelCharacter> tmpCharacter = pm.playerCharacters;
             foreach (PixelCharacter character in tmpCharacter)
             {
                 addCharacterUI(character);
             }
-            List<EquipItem> tmpItem = PlayerManager.Instance().playerEquipItems;
+            List<EquipItem> tmpItem = pm.playerEquipItems;
             foreach (EquipItem item in tmpItem)
             {
                 addItemUI(item);
@@ -61,11 +62,13 @@ namespace testSL
         {
             foreach (TestCharacterLI character in characters)
             {
-                character.destroy();
+                if(character != null)
+                    character.destroy();
             }
             foreach (TestItemLI item in items)
             {
-                item.destroy();
+                if(item != null)
+                    item.destroy();
             }
             items = new List<TestItemLI>();
             characters = new List<TestCharacterLI>();
@@ -106,18 +109,22 @@ namespace testSL
             items.Add(tmp);
         }
 
+        /// <summary>
+        /// 테스트를 위해 새 PlayerManager 생성
+        /// </summary>
         public void onClickNewManager()
         {
             destroyUI();
             PlayerManager pm = new PlayerManager();
-            pm.Initialize();
-            PlayerManager.Initialize(pm);
+            PlayerManager.replace(pm);
         }
 
         public void onClickGameStart()
         {
-            SceneManager.LoadScene("Scenes/SelectScenes/SelectScene");
-            // SceneManager.LoadScene("Scenes/CombineScenes/CombineScene");
+            //SceneManager.LoadScene("Scenes/SelectScenes/SelectScene");
+            //SceneManager.LoadScene("Scenes/CombineScenes/CombineScene");
+            SceneManager.LoadScene("Scenes/Parameter Test Scene/Parameter Test");
+
         }
     }
 }

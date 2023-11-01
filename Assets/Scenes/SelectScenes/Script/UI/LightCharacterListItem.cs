@@ -17,7 +17,7 @@ namespace deck
         /// <summary>
         /// UI가 보여줄 캐릭터 객체
         /// </summary>
-        PixelCharacter character;
+        public PixelCharacter character { get; private set; }
         /// <summary>
         /// 캐릭터 이름
         /// </summary>
@@ -45,5 +45,6 @@ namespace deck
         {
             characterImage.setSortingOrder(sortingOrder);
         }
+
     }
 }

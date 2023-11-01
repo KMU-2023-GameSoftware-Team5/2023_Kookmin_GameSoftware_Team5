@@ -1399,7 +1399,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1940676500}
-  - component: {fileID: 1940676499}
   - component: {fileID: 1940676501}
   m_Layer: 0
   m_Name: SceneManager
@@ -1408,18 +1407,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1940676499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1940676498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaf0c84459dd0a841b9f52996d546007, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1940676500
 Transform:
   m_ObjectHideFlags: 0
@@ -1449,7 +1436,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGold: 500
   playerLife: 5
-  saveLoadManager: {fileID: 1940676499}
   characterGrid: {fileID: 2038564925789225238}
   itemGrid: {fileID: 4300303415617314037}
   newGameSelector: {fileID: 52543051}
