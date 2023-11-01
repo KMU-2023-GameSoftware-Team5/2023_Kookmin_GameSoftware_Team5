@@ -110,6 +110,7 @@ namespace battle
 
         public void SetTeam0(List<PixelCharacter> characters)
         {
+            // use this. now parameter is List
             List<PixelCharacter> team0 = characters;
 
             foreach (var character in team0)
@@ -126,6 +127,7 @@ namespace battle
 
         public void SetTeam0(PixelCharacter[] characters)
         {
+            // legacy - now paramter is not array 
             List<PixelCharacter> team0 = new List<PixelCharacter>();
 
             foreach(var character in characters)

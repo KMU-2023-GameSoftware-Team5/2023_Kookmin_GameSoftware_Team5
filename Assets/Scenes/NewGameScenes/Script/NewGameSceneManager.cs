@@ -67,6 +67,7 @@ namespace deck
         {
             // 다음씬으로 점프 
             SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
+            
         }
 
         /// <summary>

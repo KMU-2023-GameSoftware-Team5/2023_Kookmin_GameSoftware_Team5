@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 namespace deck
@@ -110,15 +111,18 @@ namespace deck
         {
             this.playerCharacters = playerCharacters;
             this.playerEquipItems = playerEquipItems;
+            selectedCharacters = new JArray();
             this.playerGold = playerGold;
             this.playerLife = playerLife;
         }
 
-        public PlayerManager(List<PixelCharacter> playerCharacters, int playerGold, int playerLife)
+        public PlayerManager(List<PixelCharacter> playerCharacters, int playerGold, int playerLife) 
         {
             this.playerGold = playerGold;
             this.playerLife = playerLife;
             this.playerCharacters = playerCharacters;
+            playerEquipItems = new List<EquipItem>();
+            selectedCharacters = new JArray();
         }
 
 
@@ -295,10 +299,13 @@ namespace deck
             playerCharacters = characters;
 
             // 캐릭터 배치 정보
-            selectedCharacters = (JArray) json["selectedCharacterInfo"];
-            if(selectedCharacters == null)
+            if(json["selectedCharacterInfo"].Type == JTokenType.Null)
             {
                 selectedCharacters = new JArray();
+            }
+            else
+            {
+                selectedCharacters = (JArray)json["selectedCharacterInfo"];
             }
         }
     }

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene.unity
     guid: 278cc8f32806e684f9fa3a4e813934e4
+  - enabled: 1
+    path: Assets/Scenes/Parameter Test Scene/Parameter Test.unity
+    guid: 91bd3e4b3d7e4aa4daaa2699a531356a
   m_configObjects: {}
