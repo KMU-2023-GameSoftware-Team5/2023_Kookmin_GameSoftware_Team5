@@ -1,3 +1,4 @@
+using GameMap;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,5 +17,22 @@ public class SceneParamter : StaticGetter<SceneParamter>
                 m_mobSet = value;
             }
         }
+    }
+
+    // == Map parameters ==
+    public bool NeedInitializeMapParameter = true;
+
+    // This array saves the AreaData's that areas of map have in order
+    public AreaData[] AreaDatas;
+    public int AreaVisitCount;
+    public int NowAreaIndex = -1;
+
+    public void InitializeMapParameters()
+    {
+        AreaDatas = null;
+        AreaVisitCount = 0;
+        NowAreaIndex = -1;
+
+        NeedInitializeMapParameter = false;
     }
 }

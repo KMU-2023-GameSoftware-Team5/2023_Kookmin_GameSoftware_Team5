@@ -9,6 +9,8 @@ namespace GameMap
     {
         static readonly System.Random SystemRandom = new();
 
+        readonly SceneParamter m_sceneParameter = SceneParamter.Instance();
+
         [SerializeField] MobSetData[] m_mobSetDatas;
 
         [SerializeField] GameObject m_iconGroupLayout;
@@ -24,7 +26,6 @@ namespace GameMap
         [SerializeField] GameObject m_nearbyStandardB;
 
         [SerializeField][Range(0, 50)] int m_bossOpenMinimum = 5;
-        int m_areaVisitCount = 0;
 
         List<GameObject> m_areas;
 
@@ -36,37 +37,47 @@ namespace GameMap
 
         void Start()
         {
+            if (m_sceneParameter.NeedInitializeMapParameter)
+                m_sceneParameter.InitializeMapParameters();
+
             InitializeRandomSeed();
             BuildAreas();
 
-            // Disable all areas and add onClick listeners to area
-            foreach (GameObject area in m_areas)
+            // Move to clicked area
+            for (int i = 0; i < m_areas.Count; i++)
             {
-                area.SetActive(false);
+                // Use this variable to resolve closure problem
+                int t_index = i;
 
-                area.GetComponent<Button>().onClick.AddListener(() =>
+                m_areas[i].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     ChangeMobSetData();
 
-                    m_areaVisitCount++;
-                    DisableAllAreas(area);
-                    ActivateNearAreas(area);
+                    m_sceneParameter.AreaVisitCount++;
+                    m_sceneParameter.NowAreaIndex = t_index;
 
-                    SceneManager.LoadScene("CombineScene");
+                    SceneManager.LoadScene("MapScene1");
                 });
             }
 
-            // Pick and show start area
-            int startAreaIndex = Random.Range(0, m_areas.Count);
+            // Disable all areas
+            m_bossArea.SetActive(false);
+            foreach (var area in m_areas)
+                area.SetActive(false);
+
+            // Get index of start(now) area
+            int startAreaIndex = m_sceneParameter.NowAreaIndex == -1 ?
+                Random.Range(0, m_areas.Count) : m_sceneParameter.NowAreaIndex;
+
+            // Activate now and near areas
+            ActivateNearAreas(m_areas[startAreaIndex]);
             m_areas[startAreaIndex].SetActive(true);
         }
 
         void InitializeRandomSeed()
         {
             int seed = SystemRandom.Next();
-
             Random.InitState(seed);
-            Debug.Log($"Seed: {seed}");
         }
 
         void BuildAreas()
@@ -108,9 +119,7 @@ namespace GameMap
                 builder.AddCanditiateTarget(image, button);
             }
 
-            var sceneParameter = SceneParamter.Instance();
-
-            if (sceneParameter.AreaDatas is null)
+            if (m_sceneParameter.AreaDatas is null)
             {
                 foreach (AreaData areaData in m_areaData)
                     builder.AddAreaData(areaData);
@@ -122,20 +131,19 @@ namespace GameMap
                 });
             }
             else
-                builder.UseAreaDatas(sceneParameter.AreaDatas);
+                builder.AddAreaDatas(m_sceneParameter.AreaDatas);
 
             builder.Build();
 
-            sceneParameter.AreaDatas = builder.AreaData;
+            m_sceneParameter.AreaDatas = builder.AreaData.ToArray();
             m_areas = builder.AreaResult;
         }
 
         void ChangeMobSetData()
         {
-            SceneParamter sceneParamter = SceneParamter.Instance();
-
             // THIS IS TEMP!
-            sceneParamter.MobSet = m_mobSetDatas[m_areaVisitCount % m_mobSetDatas.Length];
+            int index = m_sceneParameter.AreaVisitCount % m_mobSetDatas.Length;
+            m_sceneParameter.MobSet = m_mobSetDatas[index];
         }
 
         void ActivateNearAreas(GameObject target)
@@ -144,7 +152,7 @@ namespace GameMap
 
             foreach (GameObject other in m_areas)
             {
-                if (target == other || (other == m_bossArea && m_areaVisitCount < m_bossOpenMinimum))
+                if (target == other)
                     continue;
 
                 Vector3 otherPos = other.transform.position;
@@ -155,17 +163,13 @@ namespace GameMap
 
                 other.SetActive(true);
             }
-        }
 
-        void DisableAllAreas(GameObject exclusive = null)
-        {
-            foreach (GameObject area in m_areas)
-            {
-                if (area == exclusive)
-                    continue;
+            Vector3 bossPos = m_bossArea.transform.position;
 
-                area.SetActive(false);
-            }
+            // Other area is in range
+            if (m_sceneParameter.AreaVisitCount >= m_bossOpenMinimum &&
+                (areaPos - bossPos).magnitude <= NearbyDistanceStandard)
+                m_bossArea.SetActive(true);
         }
     }
 }

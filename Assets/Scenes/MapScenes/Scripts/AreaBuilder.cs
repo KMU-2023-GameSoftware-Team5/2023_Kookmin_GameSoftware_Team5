@@ -1,11 +1,36 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameMap
 {
+    static class NumberGenerator
+    {
+        static IEnumerator<int> Generate()
+        {
+            int ret = 0;
+            while (true)
+                yield return ret++;
+        }
+
+        static IEnumerator<int> generator = Generate();
+
+        public static int Next(int maxVal)
+        {
+            int ret = generator.Current;
+
+            if (ret == maxVal - 1)
+                generator = Generate();
+            else
+                generator.MoveNext();
+
+            return ret;
+        }
+    }
+
     public class AreaBuilder : UnityEngine.Object
     {
         /// <summary>
@@ -21,7 +46,7 @@ namespace GameMap
         Button m_bossButton;
         AreaData m_bossData;
 
-        AreaPickStrategy m_areaPickStrategy = null;
+        AreaPickStrategy m_areaPickStrategy = x => NumberGenerator.Next(x);
 
         GameObject m_iconPrefab;
         Transform m_iconParent;
@@ -32,11 +57,11 @@ namespace GameMap
         public void AddCanditiateTarget(Image areaImage, Button areaButton) =>
             m_canditiateTargets.Add(Tuple.Create(areaImage, areaButton));
 
-        public void AddAreaData(AreaData areaData)
-            => m_areaDatas.Add(areaData);
+        public void AddAreaData(AreaData areaData) =>
+            m_areaDatas.Add(areaData);
 
-        public void UseAreaDatas(List<AreaData> areaDatas) =>
-            areaDatas.ForEach(x => AreaData.Add(x));
+        public void AddAreaDatas(AreaData[] areaDatas) =>
+            m_areaDatas.AddRange(areaDatas);
 
         /// <summary>
         /// Try to use icon prefab
@@ -53,11 +78,14 @@ namespace GameMap
             return true;
         }
 
-        public void UseAreaPickStrategy(AreaPickStrategy strategy)
-            => m_areaPickStrategy = strategy;
+        /// <summary>
+        /// Use strategy to pick area data. Default is in order
+        /// </summary>
+        public void UseAreaPickStrategy(AreaPickStrategy strategy) =>
+            m_areaPickStrategy = strategy;
 
-        public void UseIconParent(Transform parent)
-            => m_iconParent = parent;
+        public void UseIconParent(Transform parent) =>
+            m_iconParent = parent;
 
         public void UseBossTarget(Button bossButton, AreaData bossData)
         {
@@ -75,28 +103,26 @@ namespace GameMap
                 m_bossButton == null || m_bossData == null)
                 return;
 
-            // 1. Instantiate area icon
-            foreach (AreaData areaData in m_areaDatas)
+            // 1-1. Remove boss data from m_areaDatas if exist
+            m_areaDatas.Remove(m_bossData);
+
+            // 1-2. Instantiate boss area icon first
+            GameObject bossIcon = Instantiate(m_iconPrefab, m_iconParent);
+            bossIcon.GetComponentInChildren<Image>().sprite = m_bossData.sprite;
+            bossIcon.GetComponentInChildren<TMP_Text>().SetText(m_bossData.areaName);
+
+            // 1-3. Instantiate area icon from distincted m_areaDatas
+            foreach (AreaData areaData in m_areaDatas.Distinct())
             {
                 GameObject areaIcon = Instantiate(m_iconPrefab, m_iconParent);
                 areaIcon.GetComponentInChildren<Image>().sprite = areaData.sprite;
                 areaIcon.GetComponentInChildren<TMP_Text>().SetText(areaData.areaName);
             }
 
-            // 2-1. Remove boss data from m_areaDatas if exist
-            m_areaDatas.Remove(m_bossData);
-
-            // 2-2. Pick Area type with AreaPickStrategy and add to List
-            for (int i = 0; i < m_canditiateTargets.Count; i++)
+            // 2. Pick Area type with AreaPickStrategy and add to List
+            foreach (var targetTuple in m_canditiateTargets)
             {
-                var targetTuple = m_canditiateTargets[i];
-
-                AreaData areaData;
-
-                if (m_areaPickStrategy is null)
-                    areaData = m_areaDatas[i % m_areaDatas.Count];
-                else
-                    areaData = m_areaDatas[m_areaPickStrategy(m_areaDatas.Count)];
+                AreaData areaData = m_areaDatas[m_areaPickStrategy(m_areaDatas.Count)];
 
                 targetTuple.Item1.sprite = areaData.sprite;
                 targetTuple.Item2.onClick.AddListener(areaData.onClick.Invoke);
@@ -105,7 +131,7 @@ namespace GameMap
                 AreaData.Add(areaData);
             }
 
-            // 3. Set boss button
+            // 3. Set boss button onClick
             m_bossButton.onClick.AddListener(m_bossData.onClick.Invoke);
         }
     }
