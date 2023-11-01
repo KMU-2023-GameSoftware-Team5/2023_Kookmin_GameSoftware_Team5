@@ -1,147 +1,175 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GameMap
 {
-	public class AreaManager : MonoBehaviour
-	{
-		static readonly System.Random SystemRandom = new();
+    public class AreaManager : MonoBehaviour
+    {
+        static readonly System.Random SystemRandom = new();
 
-		[SerializeField] GameObject m_iconGroupLayout;
-		[SerializeField] GameObject m_iconPrefab;
+        readonly SceneParamter m_sceneParameter = SceneParamter.Instance();
 
-		[SerializeField] AreaData[] m_areaData;
-		[SerializeField] GameObject m_canditiateGroup;
+        [SerializeField] MobSetData[] m_mobSetDatas;
 
-		[SerializeField] GameObject m_bossArea;
-		[SerializeField] AreaData m_bossData;
+        [SerializeField] GameObject m_iconGroupLayout;
+        [SerializeField] GameObject m_iconPrefab;
 
-		[SerializeField] GameObject m_nearbyStandardA;
-		[SerializeField] GameObject m_nearbyStandardB;
+        [SerializeField] AreaData[] m_areaData;
+        [SerializeField] Transform m_canditiateGroup;
 
-		[SerializeField] [Range(0, 50)] int m_bossOpenMinimum = 5;
-		int m_areaVisitCount = 0;
+        [SerializeField] GameObject m_bossArea;
+        [SerializeField] AreaData m_bossData;
 
-		List<GameObject> m_areas;
+        [SerializeField] GameObject m_nearbyStandardA;
+        [SerializeField] GameObject m_nearbyStandardB;
 
-		float NearbyDistanceStandard
-		{
-			get => (m_nearbyStandardA.transform.position -
-					m_nearbyStandardB.transform.position).magnitude;
-		}
+        [SerializeField][Range(0, 50)] int m_bossOpenMinimum = 5;
 
-		void Start()
-		{
-			InitializeRandomSeed();
-			BuildAreas();
+        List<GameObject> m_areas;
 
-			// Disable all areas and add onClick listeners to area
-			foreach (GameObject area in m_areas)
-			{
-				area.SetActive(false);
+        float NearbyDistanceStandard
+        {
+            get => (m_nearbyStandardA.transform.position -
+                    m_nearbyStandardB.transform.position).magnitude;
+        }
 
-				// Todo: Check this work on multiple button click
-				area.GetComponent<Button>().onClick.AddListener(() =>
-				{
-					m_areaVisitCount++;
-					DisableAllAreas(area);
-					ActivateNearAreas(area);
-				});
-			}
+        void Start()
+        {
+            if (m_sceneParameter.NeedInitializeMapParameter)
+                m_sceneParameter.InitializeMapParameters();
 
-			// Pick and show start area
-			int startAreaIndex = Random.Range(0, m_areas.Count);
-			m_areas[startAreaIndex].SetActive(true);
-		}
+            InitializeRandomSeed();
+            BuildAreas();
 
-		void InitializeRandomSeed()
-		{
-			int seed = SystemRandom.Next();
+            // Move to clicked area
+            for (int i = 0; i < m_areas.Count; i++)
+            {
+                // Use this variable to resolve closure problem
+                int t_index = i;
 
-			Random.InitState(seed);
-			Debug.Log($"Seed: {seed}");
-		}
+                m_areas[i].GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    ChangeMobSetData();
 
-		void BuildAreas()
-		{
-			var builder = new AreaBuilder();
+                    m_sceneParameter.AreaVisitCount++;
+                    m_sceneParameter.NowAreaIndex = t_index;
 
-			if (!builder.TryUseIconPrefab(m_iconPrefab))
-			{
-				Debug.LogError("Icon prefab doesn't have chuld component Image or TMP_Text or both.");
-				return;
-			}
+                    SceneManager.LoadScene("MapScene1");
+                });
+            }
 
-			builder.UseAreaPickStrategy(areaDataCount =>
-			{
-				// THIS IS TEMP!
-				return Random.Range(0, areaDataCount);
-			});
+            // Disable all areas
+            m_bossArea.SetActive(false);
+            foreach (var area in m_areas)
+                area.SetActive(false);
 
-			builder.UseIconParent(m_iconGroupLayout.transform);
+            // Get index of start(now) area
+            int startAreaIndex = m_sceneParameter.NowAreaIndex == -1 ?
+                Random.Range(0, m_areas.Count) : m_sceneParameter.NowAreaIndex;
 
-			if (!m_bossArea.TryGetComponent(out Button bossButton))
-			{
-				Debug.LogError($"Boss area does not have button component");
-				return;
-			}
+            // Activate now and near areas
+            ActivateNearAreas(m_areas[startAreaIndex]);
+            m_areas[startAreaIndex].SetActive(true);
+        }
 
-			builder.UseBossTarget(bossButton, m_bossData);
+        void InitializeRandomSeed()
+        {
+            int seed = SystemRandom.Next();
+            Random.InitState(seed);
+        }
 
-			foreach (Transform canditiateTransfrom in m_canditiateGroup.transform)
-			{
-				if (!canditiateTransfrom.TryGetComponent(out Image image))
-				{
-					string name = canditiateTransfrom.name;
-					Debug.LogWarning($"This area does not have image component: {name}");
-					continue;
-				}
+        void BuildAreas()
+        {
+            var builder = new AreaBuilder();
 
-				if (!canditiateTransfrom.TryGetComponent(out Button button))
-				{
-					string name = canditiateTransfrom.name;
-					Debug.LogWarning($"This area does not have button component: {name}");
-					continue;
-				}
+            if (!builder.TryUseIconPrefab(m_iconPrefab))
+            {
+                Debug.LogError("Icon prefab doesn't have chuld component Image or TMP_Text or both.");
+                return;
+            }
 
-				builder.AddCanditiateTarget(image, button);
-			}
+            builder.UseIconParent(m_iconGroupLayout.transform);
 
-			foreach (AreaData areaData in m_areaData)
-				builder.AddAreaData(areaData);
+            if (!m_bossArea.TryGetComponent(out Button bossButton))
+            {
+                Debug.LogError($"Boss area does not have button component");
+                return;
+            }
 
-			m_areas = builder.Build();
-		}
+            builder.UseBossTarget(bossButton, m_bossData);
 
-		void ActivateNearAreas(GameObject target)
-		{
-			Vector3 areaPos = target.transform.position;
+            foreach (Transform canditiateTransfrom in m_canditiateGroup)
+            {
+                if (!canditiateTransfrom.TryGetComponent(out Image image))
+                {
+                    string name = canditiateTransfrom.name;
+                    Debug.LogWarning($"This area does not have image component: {name}");
+                    continue;
+                }
 
-			foreach (GameObject other in m_areas)
-			{
-				if (target == other || (other == m_bossArea && m_areaVisitCount < m_bossOpenMinimum))
-					continue;
+                if (!canditiateTransfrom.TryGetComponent(out Button button))
+                {
+                    string name = canditiateTransfrom.name;
+                    Debug.LogWarning($"This area does not have button component: {name}");
+                    continue;
+                }
 
-				Vector3 otherPos = other.transform.position;
+                builder.AddCanditiateTarget(image, button);
+            }
 
-				// Other area is out of range
-				if ((areaPos - otherPos).magnitude >= NearbyDistanceStandard)
-					continue;
+            if (m_sceneParameter.AreaDatas is null)
+            {
+                foreach (AreaData areaData in m_areaData)
+                    builder.AddAreaData(areaData);
 
-				other.SetActive(true);
-			}
-		}
+                builder.UseAreaPickStrategy(areaDataCount =>
+                {
+                    // THIS IS TEMP!
+                    return Random.Range(0, areaDataCount);
+                });
+            }
+            else
+                builder.AddAreaDatas(m_sceneParameter.AreaDatas);
 
-		void DisableAllAreas(GameObject exclusive = null)
-		{
-			foreach (GameObject area in m_areas)
-			{
-				if (area == exclusive)
-					continue;
+            builder.Build();
 
-				area.SetActive(false);
-			}
-		}
-	}
+            m_sceneParameter.AreaDatas = builder.AreaData.ToArray();
+            m_areas = builder.AreaResult;
+        }
+
+        void ChangeMobSetData()
+        {
+            // THIS IS TEMP!
+            int index = m_sceneParameter.AreaVisitCount % m_mobSetDatas.Length;
+            m_sceneParameter.MobSet = m_mobSetDatas[index];
+        }
+
+        void ActivateNearAreas(GameObject target)
+        {
+            Vector3 areaPos = target.transform.position;
+
+            foreach (GameObject other in m_areas)
+            {
+                if (target == other)
+                    continue;
+
+                Vector3 otherPos = other.transform.position;
+
+                // Other area is out of range
+                if ((areaPos - otherPos).magnitude >= NearbyDistanceStandard)
+                    continue;
+
+                other.SetActive(true);
+            }
+
+            Vector3 bossPos = m_bossArea.transform.position;
+
+            // Other area is in range
+            if (m_sceneParameter.AreaVisitCount >= m_bossOpenMinimum &&
+                (areaPos - bossPos).magnitude <= NearbyDistanceStandard)
+                m_bossArea.SetActive(true);
+        }
+    }
 }
