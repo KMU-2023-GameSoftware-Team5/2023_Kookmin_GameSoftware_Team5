@@ -66,7 +66,8 @@ namespace deck
         public void onClickGameStart()
         {
             // 다음씬으로 점프 
-            SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
+            // SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
+            SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
             
         }
 
