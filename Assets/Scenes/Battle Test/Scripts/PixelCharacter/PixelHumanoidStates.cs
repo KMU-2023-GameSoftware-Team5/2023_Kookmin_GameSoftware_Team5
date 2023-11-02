@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using data;
+using static UnityEngine.GraphicsBuffer;
 
 // PixelHumanoid가 가질 수 있는 State를 정의하는 파일
 
@@ -35,7 +36,7 @@ namespace battle
                 OnEnter = (PixelHumanoid owner) =>
                 {
                     // 안하면 무한루프
-                    owner.m_fsm.SetTransitionToSearch(false);
+                    owner.m_fsm.SetForcedNextState(EState.None);
 
                     owner.m_animator.SetBool("Idle", false);
                     owner.m_animator.SetBool("Dead", false);
@@ -45,40 +46,40 @@ namespace battle
                 {
                     float distance;
 
-                    Debug.Log("owner: " + owner);
-                    Debug.Log("owner: " + owner.bm);
-
                     PixelHumanoid enemy = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
                     distance = Mathf.Sqrt(distance);
 
-                    // 범위 안의 적을 찾은 경우
-                    if (distance <= owner.searchingRange)
-                    {
-                        owner.targetId = enemy.entityId;
-                        return EState.Chasing;
-                    }
+                    owner.targetId = enemy.entityId;
+                    return EState.Chasing;
 
-                    Vector3 delta = Vector3.zero;
-                    if (owner.m_direction == Utility.Direction2.Left)
-                    {
-                        delta = Vector3.left * Time.deltaTime * owner.stats.walkSpeed;
-                    }
-                    else if (owner.m_direction == Utility.Direction2.Right)
-                    {
-                        delta = Vector3.right * Time.deltaTime * owner.stats.walkSpeed;
-                    }
-                    owner.transform.position += delta;
+                    //// 범위 안의 적을 찾은 경우
+                    //if (distance <= owner.searchingRange)
+                    //{
+                    //    owner.targetId = enemy.entityId;
+                    //    return EState.Chasing;
+                    //}
 
-                    // consider on paused
-                    if (delta.x != 0)
-                    {
-                        if (delta.x > 0.0f)
-                            owner.SetDirection(Utility.Direction2.Right);
-                        else
-                            owner.SetDirection(Utility.Direction2.Left);
-                    }
+                    //Vector3 delta = Vector3.zero;
+                    //if (owner.m_direction == Utility.Direction2.Left)
+                    //{
+                    //    delta = Vector3.left * Time.deltaTime * owner.stats.walkSpeed;
+                    //}
+                    //else if (owner.m_direction == Utility.Direction2.Right)
+                    //{
+                    //    delta = Vector3.right * Time.deltaTime * owner.stats.walkSpeed;
+                    //}
+                    //owner.transform.position += delta;
 
-                    return EState.None;
+                    //// consider on paused
+                    //if (delta.x != 0)
+                    //{
+                    //    if (delta.x > 0.0f)
+                    //        owner.SetDirection(Utility.Direction2.Right);
+                    //    else
+                    //        owner.SetDirection(Utility.Direction2.Left);
+                    //}
+
+                    //return EState.None;
                 }
             };
             public static State GetSearchingState() { return s_searchingState; }
@@ -219,11 +220,13 @@ namespace battle
             {
                 OnEnter = (PixelHumanoid owner) =>
                 {
-                    owner.m_fsm.SetTransitionToDead(false);
-
                     owner.m_animator.SetBool("Idle", false);
                     owner.m_animator.SetBool("Walking", false);
                     owner.m_animator.SetBool("Dead", true);
+                },
+                OnUpdate = (PixelHumanoid onwer) =>
+                {
+                    return EState.None;
                 }
             };
             public static State GetDeadState() { return s_deadState; }
@@ -252,6 +255,49 @@ namespace battle
                 }
             };
             public static State GetDelayingState() {  return s_delayingState; }
+
+            public class BeingVulturedState : ExtendedState
+            {
+                public uint vulturerId;
+
+                public BeingVulturedState()
+                {
+                    vulturerId = 0;
+                }
+
+                protected override EState onUpdate(PixelHumanoid owner)
+                {
+                    if (!owner.IsDead())
+                        return EState.Chasing;
+
+                     PixelCharacter vulture =  owner.bm.GetEntity(vulturerId, BattleManager.EDeadOrAlive.All);
+                    if (vulture != null)
+                    {
+                        float distance = Utility.GetDistanceBetween(owner.transform, vulture.transform);
+                        if (distance <= 0.5f)
+                        {
+                            owner.m_sr.enabled = false;
+                            return EState.Waiting;
+                        }
+                        else
+                        {
+                            Vector3 delta = vulture.transform.position - owner.transform.position;
+                            delta.Normalize();
+                            delta = delta * 10.0f * Time.deltaTime;
+                            owner.transform.position += delta;
+
+                            return EState.BeingVultured;
+                        }
+                    }
+                    else
+                    {
+                        if (!owner.IsDead())
+                            return EState.Chasing;
+                        else 
+                            return EState.Dead;
+                    }
+                }
+            }
         }
     }
 }

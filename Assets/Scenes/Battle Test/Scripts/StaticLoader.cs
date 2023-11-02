@@ -26,6 +26,9 @@ namespace battle
         [SerializeField] private GameObject lightningPillar;
         public GameObject GetLightningPillar() {  return lightningPillar; }
 
+        [SerializeField] private GameObject chomp;
+        public GameObject GetChomp() { return chomp; }
+
         [Header("Reference")]
         [SerializeField] private GameObject fireOrbit;
         public GameObject GetFireOrbit() { return fireOrbit; }

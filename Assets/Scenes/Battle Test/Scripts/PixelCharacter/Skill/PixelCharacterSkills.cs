@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace battle
 {
@@ -11,6 +12,8 @@ namespace battle
             None,
             LightPillar,
             FireOrbit,
+            SingleHeal,
+            Vulture, 
         }
 
         public class SkillFactory : StaticGetter<SkillFactory>, IOnStaticFound
@@ -23,11 +26,13 @@ namespace battle
                 s_skills[ESkill.None] = s_noneSkill;
                 s_skills[ESkill.LightPillar] = s_lightingPillarSkill;
                 s_skills[ESkill.FireOrbit] = s_fireOrbitSkill;
+                s_skills[ESkill.SingleHeal] = s_singleHealSkill;
+                s_skills[ESkill.Vulture] = s_vulture;
 
                 return true;
             }
 
-            public State GetSkill(ESkill skill)
+            public State GetStaticSkill(ESkill skill)
             {
                 if (!s_skills.ContainsKey(skill))
                 {
@@ -97,6 +102,84 @@ namespace battle
                 OnUpdate = (PixelHumanoid owner) =>
                 {
                     return EState.Chasing;
+                }
+            };
+
+            private static int s_singleHealAmount = 20;
+            private static State s_singleHealSkill = new State()
+            {
+                OnEnter = (PixelHumanoid owner) =>
+                {
+                    owner.stats.mp = 0;
+
+                    PixelCharacter[] characters;
+                    owner.bm.GetAliesFromLowestHp(owner, out characters);
+
+                    // heal self 50% of skill heal amount
+                    owner.bm.ApplyHeal(owner, owner, s_singleHealAmount / 2);
+                    if (characters.Length > 0)
+                    {
+                        owner.bm.ApplyHeal(owner, characters[0], s_singleHealAmount);
+                    }
+                }
+                ,
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    return EState.Chasing;
+                }
+            };
+
+            private static State s_vulture = new State()
+            {
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    PixelCharacter dead = owner.bm.GetClosestDead(owner);
+                    if (dead == null)
+                    {
+                        owner.stats.mp /= 3;
+
+                        return EState.Chasing;
+                    }
+                    else
+                    {
+                        float distance = Utility.GetDistanceBetween(owner.transform, dead.transform);
+                        if (distance <= 1.0f)
+                        {
+                            owner.stats.mp = 0;
+
+                            owner.bm.ApplyHeal(owner, owner, dead.maxHp / 10);
+                            owner.stats.damage += 2;
+
+                            GameObject chompGo = Instantiate(StaticLoader.Instance().GetChomp());
+                            chompGo.transform.position = dead.transform.position + Vector3.up * 0.6f;
+                            Destroy(chompGo, 0.5f);
+
+                            owner.bm.Vulture(owner, (PixelHumanoid)dead);   
+
+                            return EState.Chasing;
+                        }
+                        else
+                        {
+                            Vector3 delta = dead.transform.position - owner.transform.position;
+                            delta.Normalize();
+                            delta = delta * owner.stats.walkSpeed * Time.deltaTime;
+                            owner.transform.position += delta;
+
+                            // consider on paused
+                            if (delta.x != 0.0)
+                            {
+                                if (delta.x > 0.0f)
+                                    owner.SetDirection(Utility.Direction2.Right);
+                                else
+                                    owner.SetDirection(Utility.Direction2.Left);
+                            }
+
+                            owner.m_animator.SetBool("Idle", false);
+                            owner.m_animator.SetBool("Walking", true);
+
+                            return EState.Skill;
+                        }
+                    }
                 }
             };
         }

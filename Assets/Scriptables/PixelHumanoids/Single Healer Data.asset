@@ -10,29 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
-  m_Name: Goblin Archor Data
+  m_Name: Single Healer Data
   m_EditorClassIdentifier: 
   sheild: 0
-  hp: 20
+  hp: 100
   mp: 0
   energy: 0
-  walkSpeed: 3.5
+  walkSpeed: 2
   damage: 1
-  attackDelay: 1.2
-  criticalRate: 0.5
-  characterName: Goblin Archor
-  attackRange: 5
-  Head: Goblin#FFFFFF/0:0:0
-  Ears: Goblin#FFFFFF/0:0:0
-  Eyes: Goblin#FFFFFF/0:0:0
-  Body: Goblin#FFFFFF/0:0:0
-  Hair: 
-  Armor: ArcherTunic#FFFFFF/0:0:0
+  attackDelay: 0.6
+  criticalRate: 0
+  characterName: Single Healer
+  attackRange: 1
+  Head: Elf#FFFFFF/0:0:0
+  Ears: Elf#FFFFFF/0:0:0
+  Eyes: Elf#FFFFFF/-33:-5:100
+  Body: Orc#FFFFFF/0:0:0
+  Hair: Hair7#C7CFDD/0:0:0
+  Armor: NecromancerRobe#FFFFFF/0:0:0
   Helmet: 
-  Weapon: BattleBow#FFFFFF/0:0:0
+  Weapon: BishopStaff#FFFFFF/0:0:0
   Shield: 
   Cape: 
   Back: 
   Mask: 
-  defualtAttackType: 1
-  skill: 0
+  defualtAttackType: 2
+  skill: 3

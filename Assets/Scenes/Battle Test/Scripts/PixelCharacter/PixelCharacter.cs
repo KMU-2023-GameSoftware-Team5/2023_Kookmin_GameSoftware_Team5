@@ -64,12 +64,23 @@ namespace battle
         }
 
         /// <summary>
-        /// callback on kill
+        /// callback on damaged
         /// /// don't call this by your self: it is called by battle manager
         /// </summary>
         /// <param name="allies">includeing self and dead</param>
         /// <param name="enemies">includeing all enemies even already dead</param>
         public virtual void OnDamaged(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
+        {
+
+        }
+
+        /// <summary>
+        /// callback on healed
+        /// /// don't call this by your self: it is called by battle manager
+        /// </summary>
+        /// <param name="allies">includeing self and dead</param>
+        /// <param name="enemies">includeing all enemies even already dead</param>
+        public virtual void OnHealed(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
         {
 
         }

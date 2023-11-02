@@ -65,6 +65,8 @@ namespace battle
         }
 
         private FSM m_fsm;
+        public FSM GetFsm() { return m_fsm; }
+
         // public override bool IsDead() { return m_fsm.GetCurrentState() == EState.Dead; }
         public override bool IsDead() { return m_isDead; }
 
@@ -107,7 +109,7 @@ namespace battle
         public override void OnBattleStarted(PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             targetId = 0;
-            m_fsm.SetTransitionToSearch(true);
+            m_fsm.SetForcedNextState(EState.Searching);
         }
 
         private bool m_isDead;
@@ -121,7 +123,7 @@ namespace battle
         public override void OnDead(PixelCharacter killer, PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             base.OnDead(killer, allies, enemies);   // invalidate headBar
-            m_fsm.SetTransitionToDead(true);
+            m_fsm.SetForcedNextState(EState.Dead);
             m_isDead = true;
 
             m_sr.sortingOrder = -1;
@@ -150,6 +152,11 @@ namespace battle
         public override void OnDamaged(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             m_animator.SetTrigger("Hit");
+        }
+
+        public override void OnHealed(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
+        {
+            m_animator.SetTrigger("Heal");
         }
     }
 }

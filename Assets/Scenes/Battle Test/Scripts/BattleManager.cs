@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -22,6 +23,30 @@ namespace battle
             All
         }
 
+        public class Statistics
+        {
+            public Statistics(PixelCharacter character)
+            {
+                this.character = character;
+                Clear();
+            }
+
+            public void Clear()
+            {
+                DamageApplied = 0;
+                TakenDamage = 0;
+                HealApplied = 0;
+                TakenHeal = 0;
+            }
+
+            public PixelCharacter character;
+            public int DamageApplied;
+            public int TakenDamage;
+            public int HealApplied;
+            public int TakenHeal;
+        }
+        private Dictionary<uint, Statistics> m_statistics;   // key: id
+
         [SerializeField] private EStatus status = EStatus.Waiting;
         public EStatus GetStatus() { return status; }
 
@@ -29,6 +54,7 @@ namespace battle
         {
             status = EStatus.Waiting;
             m_entityMap = new Dictionary<uint, PixelCharacter>();
+            m_statistics = new Dictionary<uint, Statistics>(); 
         }
 
         private Dictionary<uint, PixelCharacter> m_entityMap;
@@ -63,6 +89,8 @@ namespace battle
         private List<PixelCharacter> m_team1Characters;
         public bool StartBattle(List<PixelCharacter> team0, List<PixelCharacter> team1)
         {
+            m_statistics.Clear();
+
             if (status == EStatus.Fighting)
             {
                 Debug.LogError("already fighting");
@@ -77,11 +105,15 @@ namespace battle
             {
                 character.entityId = lastEntityNumber++;
                 m_entityMap[character.entityId] = character;
+
+                m_statistics[character.entityId] = new Statistics(character);
             }
             foreach (PixelCharacter character in m_team1Characters)
             {
                 character.entityId = lastEntityNumber++;
                 m_entityMap[character.entityId] = character;
+
+                m_statistics[character.entityId] = new Statistics(character);
             }
 
             Debug.Log("battle started");
@@ -150,6 +182,40 @@ namespace battle
             }
         }
 
+        public PixelHumanoid GetClosestDead(PixelCharacter from)
+        {
+            PixelHumanoid ret = null;
+
+            float min_distance = float.MaxValue;
+            foreach (PixelHumanoid iCharacter in m_team0Characters)
+            {
+                if (iCharacter.IsDead())
+                {
+                    float distance = Utility.GetSquaredDistanceBetween(from.transform, iCharacter.transform);
+                    if (distance < min_distance)
+                    {
+                        min_distance = distance;
+                        ret = iCharacter;
+                    }
+                }
+            }
+
+            foreach (PixelHumanoid iCharacter in m_team1Characters)
+            {
+                if (iCharacter.IsDead())
+                {
+                    float distance = Utility.GetSquaredDistanceBetween(from.transform, iCharacter.transform);
+                    if (distance < min_distance)
+                    {
+                        min_distance = distance;
+                        ret = iCharacter;
+                    }
+                }
+            }
+
+            return ret;
+        }
+
         public void GetAliveEnemiesFromClosest(PixelCharacter from, out PixelCharacter[] out_enemies)
         {
             List<PixelCharacter> ret = new List<PixelCharacter>();
@@ -177,17 +243,84 @@ namespace battle
             out_enemies = ret.ToArray();
         }
 
+        public void GetAliesFromLowestHp(PixelCharacter from, out PixelCharacter[] out_enemies)
+        {
+            List<PixelCharacter> ret = new List<PixelCharacter>();
+            
+            List<PixelCharacter> alies = m_team0Characters;
+            if (from.teamIndex == 1)
+                alies = m_team1Characters;
+
+            foreach (PixelCharacter iCharacter in alies)
+            {
+                if (iCharacter.IsDead()) continue;
+
+                ret.Add(iCharacter);
+            }
+
+            ret.Sort((PixelCharacter x, PixelCharacter y) =>
+            {
+
+                return x.stats.hp - y.stats.hp;
+            }
+            );
+
+            out_enemies = ret.ToArray();
+        }
+
         public void ApplyDefaultAttack(PixelCharacter from, PixelCharacter to)
         {
             ApplyDamage(from, to, from.stats.damage, true);
         }
 
-        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical, Color color)
+        public void ApplyHeal(PixelCharacter from, PixelCharacter to, int amount)
+        {
+            if (to.IsDead())
+                return;
+
+            to.stats.hp += amount;
+            if (to.stats.hp > to.maxHp)
+            {
+                amount -= to.stats.hp - to.maxHp;
+
+                to.stats.hp = to.maxHp;
+            }
+                
+
+            m_statistics[from.targetId].HealApplied += amount;
+            m_statistics[to.targetId].TakenHeal += amount;
+
+            UnityEngine.Color damageTextColor = UnityEngine.Color.green;
+
+            // creat damage text
+            GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
+            GameObject damageTextGo = Instantiate(damageTextPrefap, Vector3.zero, Quaternion.identity, to.transform);
+            damageTextGo.transform.localPosition = new Vector3(0.0f, 2.0f, 0.0f);
+            FloatingText floatingText = damageTextGo.GetComponent<FloatingText>();
+            floatingText.Initialize(amount.ToString(), damageTextColor);
+
+            // callback on damaged
+            if (to.teamIndex == 0)
+            {
+                to.OnHealed(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
+            }
+            else if (to.teamIndex == 1)
+            {
+                to.OnHealed(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
+            }
+        }
+
+        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical, UnityEngine.Color color)
         {
             if (to.IsDead())
                 return;
 
             to.stats.hp -= damage;
+            if (to.stats.hp < 0)
+                damage += to.stats.hp;
+
+            m_statistics[from.targetId].DamageApplied += damage;
+            m_statistics[from.targetId].TakenDamage += damage;
 
             from.stats.mp += 10;
             if (from.stats.mp > 100)
@@ -197,7 +330,7 @@ namespace battle
                 // TODO: notify mp 100 maybe?
             }
 
-            Color damageTextColor = color;
+            UnityEngine.Color damageTextColor = color;
 
             // creat damage text
             GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
@@ -247,6 +380,11 @@ namespace battle
                 return;
 
             to.stats.hp -= damage;
+            if (to.stats.hp < 0)
+                damage += to.stats.hp;
+
+            m_statistics[from.targetId].DamageApplied += damage;
+            m_statistics[from.targetId].TakenDamage += damage;
 
             from.stats.mp += 10;
             if (from.stats.mp > 100)
@@ -256,12 +394,12 @@ namespace battle
                 // TODO: notify mp 100 maybe?
             }
 
-            Color damageTextColor = Color.white;
+            UnityEngine.Color damageTextColor = UnityEngine.Color.white;
             if (checkCritical)
             {
                 if (UnityEngine.Random.Range(0.0f, 1.0f) <= from.stats.criticalRate)
                 {
-                    damageTextColor = Color.yellow;
+                    damageTextColor = UnityEngine.Color.yellow;
                     damage *= 2;
                 }
             }
@@ -306,6 +444,27 @@ namespace battle
                     to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
             }
+        }
+
+        public virtual void Vulture(PixelCharacter from, PixelHumanoid to)
+        {
+            if (!to.IsDead())
+            {
+                return;
+            }
+
+            PixelHumanoid.FSM fsm = to.GetFsm();
+
+            PixelHumanoid.StateFactory.BeingVulturedState state = (PixelHumanoid.StateFactory.BeingVulturedState)fsm.GetStateSet().Get(PixelHumanoid.EState.BeingVultured);
+            state.vulturerId = from.entityId;
+
+            // delete vultured humanoid so that can't be queryed even for DEAD state
+            if (to.teamIndex == 0)
+                m_team0Characters.Remove(to);
+            else if (to.teamIndex == 1)
+                m_team1Characters.Remove(to);
+
+            fsm.SetForcedNextState(PixelHumanoid.EState.BeingVultured);
         }
 
         public void Pause()
