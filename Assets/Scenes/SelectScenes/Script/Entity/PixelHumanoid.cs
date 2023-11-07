@@ -119,7 +119,10 @@ namespace deck
             {
                 if ((string) jItem["item id"] != "None") // jItem["item id"] = null -> but not null. why?
                 {
-                    Inventory[cnt] = itemMap[(string)jItem["item id"]];
+                    if(itemMap.ContainsKey((string)jItem["item id"]))
+                    {
+                        equip(cnt, itemMap[(string)jItem["item id"]]);
+                    }
                 }
                 cnt++;
             }

@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class JsonFileSaveLoadManager : SaveLoadManager
 {
+    string directoryPath = $"{Application.dataPath}/Scenes/SelectScenes/SaveFile";
     string makeFilePath(string path)
     {
-        return $"{Application.dataPath}/Scenes/SelectScenes/SaveFile/{path}.json";
+        return $"{directoryPath}/{path}.json";
     }
 
     public override void load(PlayerManager playerManager, string path = "PlayerManager")
@@ -31,8 +32,12 @@ public class JsonFileSaveLoadManager : SaveLoadManager
 
     public override void save(PlayerManager playerManager, string path = "PlayerManager")
     {
+        if(!Directory.Exists(directoryPath))
+        {
+            Debug.Log($"{directoryPath}"); 
+            Directory.CreateDirectory(directoryPath);
+        }
         string filePath = makeFilePath(path);
-
         JObject saveJObject = playerManager.toJson();
         // save
         File.WriteAllText(filePath, saveJObject.ToString());
