@@ -337,6 +337,33 @@ namespace deck
             return character.unEquip(equipId);
         }
 
+        /// <summary>
+        /// 캐릭터 구매관련 함수
+        /// </summary>
+        /// <param name="character">구매할 캐릭터</param>
+        /// <param name="price">구매할 캐릭터 가격</param>
+        /// <returns>구매 성공여부</returns>
+        public bool buyCharacter(PixelCharacter character, int price)
+        {
+            if (playerGold >= price)
+            {
+                // 돈계산 
+                playerGold -= price;
+
+                // 캐릭터 추가
+                addCharacter(character);
+
+                // 저장로직 호출
+                save();
+                return true;
+            }
+            else
+            {
+                // 구매 실패
+                return false;
+            }
+        }
+
     }
 }
   

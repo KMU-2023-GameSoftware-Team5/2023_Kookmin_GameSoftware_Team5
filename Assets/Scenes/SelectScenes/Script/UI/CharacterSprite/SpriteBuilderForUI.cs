@@ -25,7 +25,6 @@ namespace deck
             builder.Rebuild();
 
             resizeSprite();
-
         }
 
         public void setSortingOrder(int sortingOrder)

@@ -37,8 +37,10 @@ namespace deck
         public void Initialize(PixelCharacter character)
         {
             this.character = character;
-            characterSprite.buildCharacter(this.character.characterName);
-
+            if (characterSprite != null)
+            {
+                characterSprite.buildCharacter(character.characterName);
+            }
             if (characterNickNameText != null)
             {
                 characterNickNameText.text = character.characterNickName;
@@ -47,7 +49,7 @@ namespace deck
             {
                 characterNameText.text = character.characterName;
             }
-            if(characterDetailOpener != null)
+            if (characterDetailOpener != null)
             {
                 characterDetailOpener.character = character;
             }
@@ -59,5 +61,4 @@ namespace deck
         }
 
     }
-
 }
