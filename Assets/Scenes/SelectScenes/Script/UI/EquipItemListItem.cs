@@ -78,7 +78,8 @@ namespace deck
         /// </summary>
         public void openItemDetail()
         {
-            EquipItemManager.Instance().openItemDetail(item);
+            // EquipItemManager.Instance().openItemDetail(item);
+            MyDeckFactory.Instance().detailCanvasManager.openItemDetail(item);
         }
 
         /// <summary>

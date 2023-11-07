@@ -8,6 +8,12 @@ namespace deck
 {
     public class PlayerManager
     {
+        /*
+         * Static Pref Field
+         */
+        public static int MAX_INVENTORY_SIZE = 2;
+        public static int MAX_SELECTED_CHARACTER = 5;
+
         ///////////////////
         /* start of static */
         ///////////////////
@@ -307,6 +313,30 @@ namespace deck
             {
                 selectedCharacters = (JArray)json["selectedCharacterInfo"];
             }
+
         }
+
+        /// <summary>
+        /// 캐릭터에게 아이템 장착 이벤트
+        /// </summary>
+        /// <param name="character">아이템을 장착할 캐릭터</param>
+        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
+        /// <param name="item">장착할 아이템</param>
+        public bool equip(PixelCharacter character, int equipId, EquipItem item)
+        {
+            return character.equip(equipId, item);
+        }
+
+        /// <summary>
+        /// 캐릭터 아이템 장착 해제 이벤트
+        /// </summary>
+        /// <param name="character">아이템을 해제할 캐릭터</param>
+        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
+        public bool unEquip(PixelCharacter character, int equipId)
+        {
+            return character.unEquip(equipId);
+        }
+
     }
 }
+  

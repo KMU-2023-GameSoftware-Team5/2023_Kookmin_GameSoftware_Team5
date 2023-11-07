@@ -69,13 +69,6 @@ namespace deck
         [SerializeField]
         GameObject selectedCharacterPrefab;
 
-        [Header("Character Details")]
-        /// <summary>
-        /// 캐릭터 세부 정보창 UI
-        /// </summary>
-        [SerializeField]
-        CharacterDetails characterDetails;
-
         /////////////////////////////////////////////////////////////////////////////////
         // 캐릭터 배치관련 
 
@@ -187,36 +180,6 @@ namespace deck
         }
 
         /// <summary>
-        /// 캐릭터 세부 정보창 열기
-        /// </summary>
-        /// <param name="character">세부 정보창을 열어야하는 캐릭터</param>
-        public void openCharacterDetails(PixelCharacter character)
-        {
-            characterDetails.openCharacterDetails(character);
-        }
-
-        /// <summary>
-        /// 캐릭터에게 아이템 장착 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 장착할 캐릭터</param>
-        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
-        /// <param name="item">장착할 아이템</param>
-        public bool equip(PixelCharacter character, int equipId, EquipItem item)
-        {
-            return character.equip(equipId, item);
-        }
-
-        /// <summary>
-        /// 캐릭터 아이템 장착 해제 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 해제할 캐릭터</param>
-        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
-        public bool unEquip(PixelCharacter character, int equipId)
-        {
-            return character.unEquip(equipId);
-        }
-
-        /// <summary>
         /// PlacementCharacter 버튼을 누르면 실행됨. 캐릭터 배치 모드로 만들기
         /// </summary>
         public void togglePlacementMode()
@@ -307,7 +270,7 @@ namespace deck
         /// <returns>배치 성공여부</returns>
         public bool placeCharacter(CharacterListItem characterLI, Vector3 characterPosition)
         {
-            if (placementUIs.Count + 1 <= 5) // TODO - 상수화. 최대 배치가능 캐릭터 수 이하면 허용
+            if (placementUIs.Count + 1 <= PlayerManager.MAX_SELECTED_CHARACTER) 
             {
                 // 자신이 배치한 캐릭터 정보 받기 
                 PixelCharacter character = characterLI.getCharacter();

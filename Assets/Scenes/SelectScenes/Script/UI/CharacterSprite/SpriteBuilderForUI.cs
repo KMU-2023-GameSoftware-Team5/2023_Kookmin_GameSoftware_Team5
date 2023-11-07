@@ -15,11 +15,7 @@ namespace deck
         [SerializeField] SpriteLibrary spriteLibrary;
         [SerializeField] CharacterBuilder builder;
         [SerializeField] SpriteRenderer spriteRenderer;
-        
-        [Header("size of Sprite")]
-        public int width;
-        public int height;
-
+        [SerializeField] RectTransform rect;
 
         public void buildCharacter(string characterName)
         {
@@ -29,6 +25,7 @@ namespace deck
             builder.Rebuild();
 
             resizeSprite();
+
         }
 
         public void setSortingOrder(int sortingOrder)
@@ -37,11 +34,22 @@ namespace deck
         }
 
         /// <summary>
-        /// 정해진 파라미터에 맞게 sprite 크기 재조정
+        /// rect transform의 크기를 기반으로 sprite resize
         /// </summary>
         public void resizeSprite()
         {
-            spriteRenderer.size = new Vector2(width, height);
+            Vector3[] v = new Vector3[4];
+            if (rect == null)
+            {
+                return;
+            }
+            rect.GetWorldCorners(v);
+
+            float l1 = Vector3.Distance(v[1], v[2]);
+            float l2 = Vector3.Distance(v[0], v[1]);
+            float l = (l1 < l2 ? l1 : l2) *250; // 158은 그냥 상수. 오차범위가 좀 넓음
+
+            spriteRenderer.size = new Vector2(l, l);
         }
 
         /// <summary>

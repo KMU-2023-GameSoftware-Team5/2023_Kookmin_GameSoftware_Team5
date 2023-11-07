@@ -22,6 +22,7 @@ namespace deck
         /// 캐릭터 이름
         /// </summary>
         [SerializeField] TextMeshProUGUI characterName;
+        public CharacterDetailOpener characterDetailOpener;
 
         public void Initialize(PixelCharacter character)
         {
@@ -30,6 +31,10 @@ namespace deck
             characterName.text = character.characterNickName;
             characterListItem = GetComponent<CharacterListItem>();
             Destroy(characterListItem);
+            if(characterDetailOpener != null)
+            {
+                characterDetailOpener.character = character;
+            }
         }
 
         public void Initialize(PixelCharacter character, Transform canvas, Transform characterList)
@@ -39,6 +44,11 @@ namespace deck
             characterName.text = character.characterNickName;
             characterListItem = GetComponent<CharacterListItem>();
             characterListItem.Initialize(character, canvas, characterList, characterImage);
+            if (characterDetailOpener != null)
+            {
+                characterDetailOpener.character = character;
+            }
+
         }
 
         public void setSortingOrder(int sortingOrder)

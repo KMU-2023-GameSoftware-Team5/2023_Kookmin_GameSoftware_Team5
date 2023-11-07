@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 4438468848990801455}
   - component: {fileID: 3498450171048268226}
   - component: {fileID: 6748514139407575770}
+  - component: {fileID: 5215441478812936143}
   m_Layer: 0
   m_Name: CharacterListItem
   m_TagString: Untagged
@@ -681,9 +682,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6748514139407575770}
-        m_TargetAssemblyTypeName: jslee2.CharacterListItem, Assembly-CSharp
-        m_MethodName: openCharacterDetails
+      - m_Target: {fileID: 5215441478812936143}
+        m_TargetAssemblyTypeName: deck.CharacterDetailOpener, Assembly-CSharp
+        m_MethodName: openCharacterDetail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -707,6 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterImage: {fileID: 2181364261960953596}
   characterName: {fileID: 8557565569894838860}
+  characterDetailOpener: {fileID: 5215441478812936143}
 --- !u!114 &6748514139407575770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,6 +722,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeMark: {fileID: 6233925678674362028}
+--- !u!114 &5215441478812936143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222363497115625295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e08b9e2798ce5bf4f9c4da6f0bfc3423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8818206398944406719
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6868364397221501242, guid: 277bae0b307b27049b33f0cfc8d1d9f4, type: 3}
       propertyPath: m_SortingLayer
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -33,6 +33,7 @@ namespace deck
         public SpriteCollection GetCollection() { return collection; }
 
 
+
         [SerializeField] private ItemData[] itemDatas;
         public Dictionary<string, ItemData> itemDataMap;
 
@@ -46,6 +47,12 @@ namespace deck
         /// 플레이어가 현재 가지고 있는 아이템 정보 프리펩
         /// </summary>
         [SerializeField] GameObject LigthEquipItemPrefab;
+        /// <summary>
+        /// 플레이어가 현재 가지고 있는 캐릭터정보 프리펩
+        /// </summary>
+        [SerializeField] GameObject characterCardPrefab;
+
+        [SerializeField] public DetailCanvasManager detailCanvasManager;
 
         public void Initialize()
         {
@@ -109,7 +116,7 @@ namespace deck
         /// <param name="targetParent">UI 배치할 transform</param>
         /// <param name="initialize">초기화를 factory에서 할 것인지</param>
         /// <returns></returns>
-        public GameObject createCharacterInventoryPrefab(PixelCharacter character, Transform targetParent, bool initialize=true, int sortingOrder = 1)
+        public GameObject createCharacterInventoryPrefab(PixelCharacter character,Transform targetParent, bool initialize=true, int sortingOrder = 1)
         {
             GameObject go = Instantiate(characterInventoryItemPrefab, targetParent);
             if(initialize)
@@ -122,6 +129,29 @@ namespace deck
                 }
             }
             return go;
+        }
+
+        /// <summary>
+        /// 플레이어가 현재 보유 중인 캐릭터 정보 UI 생성
+        /// </summary>
+        /// <param name="character">플레이어의 캐릭터 정보</param>
+        /// <param name="targetParent">UI 배치할 transform</param>
+        /// <param name="initialize">초기화를 factory에서 할 것인지</param>
+        /// <returns></returns>
+        public GameObject createCharacterCardPrefab(PixelCharacter character, Transform targetParent, bool initialize = true, int sortingOrder = 1)
+        {
+            GameObject go = Instantiate(characterCardPrefab, targetParent);
+            if (initialize)
+            {
+                CharacterIcon tmp = go.GetComponent<CharacterIcon>();
+                tmp.Initialize(character);
+                if (sortingOrder != 1)
+                {
+                    tmp.setSortingOrder(sortingOrder);
+                }
+            }
+            return go;
+
         }
 
         /// <summary>

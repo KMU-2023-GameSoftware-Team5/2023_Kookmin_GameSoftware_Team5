@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterImage: {fileID: 519075003007008410}
   characterName: {fileID: 5423453804234534532}
+  characterDetailOpener: {fileID: 0}
 --- !u!114 &1639096527179475544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,7 +900,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6868364397221501242, guid: 277bae0b307b27049b33f0cfc8d1d9f4, type: 3}
       propertyPath: m_SortingLayer
-      value: -1
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868364397221501242, guid: 277bae0b307b27049b33f0cfc8d1d9f4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
