@@ -46,7 +46,7 @@ namespace deck
 
             float l1 = Vector3.Distance(v[1], v[2]);
             float l2 = Vector3.Distance(v[0], v[1]);
-            float l = (l1 < l2 ? l1 : l2) *250; // 158은 그냥 상수. 오차범위가 좀 넓음
+            float l = (l1 < l2 ? l1 : l2) * 250; // 158은 그냥 상수. 오차범위가 좀 넓음
 
             spriteRenderer.size = new Vector2(l, l);
         }
@@ -60,5 +60,10 @@ namespace deck
             int sortingOrder = dragMode ? 3 : 1;
             setSortingOrder(sortingOrder);
         }
+        public Sprite getSprite(string category = "idle", string label = "0")
+        {
+            return spriteLibrary.GetSprite(category, label);
+        }
     }
 }
+

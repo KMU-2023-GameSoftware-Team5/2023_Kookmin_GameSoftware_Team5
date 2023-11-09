@@ -26,6 +26,7 @@ namespace deck
         /// </summary>
         public Dictionary<string, PixelHumanoidData>  m_humanoidDataMap;
 
+
         /// <summary>
         /// CreateBuilderControl을 위한 sprite collection
         /// </summary>
@@ -56,6 +57,7 @@ namespace deck
 
         public void Initialize()
         {
+            characterSpritePool = new Dictionary<string, Sprite>();
             m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
             collection = battle.StaticLoader.Instance().GetCollection();
             itemDataMap = new Dictionary<string, ItemData>();
@@ -64,7 +66,25 @@ namespace deck
                 if (itemData != null)
                     itemDataMap[itemData.itemName] = itemData;
             }
+            buildSpritePool();
+        }
 
+        public Dictionary<string, Sprite> characterSpritePool;
+        [SerializeField]GameObject spritePoolMember;
+
+        void buildSpritePool()
+        {
+            foreach(KeyValuePair<string, PixelHumanoidData> character in m_humanoidDataMap)
+            {
+                GameObject go = Instantiate(spritePoolMember, transform);
+                SpritePoolMember tmp = go.GetComponent<SpritePoolMember>();
+                characterSpritePool[character.Key] = tmp.buildCharacter(character.Value);
+            }
+        }
+
+        public Sprite getSprite(string characterName)
+        {
+            return characterSpritePool[characterName];
         }
 
         /// <summary>
