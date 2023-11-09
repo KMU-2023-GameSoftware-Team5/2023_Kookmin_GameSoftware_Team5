@@ -7769,9 +7769,9 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_Spacing: 20
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -8210,6 +8210,7 @@ MonoBehaviour:
   LigthEquipItemPrefab: {fileID: 6302780969460027485, guid: 46cc4dff4baaeb847b94afb1c0625f17, type: 3}
   characterCardPrefab: {fileID: 5375169232583206860, guid: c8578b3d8ce8ed4469551754a6f31a34, type: 3}
   detailCanvasManager: {fileID: 915311757462136988}
+  spritePoolMember: {fileID: 1921265074708240142, guid: 1af125345e21150438a1cb74bb107654, type: 3}
 --- !u!114 &4508405901951905905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11065,6 +11066,7 @@ MonoBehaviour:
   characterNameText: {fileID: 2229574837706911697}
   characterNickNameText: {fileID: 5074586573101120759}
   characterSprite: {fileID: 730134527}
+  characterSpriteLoader: {fileID: 0}
   characterDetailOpener: {fileID: 0}
 --- !u!224 &7286515056144754224
 RectTransform:

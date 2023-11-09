@@ -13,11 +13,6 @@ public class CharacterSpriteLoader : MonoBehaviour
     public bool characterViewLeft = true;
     [SerializeField] Image image;
 
-    private void Start()
-    {
-        loadCharacterSprite("Skeleton");
-    }
-
     public void loadCharacterSprite(string characterName)
     {
         if(characterViewLeft)

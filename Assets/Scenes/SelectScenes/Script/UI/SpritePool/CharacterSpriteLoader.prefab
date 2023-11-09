@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 6992254322455246302}
   - component: {fileID: 2023281434718374520}
   m_Layer: 5
-  m_Name: CharacterSprite
+  m_Name: CharacterSpriteLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -20,9 +20,10 @@ namespace deck
         /// </summary>
         public TextMeshProUGUI characterNickNameText;
         /// <summary>
-        /// 캐릭터 스프라이트를 만들어주는 객체
+        /// 미사용, 추후 삭제 예정
         /// </summary>
         public SpriteBuilderForUI characterSprite;
+        public CharacterSpriteLoader characterSpriteLoader;
         public CharacterDetailOpener characterDetailOpener;
 
         /// <summary>
@@ -53,11 +54,17 @@ namespace deck
             {
                 characterDetailOpener.character = character;
             }
+            if (characterSpriteLoader != null)
+            {
+                characterSpriteLoader.loadCharacterSprite(character.characterName);
+            }
+
         }
 
         public void setSortingOrder(int sortingOrder)
         {
-            characterSprite.setSortingOrder(sortingOrder);
+            if(characterSprite != null)
+                characterSprite.setSortingOrder(sortingOrder);
         }
 
     }
