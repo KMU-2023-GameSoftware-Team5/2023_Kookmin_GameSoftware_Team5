@@ -43,7 +43,7 @@ namespace placement
             Vector3 mousePosition = new Vector3 (
                 Input.mousePosition.x,
                 Input.mousePosition.y,
-                10);
+                0);
             characterPosition.position = Camera.main.ScreenToWorldPoint(mousePosition);
             characterPosition.position = setDragAbleArea(characterPosition.position);
         }
@@ -92,6 +92,7 @@ namespace placement
         public void Initialize(PixelCharacter pixelCharacter)
         {
             this.pixelCharacter = pixelCharacter;
+            characterPosition.position = setDragAbleArea(characterPosition.position);
         }
 
         /// <summary>
@@ -110,6 +111,11 @@ namespace placement
         {
             headName.battleStart();
             Destroy(this);
+        }
+
+        public bool compareCharacter(PixelCharacter character)
+        {
+            return pixelCharacter.ID == character.ID;
         }
     }
 }
