@@ -49,8 +49,8 @@ namespace GameMap
 
                 // THIS IS TEMP!
                 SceneParamter.Instance().MobSet = m_bossMobSet;
-                SceneManager.LoadScene("Battle Test");
-                // SceneManager.LoadScene("SelectScene");
+                //SceneManager.LoadScene("Battle Test");
+                SceneManager.LoadScene("SelectScene");
             });
 
             // Add common onClick event to areas
@@ -68,8 +68,8 @@ namespace GameMap
 
                     // THIS IS TEMP!
                     SceneParamter.Instance().EnemyReinforce = MapData.AreaVisitCount;
-                    SceneManager.LoadScene("Battle Test");
-                    // SceneManager.LoadScene("SelectScene");
+                    // SceneManager.LoadScene("Battle Test");
+                    SceneManager.LoadScene("SelectScene");
                 });
             }
 
