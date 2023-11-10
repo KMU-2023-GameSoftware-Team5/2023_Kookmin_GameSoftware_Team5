@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8478487892546594237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8331090334744622092}
+  - component: {fileID: 4767965872373952263}
+  - component: {fileID: 6943815980896628491}
+  m_Layer: 0
+  m_Name: SelectSceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8331090334744622092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478487892546594237}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 167.47206, y: 491.15775, z: -6.7772784}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4767965872373952263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478487892546594237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150e314df68e2b345be70047631c7801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nowSelectorId: 0
+  UIDragCanvas: {fileID: 0}
+  selectCanvas: {fileID: 0}
+  characterInventoryGrid: {fileID: 0}
+  selectedCharacterList: {fileID: 0}
+  selectedCharacterPrefab: {fileID: 5412382048911321485, guid: 05d1402c8eb060f4ab271673b9dc3e9c, type: 3}
+  initializePlaecmentEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  placementCanvas: {fileID: 0}
+  placementCharacterPrefab: {fileID: 4253726400164379171, guid: d5887ad67790f71459ac03a63f630117, type: 3}
+  characterHeadNameCanvas: {fileID: 0}
+  characterHeadNamePrefab: {fileID: 5092363147269052747, guid: fd5d0cefdeb1e6a40bb2f634f47082c6, type: 3}
+  selectCharacter: {fileID: 2085911846708056765, guid: 37a593aec16cb9e4d90b840e87da694c, type: 3}
+--- !u!114 &6943815980896628491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478487892546594237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01118ade70d1694597fdb200a779848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  itemInventoryGrid: {fileID: 0}
+  itemInventoryItemPrefeb: {fileID: 3860832842316319932, guid: 3dfa8aa76c412db40a578e57ce83e2ba, type: 3}
+  equipItemDetail: {fileID: 0}

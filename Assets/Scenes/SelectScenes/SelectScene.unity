@@ -6295,7 +6295,7 @@ MonoBehaviour:
   selectCanvas: {fileID: 4176588713363666189}
   characterInventoryGrid: {fileID: 8618322708128253527}
   selectedCharacterList: {fileID: 8260525963337009730}
-  selectedCharacterPrefab: {fileID: 740590692872187205, guid: aa1e6bd3145594547ba206808b36386d, type: 3}
+  selectedCharacterPrefab: {fileID: 5412382048911321485, guid: 05d1402c8eb060f4ab271673b9dc3e9c, type: 3}
   initializePlaecmentEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6303,7 +6303,7 @@ MonoBehaviour:
   placementCharacterPrefab: {fileID: 4253726400164379171, guid: d5887ad67790f71459ac03a63f630117, type: 3}
   characterHeadNameCanvas: {fileID: 789893209}
   characterHeadNamePrefab: {fileID: 5092363147269052747, guid: fd5d0cefdeb1e6a40bb2f634f47082c6, type: 3}
-  characterListItemSlot: {fileID: 5684236844892841429, guid: 363d69ab0e7c34b418ea2af92df834f4, type: 3}
+  selectCharacter: {fileID: 2085911846708056765, guid: 37a593aec16cb9e4d90b840e87da694c, type: 3}
 --- !u!114 &2352199548679754858
 MonoBehaviour:
   m_ObjectHideFlags: 0
