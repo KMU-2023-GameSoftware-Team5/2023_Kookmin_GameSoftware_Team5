@@ -11,7 +11,6 @@ namespace deck
         [SerializeField] CharacterIcon characterIcon;
         public void Initialize(PixelCharacter character)
         {
-            Debug.Log(5);
             CharacterSelectManager.Instance().initializePlaecmentEvent.AddListener(destroyUnSelect);
             this.character= character;
             characterIcon.Initialize(character);

@@ -198,7 +198,6 @@ namespace deck
         /// <param name="character">현재 배치된 캐릭터</param>
         void createSelectedCharacterLI(PixelCharacter character)
         {
-            Debug.Log(4);
             GameObject go = Instantiate(selectedCharacterPrefab, selectedCharacterList);
             go = go.transform.GetChild(0).gameObject;
             go.GetComponent<SelectedCharacter>().Initialize(character);
@@ -269,7 +268,6 @@ namespace deck
         /// <returns>배치 성공여부</returns>
         public bool placeCharacter(SelectCharacter characterLI, Vector3 characterPosition)
         {
-            Debug.Log(2);
             if (placementUIs.Count + 1 <= PlayerManager.MAX_SELECTED_CHARACTER) 
             {
                 // 자신이 배치한 캐릭터 정보 받기 
@@ -280,7 +278,6 @@ namespace deck
                 PlacementCharacter ret = buildPixelHumanoidByPixelCharacter((PixelHumanoid)character);
                 placementUIs.Add(ret);
 
-                Debug.Log(3);
                 // 선택된 캐릭터 정보 저장
                 createSelectedCharacterLI(character);
                 characterLI.isPlaced = true;
@@ -404,7 +401,6 @@ namespace deck
             }
             for (int i = tmp.Count - 1; i >= 0; i--)
             {
-                Debug.Log(1);
                 placeCharacter(tmp[i], tmpPosition[i]);
             }
         }

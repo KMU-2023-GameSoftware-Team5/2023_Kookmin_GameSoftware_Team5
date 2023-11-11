@@ -59,7 +59,6 @@ namespace deck
             { // 이미 팔렸으면 작동X
                 return;
             }
-            Debug.Log("is Clicked");
             bool ret = ShopSceneManager.Instance().buyCharacter(character, price);
             if (ret)
             {
