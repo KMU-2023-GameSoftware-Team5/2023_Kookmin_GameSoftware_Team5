@@ -83,17 +83,6 @@ namespace deck
         }
 
         /// <summary>
-        /// 캐릭터 세부 정보창 열기
-        /// </summary>
-        /// <remarks>
-        /// onClick으로 호출
-        /// </remarks>
-        public void openCharacterDetails()
-        {
-            CharacterSelectManager.Instance().openCharacterDetails(character);
-        }        
-        
-        /// <summary>
         /// 캐릭터의 위치를 캐릭터 선택 슬롯으로 옮기는 메서드
         /// </summary>
         /// <param name="transform"></param>
@@ -125,7 +114,7 @@ namespace deck
             canvasGroup.blocksRaycasts = false;
 
             // for sprite Mask
-            characterImage.setSortingOrder(3);
+            characterImage.setSortingOrder(72);
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)

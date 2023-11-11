@@ -20,6 +20,9 @@ namespace deck{
         public EquipItem[] Inventory;
         protected CommonStats characterStat;
 
+        public bool playerOwned = false;
+
+
         /// <summary>
         /// 캐릭터 배치시의 위치
         /// </summary>

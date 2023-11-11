@@ -44,7 +44,7 @@ namespace deck
             this.characterStat = characterStat;
             
             // 아이템 인벤토리
-            Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
+            Inventory = new EquipItem[PlayerManager.MAX_INVENTORY_SIZE];
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace deck
                 (float)json["position"]["z"]
             );
 
-            Inventory = new EquipItem[EquipItemManager.MAX_INVENTORY_SIZE];
+            Inventory = new EquipItem[PlayerManager.MAX_INVENTORY_SIZE];
 
             JArray jInventory = (JArray)json["inventory"];
             int cnt = 0;
@@ -119,7 +119,10 @@ namespace deck
             {
                 if ((string) jItem["item id"] != "None") // jItem["item id"] = null -> but not null. why?
                 {
-                    Inventory[cnt] = itemMap[(string)jItem["item id"]];
+                    if(itemMap.ContainsKey((string)jItem["item id"]))
+                    {
+                        equip(cnt, itemMap[(string)jItem["item id"]]);
+                    }
                 }
                 cnt++;
             }
