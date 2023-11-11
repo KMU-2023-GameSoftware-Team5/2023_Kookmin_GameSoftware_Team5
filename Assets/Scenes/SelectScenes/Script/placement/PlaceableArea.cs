@@ -20,7 +20,6 @@ namespace deck
 
             if (characterListItem == null) // 캐릭터 정보 UI가 아닌 경우 
             {
-                Debug.Log("why3?");
                 return;
             }else if (!characterListItem.isPlaced) {
                 Vector3 mousePosition = new Vector3(
@@ -29,7 +28,6 @@ namespace deck
                 0);
                 mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
                 CharacterSelectManager.Instance().placeCharacter(characterListItem, mousePosition);
-                Debug.Log("why2?");
             }
         }
 

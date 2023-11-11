@@ -296,6 +296,7 @@ namespace deck
             foreach (JObject jcharacter in jcharacters)
             {
                 PixelHumanoid character = new PixelHumanoid();
+                character.playerOwned = true;
                 character.fromJson(jcharacter, itemMap);
                 characters.Add(character);
             }
@@ -361,6 +362,43 @@ namespace deck
             {
                 // 구매 실패
                 return false;
+            }
+        }
+
+        public bool sellCharacter(PixelCharacter character, int price)
+        {
+            if(playerCharacters.Count == 1) // 캐릭터 하나 남기면 게임오버
+            {
+                return false;
+            }
+            else
+            {
+                PixelCharacter sellTarget = null;
+                for(int i=playerCharacters.Count -1; i>=0; i--)
+                {
+                    if (playerCharacters[i].ID == character.ID)
+                    {
+                        sellTarget = playerCharacters[i];
+                        playerCharacters.RemoveAt(i);
+                        break;
+                    }
+                }
+                if(sellTarget == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    playerGold += price;
+                    for(int i = 0; i < sellTarget.Inventory.Length; i++)
+                    {
+                        if (sellTarget.Inventory[i] != null) // 안정성을 위해 장착 아이템 해제 
+                        {
+                            sellTarget.unEquip(i);
+                        }
+                    }
+                    return true;
+                }
             }
         }
 

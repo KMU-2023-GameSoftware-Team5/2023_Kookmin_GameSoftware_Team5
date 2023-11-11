@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace deck
 {
@@ -24,16 +25,18 @@ namespace deck
         {
             playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
+            initialize();
         }
 
         int skipFrame = 1;
         private void Update()
         {
+            /*
             if (skipFrame >= 0)
             {
                 if(skipFrame == 0) initialize();
                 skipFrame--;
-            }
+            }*/
         }
 
         [SerializeField] List<PixelCharacterGoods> pixelCharacterGoods;
@@ -45,6 +48,7 @@ namespace deck
         void initialize()
         {
             makeShopGoods();
+            loadPlayerCharacters();
         }
 
         /// <summary>
@@ -71,6 +75,7 @@ namespace deck
             {
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
                 playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
+                loadPlayerCharacters();
                 return ret;
             }
             else
@@ -78,6 +83,56 @@ namespace deck
                 return ret;
             }
         }
-    }
 
+        public bool sellCharacter(PixelCharacter character, int price)
+        {
+            bool ret = PlayerManager.Instance().sellCharacter(character, price);
+            if (ret)
+            {
+                playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
+                playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
+                loadPlayerCharacters();
+                return ret;
+            }
+            else
+            {
+                return ret;
+            }
+
+        }
+
+        [SerializeField] GameObject playerCharacterPreset;
+        [SerializeField] Transform playerCharacterGrid;
+        [SerializeField] Transform dragCanvas;
+        List<PlayerCharacterGoods> nowPlayerCharacterUI; 
+        public void loadPlayerCharacters()
+        {
+            if(nowPlayerCharacterUI != null)
+            {
+                for(int i = nowPlayerCharacterUI.Count-1; i >= 0; i--)
+                {
+                    nowPlayerCharacterUI[i].destroy();
+                    nowPlayerCharacterUI.RemoveAt(i);
+                }
+            }
+            nowPlayerCharacterUI = new List<PlayerCharacterGoods>();
+            List<PixelCharacter> characters = PlayerManager.Instance().playerCharacters;
+            foreach(PixelCharacter character in characters)
+            {
+                
+                GameObject go = Instantiate(playerCharacterPreset, playerCharacterGrid);
+                PlayerCharacterGoods tmp = go.transform.GetChild(0).gameObject.GetComponent<PlayerCharacterGoods>();
+                tmp.Initialize(character, 100, dragCanvas);
+                nowPlayerCharacterUI.Add(tmp);
+            }
+        }
+
+        public void onClickGameStart()
+        {
+            SceneManager.LoadScene("Scenes/CombineScenes/CombineScene");
+            // SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+
+        }
+
+    }
 }

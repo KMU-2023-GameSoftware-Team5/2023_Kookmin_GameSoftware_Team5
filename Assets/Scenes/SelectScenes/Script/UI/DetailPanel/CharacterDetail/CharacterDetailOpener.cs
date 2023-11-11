@@ -1,31 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace deck
 {
-    public class CharacterDetailOpener : MonoBehaviour
+    public class CharacterDetailOpener : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public PixelCharacter character;
         public bool longPush=false;
-        float downTime =0.1f;
+        float needDownTime =1f;
+        float downTime;
         bool isDown=false;
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if(longPush)
+                isDown = true;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            if (longPush)
+                resetPoint();
+        }
+
+        void resetPoint()
+        {
+            downTime = 0f;
+            isDown = false;
+        }
 
         void Update()
         {
             if (longPush)
             {
-                if (Input.GetMouseButtonDown(0)) // 마우스 좌클릭이 눌린 그 순간 -> 모바일도 이 이벤트? 
-                {
-                    downTime = 0f;
-                    isDown = true;
-                }
-                if(isDown & Input.GetMouseButton(0))
+                if (isDown)
                 {
                     downTime += Time.deltaTime;
-                    if(downTime > 1f)
+                    if (downTime > 1f)
                     {
-                        Debug.Log("long Click");
                         openCharacterDetail();
                     }
                 }
