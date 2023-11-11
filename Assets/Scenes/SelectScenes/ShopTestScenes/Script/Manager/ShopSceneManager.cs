@@ -18,13 +18,13 @@ namespace deck
             return instance;
         }
 
+        public int rerollPrice = 50;
+
         [SerializeField] TextMeshProUGUI playerGoldText;
-        [SerializeField] TextMeshProUGUI playerCount;
 
         private void Start()
         {
             playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
-            playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
             initialize();
         }
 
@@ -51,6 +51,14 @@ namespace deck
             loadPlayerCharacters();
         }
 
+        public void onClickReroll()
+        {
+            if (PlayerManager.Instance().useGold(rerollPrice))
+            {
+                makeShopGoods();
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,7 +82,6 @@ namespace deck
             if (ret)
             {
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
-                playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
                 loadPlayerCharacters();
                 return ret;
             }
@@ -90,7 +97,6 @@ namespace deck
             if (ret)
             {
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
-                playerCount.text = $"{PlayerManager.Instance().playerCharacters.Count}";
                 loadPlayerCharacters();
                 return ret;
             }

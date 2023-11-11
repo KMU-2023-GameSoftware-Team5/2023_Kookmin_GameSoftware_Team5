@@ -203,6 +203,7 @@ namespace deck
         /// <returns>성공여부</returns>
         public bool addCharacter(PixelCharacter character)
         {
+            character.playerOwned = true;
             playerCharacters.Add(character);
             return true;
         }
@@ -346,7 +347,7 @@ namespace deck
         /// <returns>구매 성공여부</returns>
         public bool buyCharacter(PixelCharacter character, int price)
         {
-            if (playerGold >= price)
+            if (useGold(price))
             {
                 // 돈계산 
                 playerGold -= price;
@@ -397,8 +398,22 @@ namespace deck
                             sellTarget.unEquip(i);
                         }
                     }
+                    save();
                     return true;
                 }
+            }
+        }
+
+        public bool useGold(int gold)
+        {
+            if(playerGold < gold)
+            {
+                return false;
+            }
+            else
+            {
+                playerGold -= gold;
+                return true;
             }
         }
 

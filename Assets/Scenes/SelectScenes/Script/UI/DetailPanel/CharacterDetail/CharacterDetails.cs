@@ -47,7 +47,7 @@ namespace deck
         /// 캐릭터 세부 정보 보여줄 텍스트 컴포넌트
         /// </summary>
         [SerializeField] TextMeshProUGUI characterDescription;
-
+        [SerializeField] GameObject itemTab;
 
         void Awake()
         {
@@ -87,6 +87,7 @@ namespace deck
             {
                 charactrerEquipItemSlot[i].setItem(this.character.Inventory[i]);
             }
+            itemTab.SetActive(character.playerOwned);
         }
 
         /// <summary>
