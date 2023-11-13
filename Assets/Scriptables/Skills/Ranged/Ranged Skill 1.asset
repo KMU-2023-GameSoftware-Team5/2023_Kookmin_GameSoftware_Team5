@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcfa2c4e82e12d42bb2123e7a211b96, type: 3}
+  m_Name: Ranged Skill 1
+  m_EditorClassIdentifier: 
+  skillName: Ranged Skill 1
+  skillDescription: 
+  projectile: {fileID: 3484203600360959584, guid: e62cfc5a062735240ba5a596d2a920e8, type: 3}
+  projectileRadius: 1
+  projectileCount: 5
+  projectileGapSec: 0.2
+  rotateProjectileDirection: 1
+  projectileSpeed: 7
+  damage: 1
+  range: 12

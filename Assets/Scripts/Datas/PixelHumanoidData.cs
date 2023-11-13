@@ -36,7 +36,9 @@ namespace data
 
         [Header("Setting")]
         public EDefualtAttackType defualtAttackType;
+        public bool useCustomSkil;
         public PixelHumanoid.ESkill skill;
+        public string customSkillName;
 
         public void SetOutToBuilder(CharacterBuilder builder)
         {

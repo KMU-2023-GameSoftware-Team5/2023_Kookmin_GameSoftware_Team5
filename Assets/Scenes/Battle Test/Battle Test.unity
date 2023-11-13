@@ -2175,6 +2175,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team1Characters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team0Characters.Array.data[0].name
+      value: Goblin Archor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team1Characters.Array.data[0].position.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team1Characters.Array.data[1].position.z
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team1Characters.Array.data[2].position.z
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158519171430747464, guid: c296b2c34789bfd41826708376aad78a, type: 3}
+      propertyPath: team1Characters.Array.data[3].position.z
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 4043615433042829102, guid: c296b2c34789bfd41826708376aad78a, type: 3}
       propertyPath: m_Name
       value: Battle Test

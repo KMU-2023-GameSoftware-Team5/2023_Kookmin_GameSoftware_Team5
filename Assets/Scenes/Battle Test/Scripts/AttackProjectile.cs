@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace battle
 {
-    // TODO: line Renderer·Î ±ËÀû ÀÌ»Ú°Ô ±×¸®±â
+    // TODO: line Rendererë¡œ ê¶¤ì  ì´ì˜ê²Œ ê·¸ë¦¬ê¸°
     public class AttackProjectile : MonoBehaviour
     {
         public BattleManager bm;
@@ -22,7 +22,18 @@ namespace battle
         public SpriteRenderer sr;
 
         // TODO: too many initializers: just use prefap default value and make more prefab
-        public void Initialize(BattleManager bm, PixelHumanoid parent, Vector3 birthPosition, uint targetId, float radius, bool rotateDirection, float lifeTime, float speed, int damage, bool lodge)
+        public void Initialize(
+            BattleManager bm, 
+            PixelHumanoid parent, 
+            Vector3 birthPosition, 
+            uint targetId, 
+            float radius, 
+            bool rotateDirection, 
+            float lifeTime, 
+            float speed, 
+            int damage, 
+            bool lodge
+        )
         {
             isAlive = true;
 
@@ -86,7 +97,7 @@ namespace battle
                 if (lodge)
                 {
                     isAlive = false;
-                    leftLifeTime = 5.0f;    // Å¸°Ù¿¡ Ãæµ¹ÇÏ¸é Å¸ÄÏ ¸ö¿¡ nÃÊµ¿¾È ºÙ¾îÀÖ´Â´Ù. 
+                    leftLifeTime = 5.0f;    // íƒ€ê²Ÿì— ì¶©ëŒí•˜ë©´ íƒ€ì¼“ ëª¸ì— nì´ˆë™ì•ˆ ë¶™ì–´ìˆëŠ”ë‹¤. 
                 }
                 else
                 {

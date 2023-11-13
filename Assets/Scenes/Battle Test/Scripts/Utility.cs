@@ -26,11 +26,85 @@ namespace battle
 
     public static class Utility
     {
+        private static IEnumerator instantiateAfter(GameObject go, Vector3 worldPos, float waitSec, float destoryAfterCreatedSec)
+        {
+            yield return new WaitForSeconds(waitSec);
+            GameObject _go = GameObject.Instantiate(go);
+            _go.transform.position = worldPos;
+
+            if (destoryAfterCreatedSec > 0)
+                GameObject.Destroy(_go, destoryAfterCreatedSec);
+        }
+        public static void InstantiateAfter(GameObject go, Vector3 worldPos, float waitSec, float destoryAfterCreatedSec)
+        {
+            StaticLoader.Instance().StartCoroutine(instantiateAfter(go, worldPos, waitSec, destoryAfterCreatedSec));
+        }
+
+        private static IEnumerator instantiateProjectileAfter(
+            float waitSec,
+            GameObject projectilePrefap, 
+            BattleManager bm, 
+            PixelHumanoid parent, 
+            Vector3 birthPosition, 
+            uint targetId, 
+            float radius, 
+            bool rotateDirection, 
+            float lifeTime, 
+            float speed, 
+            int damage
+        )
+        {
+            yield return new WaitForSeconds(waitSec);
+            GameObject _go = GameObject.Instantiate(projectilePrefap);
+            _go.transform.position = birthPosition;
+
+            AttackProjectile ap = _go.GetComponent<AttackProjectile>();
+            if (ap == null)
+            {
+                Debug.LogError("instantiateProjectileAfter getComponent<AttackProjectile> is null");
+            }
+            else
+            {
+                ap.Initialize(bm, parent, birthPosition, targetId, radius, rotateDirection, lifeTime, speed, damage, false);
+            }
+        }
+        public static void InstantiateProjectileAfter(
+            float waitSec,
+            GameObject projectilePrefap,
+            BattleManager bm,
+            PixelHumanoid parent,
+            Vector3 birthPosition,
+            uint targetId,
+            float radius,
+            bool rotateDirection,
+            float lifeTime,
+            float speed,
+            int damage
+        )
+        {
+            StaticLoader.Instance().StartCoroutine(
+                instantiateProjectileAfter(
+                    waitSec, 
+                    projectilePrefap, 
+                    bm, 
+                    parent, 
+                    birthPosition, 
+                    targetId, 
+                    radius, 
+                    rotateDirection, 
+                    lifeTime, 
+                    speed, 
+                    damage
+                )
+            );
+        }
+
+
         public enum Direction2 { Left, Right }
         public enum Direction4 { Left, Right, Up, Down }
 
         /// <summary>
-        /// root∞° √Î«ÿ¡ˆ¡ˆ æ ¿∫ ∞≈∏Æ∏¶ ∏Æ≈œ«—¥Ÿ. 
+        /// rootÍ∞Ä Ï∑®Ìï¥ÏßÄÏßÄ ÏïäÏùÄ Í±∞Î¶¨Î•º Î¶¨ÌÑ¥ÌïúÎã§. 
         /// </summary>
         /// <returns></returns>
         public static float GetSquaredDistanceBetween(Transform transform1, Transform transform2)

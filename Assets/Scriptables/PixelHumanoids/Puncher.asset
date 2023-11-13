@@ -10,31 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
-  m_Name: Demon Data
+  m_Name: Puncher
   m_EditorClassIdentifier: 
   sheild: 0
   hp: 100
   mp: 0
   energy: 0
-  walkSpeed: 5
+  walkSpeed: 2
   damage: 1
-  attackDelay: 0.3
-  criticalRate: 0.5
-  characterName: Demon
+  attackDelay: 1
+  criticalRate: 0.2
+  characterName: Puncher
   attackRange: 1
-  Head: Demon#FFFFFF/0:0:0
-  Ears: Demon#FFFFFF/0:0:0
-  Eyes: Demon#FFFFFF/0:0:0
-  Body: Demon#FFFFFF/0:0:0
+  Head: Elf#FFFFFF/0:0:0
+  Ears: 
+  Eyes: Human#FFFFFF/0:0:0
+  Body: Human#FFFFFF/0:0:0
   Hair: 
-  Armor: FarmerClothes#FFFFFF/0:0:0
+  Armor: TravelerTunic#FFFFFF/0:0:0
   Helmet: 
-  Weapon: Fork#FFFFFF/0:0:0
+  Weapon: 
   Shield: 
   Cape: 
   Back: 
   Mask: 
   defualtAttackType: 0
-  useCustomSkil: 1
   skill: 5
-  customSkillName: melee skill 1

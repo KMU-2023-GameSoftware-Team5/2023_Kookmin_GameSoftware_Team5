@@ -90,6 +90,22 @@ namespace battle
                 }
             }
 
+            public static StateSet CreateStateSetWithCustomSkill(string skillName)
+            {
+                return new StateSet()
+                {
+                    Waiting = StateFactory.GetWaitingState(),
+                    Searching = StateFactory.GetSearchingState(),
+                    Chasing = StateFactory.GetChasingState(),
+                    MeleeAttacking = StateFactory.GetMeleeAttackingState(),
+                    RangedAttacking = StateFactory.GetRangedAttackingState(),
+                    Delaying = StateFactory.GetDelayingState(),
+                    Dead = StateFactory.GetDeadState(),
+                    Skill = StaticLoader.Instance().GetCustomSkillState(skillName),
+                    BeingVultured = new StateFactory.BeingVulturedState()
+                };
+            }
+
             public static StateSet CreateStateSetWithSkill(ESkill skill)
             {
                 return new StateSet()
@@ -142,10 +158,7 @@ namespace battle
                 EState newState = EState.Dead;
                 newState = m_currentState.OnUpdate(owner);
                 if (m_forcedNextState != EState.None)
-                {
-                    Debug.Log(m_forcedNextState);
-                        
-
+                {       
                     newState = m_forcedNextState;
                     m_forcedNextState = EState.None;
                 }
@@ -157,6 +170,9 @@ namespace battle
 
                     m_currentEState = newState;
                     m_currentState = m_stateSet.Get(newState);
+
+                    if (m_currentState == null)
+                        Debug.Log("new state is NULL: " + newState.ToString());
 
                     if (m_currentState.OnEnter != null)
                         m_currentState.OnEnter(owner);

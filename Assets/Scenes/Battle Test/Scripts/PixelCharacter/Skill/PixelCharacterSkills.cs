@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace battle
 {
@@ -14,6 +13,7 @@ namespace battle
             FireOrbit,
             SingleHeal,
             Vulture, 
+            TruePunch
         }
 
         public class SkillFactory : StaticGetter<SkillFactory>, IOnStaticFound
@@ -28,6 +28,7 @@ namespace battle
                 s_skills[ESkill.FireOrbit] = s_fireOrbitSkill;
                 s_skills[ESkill.SingleHeal] = s_singleHealSkill;
                 s_skills[ESkill.Vulture] = s_vulture;
+                s_skills[ESkill.TruePunch] = s_truePunch;
 
                 return true;
             }
@@ -179,6 +180,49 @@ namespace battle
 
                             return EState.Skill;
                         }
+                    }
+                }
+            };
+
+            private static int s_truePunch_damage = 5;
+            private static State s_truePunch = new State()
+            {
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    float distance = 0;
+                    PixelHumanoid target = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
+
+                    if (distance > 1)
+                    {
+                        Vector3 delta = target.transform.position - owner.transform.position;
+                        delta.Normalize();
+                        delta = delta * owner.stats.walkSpeed * Time.deltaTime;
+                        owner.transform.position += delta;
+
+                        // consider on paused
+                        if (delta.x != 0.0)
+                        {
+                            if (delta.x > 0.0f)
+                                owner.SetDirection(Utility.Direction2.Right);
+                            else
+                                owner.SetDirection(Utility.Direction2.Left);
+                        }
+
+                        owner.m_animator.SetBool("Idle", false);
+                        owner.m_animator.SetBool("Walking", true);
+
+                        return EState.None;
+                    }
+                    else
+                    {
+                        GameObject skillPrefap = StaticLoader.Instance().GetTruePunch();
+                        GameObject skillGo = GameObject.Instantiate(skillPrefap);
+                        skillGo.transform.position = target.transform.position;
+
+                        owner.bm.ApplyDamage(owner, target, s_truePunch_damage, true);
+                        Destroy(skillGo, 1);
+
+                        return EState.Chasing;
                     }
                 }
             };

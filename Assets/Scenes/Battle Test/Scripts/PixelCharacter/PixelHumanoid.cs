@@ -22,6 +22,8 @@ namespace battle
         public SpriteLibrary spriteLibrary;
         public CharacterBuilder builder;
         [SerializeField] Animator m_animator;
+        public Animator GetAnimator() { return m_animator; }
+
         [SerializeField] Transform m_bodyScaler;
         [SerializeField] SpriteRenderer m_sr;
 
@@ -59,7 +61,15 @@ namespace battle
             stats.damage = data.damage;
             stats.criticalRate = data.criticalRate;
 
-            StateSet set = StateSet.CreateStateSetWithSkill(data.skill);
+            StateSet set;
+            if (data.useCustomSkil)
+            {
+                set = StateSet.CreateStateSetWithCustomSkill(data.customSkillName);
+            }
+            else
+            {
+                set = StateSet.CreateStateSetWithSkill(data.skill);
+            }
             m_fsm = new FSM(set, EState.Waiting);
             m_isDead = false;
         }

@@ -35,4 +35,6 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 1
+  useCustomSkil: 1
   skill: 0
+  customSkillName: Ranged Skill 1
