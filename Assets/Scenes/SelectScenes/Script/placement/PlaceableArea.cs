@@ -16,7 +16,7 @@ namespace deck
         /// <param name="eventData"></param>
         public void OnDrop(PointerEventData eventData)
         {
-            CharacterListItem characterListItem = eventData.pointerDrag.GetComponent<CharacterListItem>();
+            SelectCharacter characterListItem = eventData.pointerDrag.GetComponent<SelectCharacter>();
 
             if (characterListItem == null) // 캐릭터 정보 UI가 아닌 경우 
             {

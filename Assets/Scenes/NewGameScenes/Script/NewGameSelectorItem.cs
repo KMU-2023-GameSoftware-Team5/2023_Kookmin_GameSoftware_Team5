@@ -23,7 +23,7 @@ namespace deck
             this.clist = clist;
             foreach (PixelCharacter c in clist)
             {
-                MyDeckFactory.Instance().createCharacterInventoryPrefab(c, targetGrid, sortingOrder:3);
+                MyDeckFactory.Instance().createCharacterCardPrefab(c, targetGrid, sortingOrder:3);
                 // Light characterLI 생성
             }
         }

@@ -19,7 +19,7 @@ public class StartUI : MonoBehaviour
     }
     public void onClickStart()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("Scenes/NewGameScenes/NewGameScene");
     }
 
     public void onClickStart_map()

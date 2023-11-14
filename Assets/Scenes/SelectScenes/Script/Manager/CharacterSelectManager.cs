@@ -69,13 +69,6 @@ namespace deck
         [SerializeField]
         GameObject selectedCharacterPrefab;
 
-        [Header("Character Details")]
-        /// <summary>
-        /// 캐릭터 세부 정보창 UI
-        /// </summary>
-        [SerializeField]
-        CharacterDetails characterDetails;
-
         /////////////////////////////////////////////////////////////////////////////////
         // 캐릭터 배치관련 
 
@@ -86,11 +79,11 @@ namespace deck
         /// <summary>
         /// 전체 CharacterLI
         /// </summary>
-        List<CharacterListItem> characterUIs;
+        List<SelectCharacter> characterUIs;
         /// <summary>
         /// 현재 선택된 CharacterLI. 좌측에 생성된 SelectedCharacter와는 관련이 없다.
         /// </summary>
-        List<CharacterListItem> selectedCharacters;
+        List<SelectCharacter> selectedCharacters;
         /// <summary>
         /// 플레이어가 배치한 캐릭터 저장
         /// </summary>
@@ -132,9 +125,9 @@ namespace deck
         SaveLoadManager saveLoadManager;
         
         /// <summary>
-        /// new characterLI for select scene
+        /// 캐릭터 선택 및 배치 게임오브젝트
         /// </summary>
-        [SerializeField]GameObject characterListItemSlot;
+        [SerializeField]GameObject selectCharacter;
 
         void Start()
         {
@@ -156,24 +149,21 @@ namespace deck
             }
 
             // 현재 보유중인 캐릭터 출력 - 배치가능한 사양으로
-            characterUIs = new List< CharacterListItem >();
+            characterUIs = new List<SelectCharacter>();
             for (int i = 0; i < characters.Count; i++)
             {
-                GameObject go = Instantiate(characterListItemSlot, characterInventoryGrid);
+                GameObject go = Instantiate(selectCharacter, characterInventoryGrid);
                 Transform parentTransform = go.transform;
                 go = go.transform.GetChild(0).gameObject;
-                
-                go.GetComponent<LightCharacterListItem>().Initialize(characters[i], UIDragCanvas.transform, parentTransform);
-                characterUIs.Add(go.GetComponent<CharacterListItem>());
-                /*
-                GameObject go=  MyDeckFactory.Instance().createCharacterInventoryPrefab(characters[i], characterInventoryGrid, false); 
-                go.GetComponent<LightCharacterListItem>().Initialize(characters[i], UIDragCanvas.transform, characterInventoryGrid.transform);
-                */
+
+                SelectCharacter sc = go.GetComponent<SelectCharacter>();
+                sc.Initialize(characters[i], UIDragCanvas.transform);
+                characterUIs.Add(sc);
             }
 
             // 저장된 배치 정보 가져오기
             placementUIs = new List<PlacementCharacter>();
-            selectedCharacters = new List<CharacterListItem>();
+            selectedCharacters = new List<SelectCharacter>();
             if (PlayerManager.Instance().selectedCharacters == null || PlayerManager.Instance().selectedCharacters.Count == 0) // 배치 프리셋 정보가 없으면 초기화
             {
                 selectedCharacterSaveList = new JArray();
@@ -184,36 +174,6 @@ namespace deck
                 selectedCharacterSaveList = (JArray)PlayerManager.Instance().selectedCharacters[0];
                 loadSelectedCharacterInfo(selectedCharacterSaveList);
             }
-        }
-
-        /// <summary>
-        /// 캐릭터 세부 정보창 열기
-        /// </summary>
-        /// <param name="character">세부 정보창을 열어야하는 캐릭터</param>
-        public void openCharacterDetails(PixelCharacter character)
-        {
-            characterDetails.openCharacterDetails(character);
-        }
-
-        /// <summary>
-        /// 캐릭터에게 아이템 장착 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 장착할 캐릭터</param>
-        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
-        /// <param name="item">장착할 아이템</param>
-        public bool equip(PixelCharacter character, int equipId, EquipItem item)
-        {
-            return character.equip(equipId, item);
-        }
-
-        /// <summary>
-        /// 캐릭터 아이템 장착 해제 이벤트
-        /// </summary>
-        /// <param name="character">아이템을 해제할 캐릭터</param>
-        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
-        public bool unEquip(PixelCharacter character, int equipId)
-        {
-            return character.unEquip(equipId);
         }
 
         /// <summary>
@@ -239,7 +199,8 @@ namespace deck
         void createSelectedCharacterLI(PixelCharacter character)
         {
             GameObject go = Instantiate(selectedCharacterPrefab, selectedCharacterList);
-            go.GetComponent<LightCharacterListItem>().Initialize(character);
+            go = go.transform.GetChild(0).gameObject;
+            go.GetComponent<SelectedCharacter>().Initialize(character);
         }
 
         /// <summary>
@@ -305,12 +266,12 @@ namespace deck
         /// <param name="chracter">배치할 캐릭터</param>
         /// <param name="characterPosition">캐릭터 배치 위치</param>
         /// <returns>배치 성공여부</returns>
-        public bool placeCharacter(CharacterListItem characterLI, Vector3 characterPosition)
+        public bool placeCharacter(SelectCharacter characterLI, Vector3 characterPosition)
         {
-            if (placementUIs.Count + 1 <= 5) // TODO - 상수화. 최대 배치가능 캐릭터 수 이하면 허용
+            if (placementUIs.Count + 1 <= PlayerManager.MAX_SELECTED_CHARACTER) 
             {
                 // 자신이 배치한 캐릭터 정보 받기 
-                PixelCharacter character = characterLI.getCharacter();
+                PixelCharacter character = characterLI.character;
                 character.worldPosition = characterPosition;
 
                 // 캐릭터 배치 객체 생성
@@ -349,7 +310,7 @@ namespace deck
             // 배치된 캐릭터 정보 객체 삭제 
             for (int i = selectedCharacters.Count - 1; i >= 0; i--)
             {
-                if (selectedCharacters[i].compareCharacter(character))
+                if (selectedCharacters[i].character.ID == character.ID)
                 {
                     selectedCharacters[i].isPlaced = false;
                     selectedCharacters.RemoveAt(i);
@@ -387,7 +348,7 @@ namespace deck
             JArray ret = new JArray ();
             foreach(var characterLI in selectedCharacters)
             {
-                PixelCharacter character = characterLI.getCharacter();
+                PixelCharacter character = characterLI.character;
                 JObject tmp = new JObject();
                 tmp["id"] = character.ID;
                 tmp["position"] = new JObject {
@@ -406,15 +367,15 @@ namespace deck
         /// <param name="selecterCharacterInfo">JSON형태로 저장해둔 캐릭터 배치정보</param>
         public void loadSelectedCharacterInfo(JArray selecterCharacterInfo)
         {
-            List<CharacterListItem> tmp = new List<CharacterListItem>();
+            List<SelectCharacter> tmp = new List<SelectCharacter>();
             List<Vector3> tmpPosition = new List<Vector3>();
 
-            for (int i = selecterCharacterInfo.Count - 1; i >= 0; i--)
+            for (int i = selecterCharacterInfo.Count - 1; i >= 0; i--) // 배치된 캐릭터 정보
             {
                 bool tmpFlag = false;
-                foreach (var character in characterUIs)
+                foreach (var character in characterUIs) // 현재 UI를 다 돈다
                 {
-                    if (character.getCharacter().ID == selecterCharacterInfo[i]["id"].ToString())
+                    if (character.character.ID == selecterCharacterInfo[i]["id"].ToString()) // 두 캐릭터 객체의 ID가 같으면 작동
                     {
                         tmpFlag = true;
                         tmp.Add(character);
