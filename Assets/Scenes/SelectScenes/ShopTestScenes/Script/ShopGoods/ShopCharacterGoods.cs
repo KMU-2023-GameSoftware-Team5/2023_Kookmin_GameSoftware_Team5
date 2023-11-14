@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace deck
 {
@@ -35,6 +36,8 @@ namespace deck
         /// </summary>
         bool isSell = false;
 
+        public Outline[] outlines;
+
         /// <summary>
         /// 판매할 캐릭터 및 그 가격을 보여주는 객체 초기화 메서드
         /// </summary>
@@ -48,6 +51,10 @@ namespace deck
             characterInfo.Initialize(character);
             isSell = false;
             sellMarkUI.SetActive(false);
+            foreach (var outline in outlines)
+            {
+                outline.effectColor = MyDeckFactory.Instance().tierColors[price - 1];
+            }
         }
 
         /// <summary>

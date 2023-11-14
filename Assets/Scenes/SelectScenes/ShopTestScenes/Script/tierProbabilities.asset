@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 852ba85f8aaffef41af07c495c067c9d, type: 3}
+  m_Name: tierProbabilities
+  m_EditorClassIdentifier: 
+  tierProbabilities:
+  - stage: 2
+    tier1: 50
+    tier2: 25
+    tier3: 14
+    tier4: 8
+    tier5: 3
+  - stage: 4
+    tier1: 40
+    tier2: 28
+    tier3: 16
+    tier4: 10
+    tier5: 4
+  - stage: 6
+    tier1: 35
+    tier2: 27
+    tier3: 20
+    tier4: 12
+    tier5: 5
+  - stage: 8
+    tier1: 30
+    tier2: 25
+    tier3: 20
+    tier4: 15
+    tier5: 7

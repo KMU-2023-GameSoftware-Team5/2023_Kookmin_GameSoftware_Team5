@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using TMPro.EditorUtilities;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,13 +24,13 @@ namespace deck
 
         [SerializeField] TextMeshProUGUI playerGoldText;
 
+        
         private void Start()
         {
             playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             initialize();
         }
 
-        int skipFrame = 1;
         private void Update()
         {
             /*
@@ -47,8 +49,44 @@ namespace deck
         /// </summary>
         void initialize()
         {
+            shopParameterSetting();
             makeShopGoods();
             loadPlayerCharacters();
+        }
+
+        /// <summary>
+        /// 상점에서 캐릭터의 티어 출현 확률
+        /// </summary>
+        int[] shopParameter;
+        /// <summary>
+        /// TODO - 현재 게임 진행을 반영하는 파라미터
+        /// </summary>
+        public int stageNum;
+
+        [SerializeField] TierProbabilitiesData tiers;
+
+        public void shopParameterSetting()
+        {
+
+            int idx = 0;
+            while (stageNum > tiers.tierProbabilities[idx].stage)
+            {
+                idx++;
+            }
+            shopParameter = new int[6];
+            shopParameter[1] = tiers.tierProbabilities[idx].tier1;
+            shopParameter[2] = tiers.tierProbabilities[idx].tier2;
+            shopParameter[3] = tiers.tierProbabilities[idx].tier3;
+            shopParameter[4] = tiers.tierProbabilities[idx].tier4;
+            shopParameter[5] = tiers.tierProbabilities[idx].tier5;
+            shopParameter[0] = shopParameter[1] + shopParameter[2] + shopParameter[3] + shopParameter[4] + shopParameter[5];
+
+            for(int tier=0;tier<5;tier++)
+            {
+                probText[tier].color = MyDeckFactory.Instance().tierColors[tier];
+                float rate = (float) shopParameter[tier+1] / shopParameter[0] * 100;
+                probText[tier].text = string.Format("+{0} : {1:F1}%", tier + 1, rate);
+            }
         }
 
         public void onClickReroll()
@@ -56,21 +94,42 @@ namespace deck
             if (PlayerManager.Instance().useGold(rerollPrice))
             {
                 makeShopGoods();
+                playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             }
         }
 
+        public int makeTier()
+        {
+            // shop parameter 기반으로 생성할 캐릭터의 강화값을 산출
+            int tier = 0;
+            int rand = UnityEngine.Random.Range(0, shopParameter[0]);
+            for (int i = 1; i <= 5; i++)
+            {
+                if (rand <= shopParameter[i])
+                {
+                    tier = i;
+                    break;
+                }
+                else
+                {
+                    rand -= shopParameter[i];
+                }
+            }
+            return tier;
+        }
+
         /// <summary>
-        /// 
+        /// 판매할 캐릭터 생성
         /// </summary>
         public void makeShopGoods()
         {
-            // 더미데이터 생성 - TODO : 맵 진행상황을 참고하여 플레이어 상황에 맞게 생성하기
-            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
-            System.Random random = new System.Random();
+            
+            // price값을 기반으로 판매할 캐릭터 생성
             foreach (PixelCharacterGoods characterGood in pixelCharacterGoods)
             {
-                PixelCharacter pc = MyDeckFactory.Instance().buildPixelCharacter(characterNames[random.Next(0, characterNames.Length)]);
-                characterGood.initialize(pc, random.Next(10, 50));
+                int tier = makeTier();
+                PixelCharacter pc = MyDeckFactory.Instance().buildCharcterByPrice(tier);
+                characterGood.initialize(pc, tier);
             }
 
         }
@@ -110,7 +169,11 @@ namespace deck
         [SerializeField] GameObject playerCharacterPreset;
         [SerializeField] Transform playerCharacterGrid;
         [SerializeField] Transform dragCanvas;
-        List<PlayerCharacterGoods> nowPlayerCharacterUI; 
+        List<PlayerCharacterGoods> nowPlayerCharacterUI;
+        /// <summary>
+        /// 
+        /// </summary>
+        public TextMeshProUGUI[] probText;
         public void loadPlayerCharacters()
         {
             if(nowPlayerCharacterUI != null)

@@ -8,11 +8,11 @@ namespace testSL
 {
     public class TestItemLI : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI name;
+        [SerializeField] TextMeshProUGUI itemName;
 
         public void Initialize(EquipItem item)
         {
-            name.text = item.getItemName();
+            itemName.text = item.getItemName();
         }
 
         public void destroy()

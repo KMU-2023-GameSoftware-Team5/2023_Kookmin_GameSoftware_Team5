@@ -55,6 +55,11 @@ namespace deck
 
         [SerializeField] public DetailCanvasManager detailCanvasManager;
 
+        /// <summary>
+        /// 캐릭터 강화에 따른 색
+        /// </summary>
+        public Color[] tierColors;
+
         public void Initialize()
         {
             characterSpritePool = new Dictionary<string, Sprite>();
@@ -207,6 +212,14 @@ namespace deck
             return ret;
         }
 
+
+        public PixelCharacter buildCharcterByPrice(int price)
+        {
+            List<string> characterNames = new List<string>(m_humanoidDataMap.Keys);
+            UnityEngine.Random.Range(0, characterNames.Count-1);
+            PixelCharacter ret = buildPixelCharacter(characterNames[UnityEngine.Random.Range(0, characterNames.Count - 1)]);
+            return ret;
+        }
 
     }
 }

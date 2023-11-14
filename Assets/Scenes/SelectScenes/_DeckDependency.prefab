@@ -55,6 +55,12 @@ MonoBehaviour:
   LigthEquipItemPrefab: {fileID: 6302780969460027485, guid: 46cc4dff4baaeb847b94afb1c0625f17, type: 3}
   characterCardPrefab: {fileID: 5375169232583206860, guid: c8578b3d8ce8ed4469551754a6f31a34, type: 3}
   detailCanvasManager: {fileID: 4190149655618097637}
+  tierColors:
+  - {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 1}
+  - {r: 0.3529412, g: 1, b: 0.19607843, a: 1}
+  - {r: 0.3529412, g: 1, b: 1, a: 1}
+  - {r: 0.8235294, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0.7058824, b: 0, a: 1}
   spritePoolMember: {fileID: 1921265074708240142, guid: 1af125345e21150438a1cb74bb107654, type: 3}
 --- !u!1 &3596866978135683416
 GameObject:
@@ -118,7 +124,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!114 &706299593298567457
 MonoBehaviour:
@@ -218,6 +224,10 @@ PrefabInstance:
     - target: {fileID: 280502874120513158, guid: 3ec472c4cb27b0e4e966b4c35cb07bab, type: 3}
       propertyPath: m_Name
       value: CharacterDetails
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452668401116244169, guid: 3ec472c4cb27b0e4e966b4c35cb07bab, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 5177000466193822813, guid: 3ec472c4cb27b0e4e966b4c35cb07bab, type: 3}
       propertyPath: m_Pivot.x

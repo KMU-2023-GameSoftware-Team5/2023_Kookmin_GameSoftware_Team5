@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 3503684640568977035}
   - component: {fileID: 2276770180733043178}
   - component: {fileID: 768019147911959607}
+  - component: {fileID: 8773129455090105046}
   m_Layer: 5
   m_Name: CharacterShopCard
   m_TagString: Untagged
@@ -249,6 +250,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8773129455090105046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056296496219650242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771a0a2f2fac85c4d8d99dba8ece9b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentRect: {fileID: 6729352228082772841}
+  myRect: {fileID: 1820927178816622745}
 --- !u!1 &2276086969756243010
 GameObject:
   m_ObjectHideFlags: 0
