@@ -53,7 +53,9 @@ namespace deck
             sellMarkUI.SetActive(false);
             foreach (var outline in outlines)
             {
-                outline.effectColor = MyDeckFactory.Instance().tierColors[price - 1];
+                Color _color = MyDeckFactory.Instance().tierColors[price - 1];
+                _color.a = 0.5f;
+                outline.effectColor = _color;
             }
         }
 

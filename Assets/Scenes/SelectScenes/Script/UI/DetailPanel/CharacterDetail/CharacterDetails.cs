@@ -49,6 +49,8 @@ namespace deck
         [SerializeField] TextMeshProUGUI characterDescription;
         [SerializeField] GameObject itemTab;
 
+        [SerializeField] GameObject[] star;
+
         void Awake()
         {
             // 캐릭터 인벤토리 슬롯 생성
@@ -88,6 +90,12 @@ namespace deck
                 charactrerEquipItemSlot[i].setItem(this.character.Inventory[i]);
             }
             itemTab.SetActive(character.playerOwned);
+
+            foreach(GameObject go in star)
+            {
+                go.SetActive(false);
+            }
+            star[character.tier - 1].SetActive(true);
         }
 
         /// <summary>

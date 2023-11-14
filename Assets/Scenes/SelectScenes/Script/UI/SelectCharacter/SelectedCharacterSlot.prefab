@@ -26,13 +26,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335622029924669646}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 100612621800017224}
-  m_Father: {fileID: 4862717365966836402}
+  m_Father: {fileID: 6323691243303951846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.85}
   m_AnchorMax: {x: 1, y: 1}
@@ -341,6 +341,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2308544985314353746}
+  - {fileID: 4377402375139999734}
   m_Father: {fileID: 4862717365966836402}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -403,6 +404,8 @@ MonoBehaviour:
   characterSprite: {fileID: 0}
   characterSpriteLoader: {fileID: 8811113811469104494}
   characterDetailOpener: {fileID: 1867867168177862941}
+  characterTierText: {fileID: 0}
+  characterTierColor: {fileID: 1785979082693931537}
 --- !u!114 &1867867168177862941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,7 +619,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6323691243303951846}
-  - {fileID: 4377402375139999734}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

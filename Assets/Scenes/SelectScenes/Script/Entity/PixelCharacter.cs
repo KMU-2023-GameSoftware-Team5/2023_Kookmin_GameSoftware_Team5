@@ -20,7 +20,26 @@ namespace deck{
         public EquipItem[] Inventory;
         protected CommonStats characterStat;
 
+        /// <summary>
+        /// 이 캐릭터는 플레이어의 캐릭터입니까?
+        /// </summary>
         public bool playerOwned = false;
+
+        /// <summary>
+        /// 캐릭터의 강화정도
+        /// </summary>
+        int _tier=1;
+        public int tier
+        {
+            get
+            {
+                return _tier;
+            }
+            set
+            {
+                _tier = value;
+            }
+        }
 
 
         /// <summary>

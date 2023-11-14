@@ -136,6 +136,8 @@ MonoBehaviour:
   characterSprite: {fileID: 0}
   characterSpriteLoader: {fileID: 8578724735440140510}
   characterDetailOpener: {fileID: 5230299471388767065}
+  characterTierText: {fileID: 0}
+  characterTierColor: {fileID: 2509703514028315106}
 --- !u!114 &5230299471388767065
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -92,10 +92,6 @@ namespace deck
         public UnityEvent initializePlaecmentEvent;
 
         /////////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// 캐릭터 배치 모드. TODO
-        /// </summary>
         public bool isPlacementMode { get; private set; }
 
         [Header("Character Placement")]

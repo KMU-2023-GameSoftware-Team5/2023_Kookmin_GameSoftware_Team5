@@ -216,8 +216,8 @@ namespace deck
         public PixelCharacter buildCharcterByPrice(int price)
         {
             List<string> characterNames = new List<string>(m_humanoidDataMap.Keys);
-            UnityEngine.Random.Range(0, characterNames.Count-1);
-            PixelCharacter ret = buildPixelCharacter(characterNames[UnityEngine.Random.Range(0, characterNames.Count - 1)]);
+            PixelCharacter ret = buildPixelCharacter(characterNames[UnityEngine.Random.Range(0, characterNames.Count)]);
+            ret.tier = price;
             return ret;
         }
 

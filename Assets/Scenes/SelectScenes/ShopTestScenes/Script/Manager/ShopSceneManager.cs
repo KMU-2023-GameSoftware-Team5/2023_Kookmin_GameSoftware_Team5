@@ -72,6 +72,11 @@ namespace deck
             while (stageNum > tiers.tierProbabilities[idx].stage)
             {
                 idx++;
+                if(tiers.tierProbabilities.Length <= idx)
+                {
+                    idx--;
+                    break;
+                }
             }
             shopParameter = new int[6];
             shopParameter[1] = tiers.tierProbabilities[idx].tier1;

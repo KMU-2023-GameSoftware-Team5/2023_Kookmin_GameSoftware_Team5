@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace deck
 {
@@ -25,6 +26,9 @@ namespace deck
         public SpriteBuilderForUI characterSprite;
         public CharacterSpriteLoader characterSpriteLoader;
         public CharacterDetailOpener characterDetailOpener;
+
+        public TextMeshProUGUI characterTierText;
+        public Image characterTierColor;
 
         /// <summary>
         /// 이 객체가 보여줄 캐릭터 객체
@@ -58,7 +62,16 @@ namespace deck
             {
                 characterSpriteLoader.loadCharacterSprite(character.characterName);
             }
-
+            if(characterTierText != null)
+            {
+                characterTierText.text = $"+{character.tier}";
+            }
+            if (characterTierColor != null && character.tier != 1)
+            {
+                Color color = MyDeckFactory.Instance().tierColors[character.tier - 1];
+                color.a = 0.78f;
+                characterTierColor.color = color;
+            }
         }
 
         public void setSortingOrder(int sortingOrder)
