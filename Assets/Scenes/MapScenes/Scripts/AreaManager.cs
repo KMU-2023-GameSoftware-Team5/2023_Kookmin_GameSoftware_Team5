@@ -49,7 +49,7 @@ namespace GameMap
 
                 // THIS IS TEMP!
                 SceneParamter.Instance().MobSet = m_bossMobSet;
-                SceneManager.LoadScene("SelectScene");
+                SceneManager.LoadScene("CombineScene");
             });
 
             // Add common onClick event to areas
@@ -67,7 +67,7 @@ namespace GameMap
 
                     // THIS IS TEMP!
                     SceneParamter.Instance().EnemyReinforce = MapData.AreaVisitCount;
-                    SceneManager.LoadScene("SelectScene");
+                    SceneManager.LoadScene("CombineScene");
                 });
             }
 

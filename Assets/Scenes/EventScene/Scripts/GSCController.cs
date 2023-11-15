@@ -24,6 +24,8 @@ namespace GSC
 
     public class GSCController
     {
+        readonly PlayerManager m_playerManager = PlayerManager.Instance();
+
         readonly List<GSCScriptLine> m_scripts;
         readonly List<GSCCallback> m_callbacks;
         readonly GSCTextbox m_textbox;
@@ -120,17 +122,14 @@ namespace GSC
             Debug.LogWarning($"(GSC)Callback not found: {name}");
         }
 
-        public void GiveItem(string itemName)
-        {
-            var playerManager = PlayerManager.Instance();
-            playerManager.addEquipItemByName(itemName);
-        }
+        public void Givegold(int gold) =>
+            m_playerManager.playerGold += gold;
 
-        public void GiveCharacter(string charName)
-        {
-            var playerManager = PlayerManager.Instance();
-            playerManager.addCharacterByName(charName);
-        }
+        public void GiveItem(string itemName) =>
+            m_playerManager.addEquipItemByName(itemName);
+
+        public void GiveCharacter(string charName) =>
+            m_playerManager.addCharacterByName(charName);
 
         // Is it OK...?
         public void LoadScene(string sceneName)

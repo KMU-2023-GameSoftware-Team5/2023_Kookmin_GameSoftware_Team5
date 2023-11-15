@@ -1581,6 +1581,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7235786351951190453}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_bossMobSet
+      value: 
+      objectReference: {fileID: 11400000, guid: ea2ee0fdbd9ea044ebac56bdcadf325f, type: 2}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_canditiateGroup
       value: 
       objectReference: {fileID: 207784506}

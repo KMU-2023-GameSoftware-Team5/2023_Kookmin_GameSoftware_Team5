@@ -12,6 +12,7 @@ namespace GSC
         Call,
         Scene,
         Ifchance,
+        Givegold,
         Givechar,
         Giveitem
     }
