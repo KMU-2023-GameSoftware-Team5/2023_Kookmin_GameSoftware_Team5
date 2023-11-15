@@ -17,7 +17,8 @@ namespace GSC
 
     public class GSCManager : MonoBehaviour
     {
-        [SerializeField] GSCScript m_GSCScript;
+        [SerializeField] GSCScript[] m_GSCScripts;
+        GSCScript m_GSCScript;
 
         [SerializeField] GSCTextbox m_GSCTextbox;
         [SerializeField] GameObject m_buttonPrefab;
@@ -37,6 +38,9 @@ namespace GSC
         {
             DestroyAllButtons();
             m_GSCTextbox.Clear();
+
+            // Randomly
+            m_GSCScript = m_GSCScripts[UnityEngine.Random.Range(0, m_GSCScripts.Length)];
 
             m_image.sprite = m_GSCScript.image;
 

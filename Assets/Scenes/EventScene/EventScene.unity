@@ -1386,6 +1386,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScripts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScripts.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_callbacks.Array.data[0].name
       value: test
       objectReference: {fileID: 0}
