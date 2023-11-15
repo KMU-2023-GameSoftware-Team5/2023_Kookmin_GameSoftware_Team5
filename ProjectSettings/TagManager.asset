@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Character
+  - InputField
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
     locked: 0
   - name: SelectScene-UI
     uniqueID: 1158992023
+    locked: 0
+  - name: SelectScene-Detail
+    uniqueID: 2646637359
     locked: 0
   - name: Default
     uniqueID: 0

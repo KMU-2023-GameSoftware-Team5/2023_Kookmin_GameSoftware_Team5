@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -128,7 +127,11 @@ namespace deck
         /// </summary>
         public void openItemDetail()
         {
-            EquipItemManager.Instance().openItemDetail(equipItem);
+            if(equipItem != null)
+            {
+                // EquipItemManager.Instance().openItemDetail(equipItem);
+                MyDeckFactory.Instance().detailCanvasManager.openItemDetail(equipItem);
+            }
         }
     }
 }

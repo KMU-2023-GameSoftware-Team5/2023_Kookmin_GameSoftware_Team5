@@ -8,6 +8,12 @@ namespace deck
 {
     public class PlayerManager
     {
+        /*
+         * Static Pref Field
+         */
+        public static int MAX_INVENTORY_SIZE = 2;
+        public static int MAX_SELECTED_CHARACTER = 5;
+
         ///////////////////
         /* start of static */
         ///////////////////
@@ -197,6 +203,7 @@ namespace deck
         /// <returns>성공여부</returns>
         public bool addCharacter(PixelCharacter character)
         {
+            character.playerOwned = true;
             playerCharacters.Add(character);
             return true;
         }
@@ -290,6 +297,7 @@ namespace deck
             foreach (JObject jcharacter in jcharacters)
             {
                 PixelHumanoid character = new PixelHumanoid();
+                character.playerOwned = true;
                 character.fromJson(jcharacter, itemMap);
                 characters.Add(character);
             }
@@ -307,6 +315,108 @@ namespace deck
             {
                 selectedCharacters = (JArray)json["selectedCharacterInfo"];
             }
+
         }
+
+        /// <summary>
+        /// 캐릭터에게 아이템 장착 이벤트
+        /// </summary>
+        /// <param name="character">아이템을 장착할 캐릭터</param>
+        /// <param name="equipId">캐릭터가 몇번 인벤토리에 아이템을 장착할 것인지</param>
+        /// <param name="item">장착할 아이템</param>
+        public bool equip(PixelCharacter character, int equipId, EquipItem item)
+        {
+            return character.equip(equipId, item);
+        }
+
+        /// <summary>
+        /// 캐릭터 아이템 장착 해제 이벤트
+        /// </summary>
+        /// <param name="character">아이템을 해제할 캐릭터</param>
+        /// <param name="equipId">해제될 아이템의 인벤토리상 위치</param>
+        public bool unEquip(PixelCharacter character, int equipId)
+        {
+            return character.unEquip(equipId);
+        }
+
+        /// <summary>
+        /// 캐릭터 구매관련 함수
+        /// </summary>
+        /// <param name="character">구매할 캐릭터</param>
+        /// <param name="price">구매할 캐릭터 가격</param>
+        /// <returns>구매 성공여부</returns>
+        public bool buyCharacter(PixelCharacter character, int price)
+        {
+            if (useGold(price))
+            {
+                // 돈계산 
+                playerGold -= price;
+
+                // 캐릭터 추가
+                addCharacter(character);
+
+                // 저장로직 호출
+                save();
+                return true;
+            }
+            else
+            {
+                // 구매 실패
+                return false;
+            }
+        }
+
+        public bool sellCharacter(PixelCharacter character, int price)
+        {
+            if(playerCharacters.Count == 1) // 캐릭터 하나 남기면 게임오버
+            {
+                return false;
+            }
+            else
+            {
+                PixelCharacter sellTarget = null;
+                for(int i=playerCharacters.Count -1; i>=0; i--)
+                {
+                    if (playerCharacters[i].ID == character.ID)
+                    {
+                        sellTarget = playerCharacters[i];
+                        playerCharacters.RemoveAt(i);
+                        break;
+                    }
+                }
+                if(sellTarget == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    playerGold += price;
+                    for(int i = 0; i < sellTarget.Inventory.Length; i++)
+                    {
+                        if (sellTarget.Inventory[i] != null) // 안정성을 위해 장착 아이템 해제 
+                        {
+                            sellTarget.unEquip(i);
+                        }
+                    }
+                    save();
+                    return true;
+                }
+            }
+        }
+
+        public bool useGold(int gold)
+        {
+            if(playerGold < gold)
+            {
+                return false;
+            }
+            else
+            {
+                playerGold -= gold;
+                return true;
+            }
+        }
+
     }
 }
+  
