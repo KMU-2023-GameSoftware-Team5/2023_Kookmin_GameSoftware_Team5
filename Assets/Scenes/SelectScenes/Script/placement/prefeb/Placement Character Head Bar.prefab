@@ -584,6 +584,7 @@ MonoBehaviour:
   characterName: {fileID: 8879854413339208551}
   hp: {fileID: 6219572523585752101}
   mp: {fileID: 4515819699000680785}
+  bg: {fileID: 7087800245697829051}
 --- !u!1 &6219572523585752101
 GameObject:
   m_ObjectHideFlags: 0

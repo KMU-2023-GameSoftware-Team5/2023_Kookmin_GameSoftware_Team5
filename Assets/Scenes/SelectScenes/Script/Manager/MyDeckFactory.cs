@@ -5,6 +5,7 @@ using placement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace deck
 {
@@ -76,6 +77,7 @@ namespace deck
 
         public Dictionary<string, Sprite> characterSpritePool;
         [SerializeField]GameObject spritePoolMember;
+        public UnityEvent<string> nickNameChangeEvent;
 
         void buildSpritePool()
         {

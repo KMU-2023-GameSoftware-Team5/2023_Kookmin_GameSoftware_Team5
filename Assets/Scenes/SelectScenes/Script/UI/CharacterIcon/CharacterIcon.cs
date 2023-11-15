@@ -72,6 +72,18 @@ namespace deck
                 color.a = 0.78f;
                 characterTierColor.color = color;
             }
+            MyDeckFactory.Instance().nickNameChangeEvent.AddListener(onNickNameChange);
+        }
+
+        public void onNickNameChange(string id)
+        {
+            if(character.ID == id)
+            {
+                if (characterNickNameText != null)
+                {
+                    characterNickNameText.text = character.characterNickName;
+                }            
+            }
         }
 
         public void setSortingOrder(int sortingOrder)

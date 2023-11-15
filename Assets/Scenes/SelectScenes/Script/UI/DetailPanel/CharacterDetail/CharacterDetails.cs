@@ -59,6 +59,10 @@ namespace deck
             {
                 charactrerEquipItemSlot[i] = createCharacterEquipItemSlot(i);
             }
+            if(nickNameInput != null)
+            {
+                nickNameInput.onEndEdit.AddListener(onNickNameChange);
+            }
         }
 
         /// <summary>
@@ -96,6 +100,7 @@ namespace deck
                 go.SetActive(false);
             }
             star[character.tier - 1].SetActive(true);
+            nickNameInput.readOnly = !character.playerOwned;
         }
 
         /// <summary>
@@ -122,6 +127,17 @@ namespace deck
             return unEquipSuccess;
         }
 
+        [SerializeField] TMP_InputField nickNameInput;
+        public void onNickNameChange(string value)
+        {
+            if(value.Length <= 0)
+            {
+                characterIcon.characterNickNameText.text = character.characterNickName;
+                return;
+            }
+            character.characterNickName = value;
+            MyDeckFactory.Instance().nickNameChangeEvent.Invoke(character.ID);
+        }
     }
 
 }

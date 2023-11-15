@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f7cd120446b7646867bcc1348bbddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterNameText: {fileID: 4929801254962693810}
-  characterNickNameText: {fileID: 0}
+  characterNameText: {fileID: 0}
+  characterNickNameText: {fileID: 4929801254962693810}
   characterSprite: {fileID: 0}
   characterSpriteLoader: {fileID: 7230637382692925247}
   characterDetailOpener: {fileID: 3503684640568977035}

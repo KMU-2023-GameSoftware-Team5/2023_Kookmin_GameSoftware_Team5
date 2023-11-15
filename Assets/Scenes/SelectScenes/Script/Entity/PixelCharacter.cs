@@ -15,7 +15,7 @@ namespace deck{
     {
         string id;
         public string ID { get; protected set; }
-        public string characterNickName { get; protected set; }
+        public string characterNickName { get; set; }
         public string characterName { get; set; }
         public EquipItem[] Inventory;
         protected CommonStats characterStat;

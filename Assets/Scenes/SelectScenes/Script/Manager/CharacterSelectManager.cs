@@ -234,7 +234,7 @@ namespace deck
 
             // head name setting
             PlacementCharacterHeadName headName = headBarGo.GetComponent<PlacementCharacterHeadName>();
-            headName.Initialize(character.characterNickName);
+            headName.Initialize(character);
             ret.headName = headName;
 
             return ret;
