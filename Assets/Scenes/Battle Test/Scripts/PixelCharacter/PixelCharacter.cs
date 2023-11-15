@@ -15,6 +15,7 @@ namespace battle
         public int maxHp;
         public uint targetId;
         public int upgradeLevel = 0;
+        public ETraits traits;
 
         public CommonStats GetLevelAppliedStats()
         {

@@ -84,5 +84,8 @@ namespace battle
 
             return true;
         }
+
+        [SerializeField] private TraitsStats m_traitsStats;
+        public TraitsStats GetTraitsStats() { return m_traitsStats; }
     }
 }

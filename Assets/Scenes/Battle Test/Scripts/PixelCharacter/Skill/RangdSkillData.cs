@@ -82,7 +82,7 @@ public class RangedSkillData : CustomSkillData
 
                 for (int i = 0; i < projectileCount; i++)
                 {
-                    Utility.InstantiateProjectileAfter(
+                    Utility.InstantiateProjectileAsDamageAfter(
                         i * projectileGapSec,
                         projectile,
                         owner.bm,

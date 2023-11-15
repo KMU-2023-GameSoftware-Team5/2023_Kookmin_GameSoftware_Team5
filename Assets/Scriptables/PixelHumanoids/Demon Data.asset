@@ -22,6 +22,7 @@ MonoBehaviour:
   criticalRate: 0.5
   characterName: Demon
   attackRange: 1
+  traits: 2
   Head: Demon#FFFFFF/0:0:0
   Ears: Demon#FFFFFF/0:0:0
   Eyes: Demon#FFFFFF/0:0:0

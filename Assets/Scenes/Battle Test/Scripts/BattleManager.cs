@@ -1,6 +1,6 @@
+using data;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace battle
@@ -57,6 +57,64 @@ namespace battle
             m_statistics = new Dictionary<uint, Statistics>(); 
         }
 
+        public class TraitsCount
+        {
+            public TraitsCount(List<PixelCharacter> list)
+            {
+                GoblinCount = 0;
+                SkeletonCount = 0;
+                DemonCount = 0;
+                HumanCount = 0;
+                ElfCount = 0;
+
+                foreach (PixelCharacter character in list)
+                {
+                    if (character == null) continue;
+
+                    switch(character.traits)
+                    {
+                        case ETraits.Goblin:
+                            GoblinCount++;
+                            break;
+                        case ETraits.Skeleton:
+                            SkeletonCount++;
+                            break;
+                        case ETraits.Demon:
+                            DemonCount++;
+                            break;
+                        case ETraits.Human:
+                            HumanCount++;
+                            break;
+                        case ETraits.Elf:
+                            ElfCount++;
+                            break;
+                    }
+                }
+            }
+
+            public int GoblinCount;
+            public int SkeletonCount;
+            public int DemonCount;
+            public int HumanCount;
+            public int ElfCount;
+        }
+
+        public static CommonStats GetTraitsStats(List<PixelCharacter> characters)
+        {
+            CommonStats ret = new CommonStats();
+            TraitsCount traitsCount = new TraitsCount(characters);
+
+            TraitsStats traitsStats = StaticLoader.Instance().GetTraitsStats();
+            
+            ret.Add(traitsStats.GetStats(ETraits.Goblin, traitsCount.GoblinCount));
+            ret.Add(traitsStats.GetStats(ETraits.Skeleton, traitsCount.SkeletonCount));
+            ret.Add(traitsStats.GetStats(ETraits.Demon, traitsCount.DemonCount));
+            ret.Add(traitsStats.GetStats(ETraits.Human, traitsCount.HumanCount));
+            ret.Add(traitsStats.GetStats(ETraits.Elf, traitsCount.ElfCount));
+
+            return ret;
+        }
+
         private Dictionary<uint, PixelCharacter> m_entityMap;
         public PixelCharacter GetEntity(uint id, EDeadOrAlive doa)
         {
@@ -85,11 +143,25 @@ namespace battle
             return ret;
         }
 
+        private CommonStats team0TraitStats;
+        private CommonStats team1TraitStats;
+
+        public CommonStats GetTraitStats(PixelHumanoid humanoid)
+        {
+            if (humanoid.teamIndex == 0)
+                return team0TraitStats;
+            else
+                return team1TraitStats;
+        }
+
         private List<PixelCharacter> m_team0Characters;
         private List<PixelCharacter> m_team1Characters;
         public bool StartBattle(List<PixelCharacter> team0, List<PixelCharacter> team1)
         {
             m_statistics.Clear();
+
+            team0TraitStats = GetTraitsStats(team0);
+            team1TraitStats = GetTraitsStats(team1);
 
             if (status == EStatus.Fighting)
             {
@@ -270,7 +342,14 @@ namespace battle
 
         public void ApplyDefaultAttack(PixelCharacter from, PixelCharacter to)
         {
-            ApplyDamage(from, to, from.stats.damage, true);
+            if (from.teamIndex == 0)
+            {
+                ApplyDamage(from, to, from.stats.damage + team0TraitStats.damage, true);
+            }
+            else if (from.teamIndex == 1)
+            {
+                ApplyDamage(from, to, from.stats.damage + team1TraitStats.damage, true);
+            }
         }
 
         public void ApplyHeal(PixelCharacter from, PixelCharacter to, int amount)

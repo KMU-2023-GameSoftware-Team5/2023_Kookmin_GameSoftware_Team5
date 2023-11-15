@@ -60,6 +60,7 @@ namespace battle
             defaultAttackType = data.defualtAttackType;
             stats.damage = data.damage;
             stats.criticalRate = data.criticalRate;
+            traits = data.traits;
 
             StateSet set;
             if (data.useCustomSkil)

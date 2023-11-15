@@ -63,3 +63,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 379e70fcb99c04c4ca3d28e476205626, type: 2}
   - {fileID: 11400000, guid: c10e392ca52fd0e419f3b890ab23040a, type: 2}
   - {fileID: 11400000, guid: 9876a82b98e9c724db5416bb4201d9a9, type: 2}
+  m_traitsStats: {fileID: 11400000, guid: 7b750c3540c5e6c43bd58655088a8165, type: 2}

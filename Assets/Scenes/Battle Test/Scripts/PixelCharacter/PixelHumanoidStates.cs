@@ -121,22 +121,7 @@ namespace battle
                         }
                         else
                         {
-                            Vector3 delta = target.transform.position - owner.transform.position;
-                            delta.Normalize();
-                            delta = delta * owner.stats.walkSpeed * Time.deltaTime;
-                            owner.transform.position += delta;
-
-                            // consider on paused
-                            if (delta.x != 0.0)
-                            {
-                                if (delta.x > 0.0f)
-                                    owner.SetDirection(Utility.Direction2.Right);
-                                else
-                                    owner.SetDirection(Utility.Direction2.Left);
-                            }
-
-                            owner.m_animator.SetBool("Idle", false);
-                            owner.m_animator.SetBool("Walking", true);
+                            Utility.MoveToTarget(owner, target);
 
                             return EState.None;
                         }
@@ -193,7 +178,7 @@ namespace battle
                                     GameObject arrow = StaticLoader.Instance().GetDefaultArrowPrefab();
                                     GameObject arrowGo = Instantiate(arrow, owner.transform.position + Vector3.up, Quaternion.identity, null);
                                     AttackProjectile attackProjectile = arrowGo.GetComponent<AttackProjectile>();
-                                    attackProjectile.Initialize(owner.bm, owner, owner.transform.position, owner.targetId, 0.5f, true, 2.0f, 10.0f, owner.stats.damage, false);
+                                    attackProjectile.InitializeAsDefaultAttack(owner.bm, owner, owner.targetId, 0.5f, true, 2.0f, 10.0f);
 
                                     break;
                                 }

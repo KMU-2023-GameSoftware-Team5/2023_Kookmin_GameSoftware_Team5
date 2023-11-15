@@ -12,6 +12,15 @@ namespace data
         RangedFire2,    // 양손 총
     }
 
+    public enum ETraits
+    {
+        Goblin,
+        Skeleton,
+        Demon, 
+        Human,
+        Elf
+    }
+
     [CreateAssetMenu(fileName = "PixelHumanoidData", menuName = "data/PixelHumanoid", order = 1)]
     public class PixelHumanoidData: scriptable.CommonStats
     {
@@ -19,6 +28,7 @@ namespace data
         // WARNUNG: MUST BE UNIQUE!
         public string characterName = "unique_name";
         public float attackRange;
+        public ETraits traits;
 
         [Header("Appearance")]
         public string Head = "Human";

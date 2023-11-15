@@ -6,8 +6,21 @@ namespace data
 {
     // non-scriptable version
     // it is a struct
+    [Serializable]
     public struct CommonStats
     {
+        public CommonStats(int value)
+        {
+            sheild = value;
+            hp = value;
+            mp = value;
+            energy = value;
+            walkSpeed = value;
+            damage = value;
+            attackDelay = value;
+            criticalRate = value;
+        }
+
         public CommonStats(CommonStats other)
         {
             sheild = other.sheild;
@@ -30,6 +43,18 @@ namespace data
             damage = other.damage;
             attackDelay = other.attackDelay;
             criticalRate = other.criticalRate;
+        }
+
+        public void Add(CommonStats other)
+        {
+            sheild += other.sheild;
+            hp += other.hp;
+            mp += other.mp;
+            energy += other.energy;
+            walkSpeed += other.walkSpeed;
+            damage += other.damage;
+            attackDelay += other.attackDelay;
+            criticalRate += other.criticalRate;
         }
 
         public int sheild;

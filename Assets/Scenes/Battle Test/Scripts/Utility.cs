@@ -40,6 +40,7 @@ namespace battle
             StaticLoader.Instance().StartCoroutine(instantiateAfter(go, worldPos, waitSec, destoryAfterCreatedSec));
         }
 
+        // damage가 -1인 경우: default attack으로 간주
         private static IEnumerator instantiateProjectileAfter(
             float waitSec,
             GameObject projectilePrefap, 
@@ -65,10 +66,14 @@ namespace battle
             }
             else
             {
-                ap.Initialize(bm, parent, birthPosition, targetId, radius, rotateDirection, lifeTime, speed, damage, false);
+                if (damage == -1)
+                    ap.InitializeAsDefaultAttack(bm, parent, targetId, radius, rotateDirection, lifeTime, speed);
+                else
+                    ap.InitializeAsSkill(bm, parent, targetId, radius, rotateDirection, lifeTime, speed, damage);
             }
         }
-        public static void InstantiateProjectileAfter(
+        
+        public static void InstantiateProjectileAsDamageAfter(
             float waitSec,
             GameObject projectilePrefap,
             BattleManager bm,
@@ -99,6 +104,35 @@ namespace battle
             );
         }
 
+        public static void InstantiateProjectileAsDefaultAttack(
+            float waitSec,
+            GameObject projectilePrefap,
+            BattleManager bm,
+            PixelHumanoid parent,
+            Vector3 birthPosition,
+            uint targetId,
+            float radius,
+            bool rotateDirection,
+            float lifeTime,
+            float speed
+        )
+        {
+            StaticLoader.Instance().StartCoroutine(
+                instantiateProjectileAfter(
+                    waitSec,
+                    projectilePrefap,
+                    bm,
+                    parent,
+                    birthPosition,
+                    targetId,
+                    radius,
+                    rotateDirection,
+                    lifeTime,
+                    speed,
+                    -1
+                )
+            );
+        }
 
         public enum Direction2 { Left, Right }
         public enum Direction4 { Left, Right, Up, Down }
@@ -123,6 +157,26 @@ namespace battle
         {
             Vector3 delta = position1 - position2;
             return delta.sqrMagnitude;
+        }
+
+        public static void MoveToTarget(PixelHumanoid from, PixelCharacter to)
+        {
+            Vector3 delta = to.transform.position - from.transform.position;
+            delta.Normalize();
+            delta *= (from.stats.walkSpeed + from.bm.GetTraitStats(from).walkSpeed) * Time.deltaTime;
+            from.transform.position += delta;
+
+            // consider on paused
+            if (delta.x != 0.0)
+            {
+                if (delta.x > 0.0f)
+                    from.SetDirection(Utility.Direction2.Right);
+                else
+                    from.SetDirection(Utility.Direction2.Left);
+            }
+
+            from.GetAnimator().SetBool("Idle", false);
+            from.GetAnimator().SetBool("Walking", true);
         }
     }
 }
