@@ -223,5 +223,18 @@ namespace deck
             return ret;
         }
 
+        /// <summary>
+        /// 사용자에게 전달할 메시지
+        /// </summary>
+        public InfoMessage infoMessage;
+
+        /// <summary>
+        /// 사용자에게 일시적으로 보여줄 메시지 출력
+        /// </summary>
+        /// <param name="text"></param>
+        public void displayInfoMessage(string text)
+        {
+            infoMessage.displayInfoMessage(text);
+        }
     }
 }

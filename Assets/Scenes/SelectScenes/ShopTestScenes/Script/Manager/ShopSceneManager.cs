@@ -148,6 +148,7 @@ namespace deck
             }
             else
             {
+                MyDeckFactory.Instance().displayInfoMessage("돈이 없습니다");
                 return ret;
             }
         }
@@ -163,6 +164,7 @@ namespace deck
             }
             else
             {
+                MyDeckFactory.Instance().displayInfoMessage("마지막 캐릭터는 판매할 수 없습니다.");
                 return ret;
             }
 

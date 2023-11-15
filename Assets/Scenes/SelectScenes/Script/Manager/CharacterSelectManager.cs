@@ -282,6 +282,7 @@ namespace deck
             }
             else
             {
+                MyDeckFactory.Instance().displayInfoMessage($"{PlayerManager.MAX_SELECTED_CHARACTER}캐릭터 이상 배치할 수 없습니다.");
                 return false;
             }
         }
