@@ -1,3 +1,4 @@
+using deck;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -117,6 +118,18 @@ namespace GSC
             }
 
             Debug.LogWarning($"(GSC)Callback not found: {name}");
+        }
+
+        public void GiveItem(string itemName)
+        {
+            var playerManager = PlayerManager.Instance();
+            playerManager.addEquipItemByName(itemName);
+        }
+
+        public void GiveCharacter(string charName)
+        {
+            var playerManager = PlayerManager.Instance();
+            playerManager.addCharacterByName(charName);
         }
 
         // Is it OK...?

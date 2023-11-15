@@ -49,7 +49,6 @@ namespace GameMap
 
                 // THIS IS TEMP!
                 SceneParamter.Instance().MobSet = m_bossMobSet;
-                //SceneManager.LoadScene("Battle Test");
                 SceneManager.LoadScene("SelectScene");
             });
 
@@ -68,7 +67,6 @@ namespace GameMap
 
                     // THIS IS TEMP!
                     SceneParamter.Instance().EnemyReinforce = MapData.AreaVisitCount;
-                    // SceneManager.LoadScene("Battle Test");
                     SceneManager.LoadScene("SelectScene");
                 });
             }

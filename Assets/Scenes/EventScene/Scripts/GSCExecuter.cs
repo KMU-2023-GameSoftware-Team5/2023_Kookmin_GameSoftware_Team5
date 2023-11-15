@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GSC
@@ -49,6 +50,13 @@ namespace GSC
                         if (choiced < chance)
                             m_controller.BranchTo(now.Args[1]);
 
+                        break;
+
+                    case GSCCommand.Givechar:
+
+                        break;
+
+                    case GSCCommand.Giveitem:
                         break;
 
                     default:
