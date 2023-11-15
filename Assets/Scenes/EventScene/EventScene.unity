@@ -659,7 +659,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 409706758}
   m_HandleRect: {fileID: 409706757}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1360,7 +1360,7 @@ PrefabInstance:
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_GSCScript
       value: 
-      objectReference: {fileID: 11400000, guid: 886f48100339ef041b9629d78b4fe9c9, type: 2}
+      objectReference: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_GSCTextbox
       value: 
@@ -1385,6 +1385,14 @@ PrefabInstance:
       propertyPath: m_callbacks.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScripts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
+      propertyPath: m_GSCScripts.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7cc443d840154e44ea899f8350c84e70, type: 2}
     - target: {fileID: 6221860052819413297, guid: 3865888f93a068144a1bf0ff927b1fe2, type: 3}
       propertyPath: m_callbacks.Array.data[0].name
       value: test

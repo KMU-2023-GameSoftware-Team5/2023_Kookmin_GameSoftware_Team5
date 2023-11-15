@@ -1,3 +1,4 @@
+using deck;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace GSC
 
     public class GSCController
     {
+        readonly PlayerManager m_playerManager = PlayerManager.Instance();
+
         readonly List<GSCScriptLine> m_scripts;
         readonly List<GSCCallback> m_callbacks;
         readonly GSCTextbox m_textbox;
@@ -118,6 +121,15 @@ namespace GSC
 
             Debug.LogWarning($"(GSC)Callback not found: {name}");
         }
+
+        public void Givegold(int gold) =>
+            m_playerManager.playerGold += gold;
+
+        public void GiveItem(string itemName) =>
+            m_playerManager.addEquipItemByName(itemName);
+
+        public void GiveCharacter(string charName) =>
+            m_playerManager.addCharacterByName(charName);
 
         // Is it OK...?
         public void LoadScene(string sceneName)

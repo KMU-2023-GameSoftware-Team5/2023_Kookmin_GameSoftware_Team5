@@ -27,6 +27,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MapScenes/MapScene1.unity
     guid: 487cd714a0ce71542b7876150aca8005
   - enabled: 1
-    path: Assets/Scenes/SelectScenes/ShopTestScenes/ShopTestScene.unity
-    guid: 0d47bc0ee2ae7544d81b294ceb1b08db
+    path: Assets/Scenes/MapScenes/MapScene2.unity
+    guid: 8667511bd72663d4f862d7aa7564f659
+  - enabled: 1
+    path: Assets/Scenes/MapScenes/MapScene3.unity
+    guid: 6a61f671627d69045b29a477864d7368
+  - enabled: 1
+    path: Assets/Scenes/EventScene/EventScene.unity
+    guid: 1d63af13d8c48e341916954e20df8eca
   m_configObjects: {}

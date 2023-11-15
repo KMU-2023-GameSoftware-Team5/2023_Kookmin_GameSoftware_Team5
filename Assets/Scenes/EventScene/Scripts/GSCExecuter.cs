@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GSC
@@ -49,6 +50,19 @@ namespace GSC
                         if (choiced < chance)
                             m_controller.BranchTo(now.Args[1]);
 
+                        break;
+
+                    case GSCCommand.Givegold:
+                        int gold = int.Parse(now.Args[0]);
+                        m_controller.Givegold(gold);
+                        break;
+
+                    case GSCCommand.Givechar:
+                        m_controller.GiveCharacter(now.Args[0]);
+                        break;
+
+                    case GSCCommand.Giveitem:
+                        m_controller.GiveItem(now.Args[0]);
                         break;
 
                     default:

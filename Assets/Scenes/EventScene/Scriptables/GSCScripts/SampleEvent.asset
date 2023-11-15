@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b656d7e21986f143b6fd4f8b0f15690, type: 3}
   m_Name: SampleEvent
   m_EditorClassIdentifier: 
-  script: "#node start\r\n1\t\r\n#if \"to map\" to_map\r\n2\n\t\r\n#if \"two buttons\"
-    \"two buttons\"\r\n3\n\t\r\n#if \"long description\" long\r\n4\n\t\r\n#waitif\r\n\r\n#node
-    scene_test\r\n#scene \"SampleScene\"\r\n\r\n#node \"two buttons\"\r\n1\r\n#if
-    \"exit\" exit\r\n2\r\n#if \"to start\" start\r\n3\r\n#waitif\r\ndont show!\r\n\r\n#node
-    call_test\r\ncall test\r\n\t#call \ttest\t\r\n#if \"to start\" start\r\n#waitif\r\n\n#node
-    long\r\nAnything long Anything long Anything long Anything long Anything long
+  image: {fileID: 0}
+  script: "#node start\n#giveitem ring\n#giveitem Demon\r\n1\t\r\n#if \"to map\"
+    to_map\r\n2\n\t\r\n#if \"two buttons\" \"two buttons\"\r\n3\n\t\r\n#if \"long
+    description\" long\r\n4\n\t\r\n#waitif\r\n\r\n#node scene_test\r\n#scene \"SampleScene\"\r\n\r\n#node
+    \"two buttons\"\r\n1\r\n#if \"exit\" exit\r\n2\r\n#if \"to start\" start\r\n3\r\n#waitif\r\ndont
+    show!\r\n\r\n#node call_test\r\ncall test\r\n\t#call \ttest\t\r\n#if \"to start\"
+    start\r\n#waitif\r\n\n#node long\r\nAnything long Anything long Anything long
     Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
@@ -26,6 +27,6 @@ MonoBehaviour:
     long Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
     long Anything long Anything long Anything long Anything long Anything long Anything
-    long Anything long Anything long Anything long Anything long Anything long \n#if
-    long_if long_if\r\n#waitif\n#node long_if\nhello world!\n#goto exit\n#node to_map\n#scene
-    \"MapScene1\"\n\n#node exit\r\nEXITED\n\n"
+    long Anything long Anything long Anything long Anything long Anything long Anything
+    long Anything long \n#if long_if long_if\r\n#waitif\n#node long_if\nhello world!\n#goto
+    exit\n#node to_map\n#scene \"MapScene1\"\n\n#node exit\r\nEXITED\n\n"

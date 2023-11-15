@@ -11,7 +11,10 @@ namespace GSC
         Waitif,
         Call,
         Scene,
-        Ifchance
+        Ifchance,
+        Givegold,
+        Givechar,
+        Giveitem
     }
 
     public class GSCScriptLine
