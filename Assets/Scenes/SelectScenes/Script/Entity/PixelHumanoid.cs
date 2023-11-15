@@ -81,6 +81,7 @@ namespace deck
                 {"y", worldPosition.y},
                 {"z", worldPosition.z},
             };
+            ret["tier"] = tier;
             JArray jInventory = new JArray();
             foreach (EquipItem item in Inventory)
             {
@@ -110,7 +111,7 @@ namespace deck
                 (float)json["position"]["y"],
                 (float)json["position"]["z"]
             );
-
+            tier = (int) json["tier"];
             Inventory = new EquipItem[PlayerManager.MAX_INVENTORY_SIZE];
 
             JArray jInventory = (JArray)json["inventory"];

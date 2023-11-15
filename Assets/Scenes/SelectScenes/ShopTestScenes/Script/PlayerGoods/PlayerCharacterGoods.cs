@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace deck
 {
@@ -32,14 +33,23 @@ namespace deck
         RectTransform rect;
         CanvasGroup canvasGroup;
 
+        public Outline[] outlines;
+
         public void Initialize(PixelCharacter character, int price, Transform dragCanvas)
         {
             rect = GetComponent<RectTransform>();
             canvasGroup = GetComponent<CanvasGroup>();
             this.character = character;
             characterInfo.Initialize(character);
-            this.price = price;
+            this.price = character.tier;
+            priceTextUI.text = $"${character.tier}";
             this.dragCanvas = dragCanvas;
+            foreach (var outline in outlines)
+            {
+                Color _color = MyDeckFactory.Instance().tierColors[character.tier - 1];
+                _color.a = 0.5f;
+                outline.effectColor = _color;
+            }
         }
 
         public void destroy()

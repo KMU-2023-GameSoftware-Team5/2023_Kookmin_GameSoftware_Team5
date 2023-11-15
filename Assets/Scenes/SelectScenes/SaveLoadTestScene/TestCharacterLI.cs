@@ -9,11 +9,11 @@ namespace testSL
     public class TestCharacterLI : MonoBehaviour
     {
         [SerializeField]
-        TextMeshProUGUI name;
+        TextMeshProUGUI nameText;
 
         public void Initialize(PixelCharacter character)
         {
-            name.text = character.characterName;
+            nameText.text = character.characterName;
         }
 
         public void destroy()

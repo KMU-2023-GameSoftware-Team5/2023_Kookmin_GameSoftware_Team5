@@ -49,6 +49,8 @@ namespace deck
         [SerializeField] TextMeshProUGUI characterDescription;
         [SerializeField] GameObject itemTab;
 
+        [SerializeField] GameObject[] star;
+
         void Awake()
         {
             // 캐릭터 인벤토리 슬롯 생성
@@ -56,6 +58,10 @@ namespace deck
             for(int i=0; i<charactrerEquipItemSlot.Length; i++)
             {
                 charactrerEquipItemSlot[i] = createCharacterEquipItemSlot(i);
+            }
+            if(nickNameInput != null)
+            {
+                nickNameInput.onEndEdit.AddListener(onNickNameChange);
             }
         }
 
@@ -88,6 +94,13 @@ namespace deck
                 charactrerEquipItemSlot[i].setItem(this.character.Inventory[i]);
             }
             itemTab.SetActive(character.playerOwned);
+
+            foreach(GameObject go in star)
+            {
+                go.SetActive(false);
+            }
+            star[character.tier - 1].SetActive(true);
+            nickNameInput.readOnly = !character.playerOwned;
         }
 
         /// <summary>
@@ -114,6 +127,17 @@ namespace deck
             return unEquipSuccess;
         }
 
+        [SerializeField] TMP_InputField nickNameInput;
+        public void onNickNameChange(string value)
+        {
+            if(value.Length <= 0)
+            {
+                characterIcon.characterNickNameText.text = character.characterNickName;
+                return;
+            }
+            character.characterNickName = value;
+            MyDeckFactory.Instance().nickNameChangeEvent.Invoke(character.ID);
+        }
     }
 
 }

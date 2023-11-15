@@ -10,7 +10,6 @@ namespace deck
     {
         public PixelCharacter character;
         public bool longPush=false;
-        float needDownTime =1f;
         float downTime;
         bool isDown=false;
 

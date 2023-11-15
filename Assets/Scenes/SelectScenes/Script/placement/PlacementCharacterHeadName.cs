@@ -1,8 +1,10 @@
+using deck;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 namespace placement
@@ -16,12 +18,22 @@ namespace placement
         public TextMeshProUGUI characterName;
         public GameObject hp;
         public GameObject mp;
+        public PixelCharacter character;
+        public Image bg; 
 
-        public void Initialize(string characterNickname)
+        public void Initialize(deck.PixelCharacter character)
         {
-            characterName.text  = characterNickname;
+            this.character = character;
+            characterName.text  = character.characterNickName;
             hp.SetActive(false);
             mp.SetActive(false);
+            MyDeckFactory.Instance().nickNameChangeEvent.AddListener(onNickNameChange);
+            if(character.tier > 1)
+            {
+                Color bgColor = MyDeckFactory.Instance().tierColors[character.tier - 1];
+                bgColor.a = 0.784f;
+                bg.color = bgColor;
+            }
         }
 
         internal void unSelect()
@@ -39,5 +51,14 @@ namespace placement
             Destroy(headName);
             Destroy(this);
         }
+
+        public void onNickNameChange(string id)
+        {
+            if (character.ID == id)
+            {
+               characterName.text = character.characterNickName;
+            }
+        }
+
     }
 }

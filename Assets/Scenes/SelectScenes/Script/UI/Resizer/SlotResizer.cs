@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlotResizer : MonoBehaviour
+namespace deck
 {
-    [SerializeField] RectTransform parentRect;
-    [SerializeField] RectTransform myRect;
-
-
-    private void Update()
+    public class SlotResizer : MonoBehaviour
     {
-        float parentWidth = parentRect.rect.width;
-        float parentHeight = parentRect.rect.height;
-        myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentWidth);
-        myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentHeight);
+        [SerializeField] RectTransform parentRect;
+        [SerializeField] RectTransform myRect;
 
+
+        private void Update()
+        {
+            float parentWidth = parentRect.rect.width;
+            float parentHeight = parentRect.rect.height;
+            float minRect = parentWidth < parentHeight ? parentWidth : parentHeight;
+            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, minRect);
+            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, minRect);
+        }
     }
+
 }

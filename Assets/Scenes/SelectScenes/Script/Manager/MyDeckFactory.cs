@@ -5,6 +5,7 @@ using placement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace deck
 {
@@ -55,6 +56,11 @@ namespace deck
 
         [SerializeField] public DetailCanvasManager detailCanvasManager;
 
+        /// <summary>
+        /// 캐릭터 강화에 따른 색
+        /// </summary>
+        public Color[] tierColors;
+
         public void Initialize()
         {
             characterSpritePool = new Dictionary<string, Sprite>();
@@ -71,6 +77,7 @@ namespace deck
 
         public Dictionary<string, Sprite> characterSpritePool;
         [SerializeField]GameObject spritePoolMember;
+        public UnityEvent<string> nickNameChangeEvent;
 
         void buildSpritePool()
         {
@@ -208,5 +215,26 @@ namespace deck
         }
 
 
+        public PixelCharacter buildCharcterByPrice(int price)
+        {
+            List<string> characterNames = new List<string>(m_humanoidDataMap.Keys);
+            PixelCharacter ret = buildPixelCharacter(characterNames[UnityEngine.Random.Range(0, characterNames.Count)]);
+            ret.tier = price;
+            return ret;
+        }
+
+        /// <summary>
+        /// 사용자에게 전달할 메시지
+        /// </summary>
+        public InfoMessage infoMessage;
+
+        /// <summary>
+        /// 사용자에게 일시적으로 보여줄 메시지 출력
+        /// </summary>
+        /// <param name="text"></param>
+        public void displayInfoMessage(string text)
+        {
+            infoMessage.displayInfoMessage(text);
+        }
     }
 }

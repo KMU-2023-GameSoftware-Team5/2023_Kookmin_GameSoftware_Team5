@@ -12,14 +12,18 @@ public class BattleStartManager : MonoBehaviour
 
     public void onClickBattleStart()
     {
-        // 씬 넘어가기 전 저장
         CharacterSelectManager selectSceneManager = CharacterSelectManager.Instance();
-        selectSceneManager.save();
-        Debug.Log("select Scene 저장 완료");
 
         // 아군
         characters = selectSceneManager.battleStart();
-        
+        if(characters.Count == 0)
+        {
+            MyDeckFactory.Instance().displayInfoMessage("최소 하나의 캐릭터를 배치해야합니다.");
+            return;
+        }
+        // 씬 넘어가기 전 저장
+        selectSceneManager.save();
+
         foreach (GameObject target in destroyTarget)
         {
             if(target != null)

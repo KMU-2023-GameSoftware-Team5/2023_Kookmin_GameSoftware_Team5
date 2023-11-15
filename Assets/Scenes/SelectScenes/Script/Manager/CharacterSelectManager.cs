@@ -92,10 +92,6 @@ namespace deck
         public UnityEvent initializePlaecmentEvent;
 
         /////////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// 캐릭터 배치 모드. TODO
-        /// </summary>
         public bool isPlacementMode { get; private set; }
 
         [Header("Character Placement")]
@@ -238,7 +234,7 @@ namespace deck
 
             // head name setting
             PlacementCharacterHeadName headName = headBarGo.GetComponent<PlacementCharacterHeadName>();
-            headName.Initialize(character.characterNickName);
+            headName.Initialize(character);
             ret.headName = headName;
 
             return ret;
@@ -286,6 +282,7 @@ namespace deck
             }
             else
             {
+                MyDeckFactory.Instance().displayInfoMessage($"{PlayerManager.MAX_SELECTED_CHARACTER}캐릭터 이상 배치할 수 없습니다.");
                 return false;
             }
         }

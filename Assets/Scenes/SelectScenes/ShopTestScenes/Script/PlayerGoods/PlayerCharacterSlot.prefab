@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 3503684640568977035}
   - component: {fileID: 2276770180733043178}
   - component: {fileID: 768019147911959607}
+  - component: {fileID: 8773129455090105046}
   m_Layer: 5
   m_Name: CharacterShopCard
   m_TagString: Untagged
@@ -151,6 +152,10 @@ MonoBehaviour:
   characterInfo: {fileID: 7444391532417030458}
   priceTextUI: {fileID: 8458843713030705687}
   slot: {fileID: 6729352228082772841}
+  outlines:
+  - {fileID: 6466735778504512514}
+  - {fileID: 3252966890785224468}
+  - {fileID: 7862101938517630376}
 --- !u!114 &7444391532417030458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,11 +168,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f7cd120446b7646867bcc1348bbddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterNameText: {fileID: 4929801254962693810}
-  characterNickNameText: {fileID: 0}
+  characterNameText: {fileID: 0}
+  characterNickNameText: {fileID: 4929801254962693810}
   characterSprite: {fileID: 0}
   characterSpriteLoader: {fileID: 7230637382692925247}
   characterDetailOpener: {fileID: 3503684640568977035}
+  characterTierText: {fileID: 0}
+  characterTierColor: {fileID: 0}
 --- !u!114 &3503684640568977035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +256,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8773129455090105046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056296496219650242}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771a0a2f2fac85c4d8d99dba8ece9b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentRect: {fileID: 6729352228082772841}
+  myRect: {fileID: 1820927178816622745}
 --- !u!1 &2276086969756243010
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,8 +599,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: chracternameamamama
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
+  m_sharedMaterial: {fileID: 3355029736662346468, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -788,8 +809,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
+  m_sharedMaterial: {fileID: 3355029736662346468, guid: 1df719c08f348ad41a85bb2030cebf57, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -813,7 +834,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.7
+  m_fontSize: 22.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
