@@ -157,7 +157,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.rokgm.rokgm
-    Standalone: com.DefaultCompany.2DProject
+    Standalone: com.rokgm.rokgm
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -803,4 +803,4 @@ PlayerSettings:
   hmiLoadingImage: {fileID: 0}
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
-  insecureHttpOption: 0
+  insecureHttpOption: 2
