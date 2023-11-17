@@ -8,15 +8,28 @@ namespace deck
     {
         [SerializeField] RectTransform parentRect;
         [SerializeField] RectTransform myRect;
+        public bool useHeight=true;
 
-
-        private void Update()
+        private void Start()
         {
-            float parentWidth = parentRect.rect.width;
-            float parentHeight = parentRect.rect.height;
-            float minRect = parentWidth < parentHeight ? parentWidth : parentHeight;
-            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, minRect);
-            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, minRect);
+            RectTransform rect = parentRect.transform.parent.gameObject.GetComponent<RectTransform>();
+            float size;
+            if(useHeight )
+            {
+                size = rect.rect.height;
+                Debug.Log($"{rect.rect.height}");
+            }
+            else
+            {
+                size = rect.rect.width;
+                Debug.Log($"{rect.rect.width}");
+            }
+            size *= 0.84f;
+            parentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
+            parentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);
+            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
+            myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);
+
         }
     }
 

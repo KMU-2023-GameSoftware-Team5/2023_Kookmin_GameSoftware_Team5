@@ -263,13 +263,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056296496219650242}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 771a0a2f2fac85c4d8d99dba8ece9b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentRect: {fileID: 6729352228082772841}
-  myRect: {fileID: 1820927178816622745}
+  myRect: {fileID: 6646555774858651534}
+  useHeight: 1
 --- !u!1 &2276086969756243010
 GameObject:
   m_ObjectHideFlags: 0

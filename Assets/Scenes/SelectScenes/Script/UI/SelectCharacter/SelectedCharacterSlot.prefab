@@ -433,6 +433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentRect: {fileID: 4862717365966836402}
   myRect: {fileID: 6323691243303951846}
+  useHeight: 0
 --- !u!225 &7152568092421245036
 CanvasGroup:
   m_ObjectHideFlags: 0
