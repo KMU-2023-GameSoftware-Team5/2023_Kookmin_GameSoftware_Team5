@@ -202,9 +202,10 @@ namespace deck
 
         public void onClickGameStart()
         {
+            PlayerManager.save();
             // SceneManager.LoadScene("Scenes/CombineScenes/CombineScene");
-            // SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
-            SceneManager.LoadScene("Scenes/Parameter Test Scene/Parameter Test");
+            SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+            // SceneManager.LoadScene("Scenes/Parameter Test Scene/Parameter Test");
         }
 
     }

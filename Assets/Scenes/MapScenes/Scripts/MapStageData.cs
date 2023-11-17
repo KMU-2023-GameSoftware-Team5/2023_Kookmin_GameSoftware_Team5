@@ -29,8 +29,10 @@ namespace GameMap
             JObject ret = new();
 
             JArray temp = new();
-            foreach (AreaData areaData in AreaDatas)
-                temp.Add(areaData.areaName);
+            
+            if(AreaDatas != null)
+                foreach (AreaData areaData in AreaDatas)
+                    temp.Add(areaData.areaName);
             ret["area_data"] = temp;
 
             ret["need_init"] = NeedInit;
