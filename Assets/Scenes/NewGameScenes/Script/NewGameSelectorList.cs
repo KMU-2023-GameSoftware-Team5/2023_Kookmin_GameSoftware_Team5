@@ -55,6 +55,7 @@ namespace deck
         {
             if(nowSelectCharcterList == null)
             {
+                MyDeckFactory.Instance().displayInfoMessage("하나 선택해주십시오");
                 return;
             }
             List<PixelCharacter> clist = nowSelectCharcterList.clist;

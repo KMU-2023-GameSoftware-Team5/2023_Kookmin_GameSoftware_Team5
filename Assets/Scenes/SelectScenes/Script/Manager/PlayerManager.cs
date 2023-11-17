@@ -1,3 +1,4 @@
+using GameMap;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,11 @@ namespace deck
 {
     public class PlayerManager
     {
+        /// <summary>
+        /// 현재 스테이지 정보 
+        /// </summary>
+        GameMap.MapStageData stageData;
+
         /*
          * Static Pref Field
          */
@@ -257,6 +263,8 @@ namespace deck
 
             // 캐릭터 배치정보 저장
             saveJson["selectedCharacterInfo"] = selectedCharacters;
+            if(stageData != null)
+                saveJson["stageData"] = stageData.toJson();
             return saveJson;
         }
 
@@ -316,6 +324,15 @@ namespace deck
                 selectedCharacters = (JArray)json["selectedCharacterInfo"];
             }
 
+            if (!json.ContainsKey("stageData") || json["stageData"].Type == JTokenType.Null)
+            {
+                stageData = new MapStageData();
+            }
+            else
+            {
+                stageData = new MapStageData();
+                stageData.fromJson((JObject)json["stageData"]);
+            }
         }
 
         /// <summary>
