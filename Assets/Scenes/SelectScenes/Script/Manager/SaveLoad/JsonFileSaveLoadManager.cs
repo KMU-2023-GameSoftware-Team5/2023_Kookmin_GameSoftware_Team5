@@ -9,9 +9,9 @@ public class JsonFileSaveLoadManager : SaveLoadManager
 {
     #if (UNITY_EDITOR)
     string directoryPath = $"{Application.dataPath}/Scenes/SelectScenes/SaveFile"; // 오로지 디버깅상황에서만
-    #else 
-    string directoryPath = $"{Application.Application.persistentDataPath}/SaveFile"; // 빌드상황에서만 
-    #endif
+#else
+    string directoryPath = $"{Application.persistentDataPath}/SaveFile"; // 빌드상황에서만 
+#endif
     string makeFilePath(string path)
     {
         

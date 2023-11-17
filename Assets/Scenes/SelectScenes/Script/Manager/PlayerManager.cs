@@ -263,8 +263,8 @@ namespace deck
 
             // 캐릭터 배치정보 저장
             saveJson["selectedCharacterInfo"] = selectedCharacters;
-
-            saveJson["stageData"] = stageData.toJson();
+            if(stageData != null)
+                saveJson["stageData"] = stageData.toJson();
             return saveJson;
         }
 
