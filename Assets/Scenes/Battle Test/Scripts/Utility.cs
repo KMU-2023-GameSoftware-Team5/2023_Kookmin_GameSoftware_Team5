@@ -163,7 +163,7 @@ namespace battle
         {
             Vector3 delta = to.transform.position - from.transform.position;
             delta.Normalize();
-            delta *= (from.stats.walkSpeed + from.bm.GetTraitStats(from).walkSpeed) * Time.deltaTime;
+            delta *= from.stats.walkSpeed * Time.deltaTime;
             from.transform.position += delta;
 
             // consider on paused

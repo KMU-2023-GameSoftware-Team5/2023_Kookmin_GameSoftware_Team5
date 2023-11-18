@@ -99,7 +99,7 @@ namespace battle
             public int ElfCount;
         }
 
-        public static CommonStats GetTraitsStats(List<PixelCharacter> characters)
+        public static CommonStats CalculcateTraitsStats(List<PixelCharacter> characters)
         {
             CommonStats ret = new CommonStats();
             TraitsCount traitsCount = new TraitsCount(characters);
@@ -146,7 +146,7 @@ namespace battle
         private CommonStats team0TraitStats;
         private CommonStats team1TraitStats;
 
-        public CommonStats GetTraitStats(PixelHumanoid humanoid)
+        public CommonStats GetTraitsStats(PixelHumanoid humanoid)
         {
             if (humanoid.teamIndex == 0)
                 return team0TraitStats;
@@ -160,8 +160,8 @@ namespace battle
         {
             m_statistics.Clear();
 
-            team0TraitStats = GetTraitsStats(team0);
-            team1TraitStats = GetTraitsStats(team1);
+            team0TraitStats = CalculcateTraitsStats(team0);
+            team1TraitStats = CalculcateTraitsStats(team1);
 
             if (status == EStatus.Fighting)
             {
@@ -192,11 +192,41 @@ namespace battle
 
             foreach(PixelCharacter character in m_team0Characters)
             {
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+                
+                // apply traits synergy
+                CommonStats traitsStats = GetTraitsStats(humanoid);
+
+                humanoid.stats.sheild += traitsStats.sheild;
+                humanoid.stats.hp += traitsStats.hp;
+                humanoid.maxHp += traitsStats.hp;
+                humanoid.stats.mp += traitsStats.mp;
+                humanoid.stats.energy += traitsStats.energy;
+                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
+                humanoid.stats.damage += traitsStats.damage;
+                humanoid.stats.attackDelay -= traitsStats.attackDelay;
+                humanoid.stats.criticalRate += traitsStats.criticalRate;
+
                 character.OnBattleStarted(m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
 
             foreach (PixelCharacter character in m_team1Characters)
             {
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+
+                // apply traits synergy
+                CommonStats traitsStats = GetTraitsStats(humanoid);
+
+                humanoid.stats.sheild += traitsStats.sheild;
+                humanoid.stats.hp += traitsStats.hp;
+                humanoid.maxHp += traitsStats.hp;
+                humanoid.stats.mp += traitsStats.mp;
+                humanoid.stats.energy += traitsStats.energy;
+                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
+                humanoid.stats.damage += traitsStats.damage;
+                humanoid.stats.attackDelay -= traitsStats.attackDelay;
+                humanoid.stats.criticalRate += traitsStats.criticalRate;
+
                 character.OnBattleStarted(m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
 

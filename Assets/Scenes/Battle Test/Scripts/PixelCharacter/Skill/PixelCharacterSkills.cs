@@ -70,12 +70,13 @@ namespace battle
                     owner.bm.GetAliveEnemiesFromClosest(owner, out enemies);
                     for(int i = 0; i < 3 && i < enemies.Length; i++)
                     {
-                        GameObject go = Instantiate(StaticLoader.Instance().GetLightningPillar());
-                        LightingPillar pillar =  go.GetComponent<LightingPillar>();
+                        PixelCharacter target = enemies[i];
 
-                        pillar.Initialize(owner.bm, owner, enemies[i].entityId, s_lightingPillarSkillDamage);
+                        GameObject go = Instantiate(StaticLoader.Instance().GetLightningPillar());
+                        Destroy(go, 3.0f);
+                        go.transform.position = target.transform.position;
+                        owner.bm.ApplyDamage(owner, target, s_lightingPillarSkillDamage, true);
                     }
-                    
                 },
                 OnUpdate = (PixelHumanoid owner) =>
                 {

@@ -24,9 +24,6 @@ namespace battle
         {
             public State() { }
 
-            // 이 부분을 상속으로 구현하면 상태 하나마다 클래스 하나가 되는데, 코드가 길어지는 것이 싫다. 
-            // 그래서 대리자로 했다. 
-            // 대리자 구현은 PixelHumnaoid.StateFactory에서 확인할 수 있다.
             public Action<PixelHumanoid> OnEnter;
             public Func<PixelHumanoid, EState> OnUpdate;
             public Action<PixelHumanoid> OnEnd;

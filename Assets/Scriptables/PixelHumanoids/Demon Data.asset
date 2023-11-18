@@ -38,4 +38,4 @@ MonoBehaviour:
   defualtAttackType: 0
   useCustomSkil: 1
   skill: 5
-  customSkillName: melee skill 1
+  customSkillName: magic skill 1
