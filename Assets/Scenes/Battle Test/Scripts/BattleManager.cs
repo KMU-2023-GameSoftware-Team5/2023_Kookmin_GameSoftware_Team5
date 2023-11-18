@@ -2,11 +2,14 @@ using data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace battle
 {
     public class BattleManager : StaticComponentGetter<BattleManager>
     {
+        public UnityEvent onBattleEnd;
+
         public float maxZ = 6.0f;
         public float minZ = -8.0f;
 
@@ -486,6 +489,8 @@ namespace battle
                 {
                     to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
+
+                checkBattleEndAndHandle(to);
             }
         }
 
@@ -558,9 +563,39 @@ namespace battle
                 {
                     to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
+
+                checkBattleEndAndHandle(to);
             }
         }
 
+        private void checkBattleEndAndHandle(PixelCharacter killed)
+        {
+            // check if game end
+            List<PixelCharacter> killedTeam = m_team0Characters;
+            SceneParamter.Instance().isWin = false;
+            if (killed.teamIndex == 1)
+            {
+                killedTeam = m_team1Characters;
+                SceneParamter.Instance().isWin = true;
+            }
+
+            bool isAllDead = true;
+            foreach (var character in killedTeam)
+            {
+                if (!character.IsDead())
+                {
+                    isAllDead = false;
+                }
+
+            }
+
+            if (isAllDead)
+            {
+                onBattleEnd.Invoke();
+            }
+        }
+
+        
         public virtual void Vulture(PixelCharacter from, PixelHumanoid to)
         {
             if (!to.IsDead())

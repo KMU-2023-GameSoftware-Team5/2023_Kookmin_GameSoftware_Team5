@@ -22,4 +22,7 @@ public class SceneParamter : StaticGetter<SceneParamter>
     // == Map parameters ==
     public int MapStage = 1;
     public int EnemyReinforce;
+
+    // battle scene result
+    public bool isWin;
 }
