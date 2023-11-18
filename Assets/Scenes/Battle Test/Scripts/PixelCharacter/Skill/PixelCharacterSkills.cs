@@ -11,6 +11,9 @@ namespace battle
             None,
             LightPillar,
             FireOrbit,
+            SingleHeal,
+            Vulture, 
+            TruePunch
         }
 
         public class SkillFactory : StaticGetter<SkillFactory>, IOnStaticFound
@@ -23,11 +26,14 @@ namespace battle
                 s_skills[ESkill.None] = s_noneSkill;
                 s_skills[ESkill.LightPillar] = s_lightingPillarSkill;
                 s_skills[ESkill.FireOrbit] = s_fireOrbitSkill;
+                s_skills[ESkill.SingleHeal] = s_singleHealSkill;
+                s_skills[ESkill.Vulture] = s_vulture;
+                s_skills[ESkill.TruePunch] = s_truePunch;
 
                 return true;
             }
 
-            public State GetSkill(ESkill skill)
+            public State GetStaticSkill(ESkill skill)
             {
                 if (!s_skills.ContainsKey(skill))
                 {
@@ -64,12 +70,13 @@ namespace battle
                     owner.bm.GetAliveEnemiesFromClosest(owner, out enemies);
                     for(int i = 0; i < 3 && i < enemies.Length; i++)
                     {
-                        GameObject go = Instantiate(StaticLoader.Instance().GetLightningPillar());
-                        LightingPillar pillar =  go.GetComponent<LightingPillar>();
+                        PixelCharacter target = enemies[i];
 
-                        pillar.Initialize(owner.bm, owner, enemies[i].entityId, s_lightingPillarSkillDamage);
+                        GameObject go = Instantiate(StaticLoader.Instance().GetLightningPillar());
+                        Destroy(go, 3.0f);
+                        go.transform.position = target.transform.position;
+                        owner.bm.ApplyDamage(owner, target, s_lightingPillarSkillDamage, true);
                     }
-                    
                 },
                 OnUpdate = (PixelHumanoid owner) =>
                 {
@@ -97,6 +104,127 @@ namespace battle
                 OnUpdate = (PixelHumanoid owner) =>
                 {
                     return EState.Chasing;
+                }
+            };
+
+            private static int s_singleHealAmount = 20;
+            private static State s_singleHealSkill = new State()
+            {
+                OnEnter = (PixelHumanoid owner) =>
+                {
+                    owner.stats.mp = 0;
+
+                    PixelCharacter[] characters;
+                    owner.bm.GetAliesFromLowestHp(owner, out characters);
+
+                    // heal self 50% of skill heal amount
+                    owner.bm.ApplyHeal(owner, owner, s_singleHealAmount / 2);
+                    if (characters.Length > 0)
+                    {
+                        owner.bm.ApplyHeal(owner, characters[0], s_singleHealAmount);
+                    }
+                }
+                ,
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    return EState.Chasing;
+                }
+            };
+
+            private static State s_vulture = new State()
+            {
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    PixelCharacter dead = owner.bm.GetClosestDead(owner);
+                    if (dead == null)
+                    {
+                        owner.stats.mp /= 3;
+
+                        return EState.Chasing;
+                    }
+                    else
+                    {
+                        float distance = Utility.GetDistanceBetween(owner.transform, dead.transform);
+                        if (distance <= 1.0f)
+                        {
+                            owner.stats.mp = 0;
+
+                            owner.bm.ApplyHeal(owner, owner, dead.maxHp / 10);
+                            owner.stats.damage += 2;
+
+                            GameObject chompGo = Instantiate(StaticLoader.Instance().GetChomp());
+                            chompGo.transform.position = dead.transform.position + Vector3.up * 0.6f;
+                            Destroy(chompGo, 0.5f);
+
+                            owner.bm.Vulture(owner, (PixelHumanoid)dead);   
+
+                            return EState.Chasing;
+                        }
+                        else
+                        {
+                            Vector3 delta = dead.transform.position - owner.transform.position;
+                            delta.Normalize();
+                            delta = delta * owner.stats.walkSpeed * Time.deltaTime;
+                            owner.transform.position += delta;
+
+                            // consider on paused
+                            if (delta.x != 0.0)
+                            {
+                                if (delta.x > 0.0f)
+                                    owner.SetDirection(Utility.Direction2.Right);
+                                else
+                                    owner.SetDirection(Utility.Direction2.Left);
+                            }
+
+                            owner.m_animator.SetBool("Idle", false);
+                            owner.m_animator.SetBool("Walking", true);
+
+                            return EState.Skill;
+                        }
+                    }
+                }
+            };
+
+            private static int s_truePunch_damage = 5;
+            private static State s_truePunch = new State()
+            {
+                OnUpdate = (PixelHumanoid owner) =>
+                {
+                    float distance = 0;
+                    PixelHumanoid target = owner.bm.GetClosestAliveEnemy(owner.transform, owner.teamIndex, out distance);
+
+                    if (distance > 1)
+                    {
+                        Vector3 delta = target.transform.position - owner.transform.position;
+                        delta.Normalize();
+                        delta = delta * owner.stats.walkSpeed * Time.deltaTime;
+                        owner.transform.position += delta;
+
+                        // consider on paused
+                        if (delta.x != 0.0)
+                        {
+                            if (delta.x > 0.0f)
+                                owner.SetDirection(Utility.Direction2.Right);
+                            else
+                                owner.SetDirection(Utility.Direction2.Left);
+                        }
+
+                        owner.m_animator.SetBool("Idle", false);
+                        owner.m_animator.SetBool("Walking", true);
+
+                        return EState.None;
+                    }
+                    else
+                    {
+                        GameObject skillPrefap = StaticLoader.Instance().GetTruePunch();
+                        GameObject skillGo = GameObject.Instantiate(skillPrefap);
+                        skillGo.transform.position = target.transform.position;
+
+                        owner.bm.ApplyDamage(owner, target, s_truePunch_damage, true);
+                        Destroy(skillGo, 1);
+
+                        return EState.Chasing;
+                    }
                 }
             };
         }

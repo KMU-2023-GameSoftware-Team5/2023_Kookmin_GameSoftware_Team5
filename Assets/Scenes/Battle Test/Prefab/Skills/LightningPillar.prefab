@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1781430859258287444}
-  - component: {fileID: 3924728250240263899}
   m_Layer: 0
   m_Name: LightningPillar
   m_TagString: Untagged
@@ -33,24 +32,6 @@ Transform:
   - {fileID: 8631409827923743020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3924728250240263899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5980311250256988142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 608c59508b044f0458105714195d998b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bm: {fileID: 0}
-  parent: {fileID: 0}
-  birthPosition: {x: 0, y: 0, z: 0}
-  targetId: 0
-  damage: 0
-  m_leftTime: 3
 --- !u!1001 &8631409827923610528
 PrefabInstance:
   m_ObjectHideFlags: 0

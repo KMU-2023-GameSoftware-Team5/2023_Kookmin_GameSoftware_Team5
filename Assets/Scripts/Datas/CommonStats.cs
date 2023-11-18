@@ -6,8 +6,33 @@ namespace data
 {
     // non-scriptable version
     // it is a struct
+    [Serializable]
     public struct CommonStats
     {
+        public CommonStats(int value)
+        {
+            sheild = value;
+            hp = value;
+            mp = value;
+            energy = value;
+            walkSpeed = value;
+            damage = value;
+            attackDelay = value;
+            criticalRate = value;
+        }
+
+        public CommonStats(CommonStats other)
+        {
+            sheild = other.sheild;
+            hp = other.hp;
+            mp = other.mp;
+            energy = other.energy;
+            walkSpeed = other.walkSpeed;
+            damage = other.damage;
+            attackDelay = other.attackDelay;
+            criticalRate = other.criticalRate;
+        }
+
         public void CopyFrom(scriptable.CommonStats other)
         {
             sheild = other.sheild;
@@ -18,6 +43,18 @@ namespace data
             damage = other.damage;
             attackDelay = other.attackDelay;
             criticalRate = other.criticalRate;
+        }
+
+        public void Add(CommonStats other)
+        {
+            sheild += other.sheild;
+            hp += other.hp;
+            mp += other.mp;
+            energy += other.energy;
+            walkSpeed += other.walkSpeed;
+            damage += other.damage;
+            attackDelay += other.attackDelay;
+            criticalRate += other.criticalRate;
         }
 
         public int sheild;
@@ -42,6 +79,24 @@ namespace data
             return ret;
         }
 
+
+        public CommonStats CreateMultiflied(float scale)
+        {
+            CommonStats ret = new CommonStats(this);
+
+            ret.sheild = (int)(sheild * scale);
+            ret.hp = (int)(hp * scale);
+            ret.mp = (int)(mp * scale);
+            ret.energy = (int)(energy * scale);
+            ret.damage = (int)(damage * scale);
+            
+            // 업그레이드 하지 않아도 변하지 않는 스텟
+            ret.criticalRate = criticalRate;
+            ret.walkSpeed = walkSpeed;
+            ret.attackDelay = attackDelay;
+
+            return ret;
+        }
     }
 
     namespace scriptable

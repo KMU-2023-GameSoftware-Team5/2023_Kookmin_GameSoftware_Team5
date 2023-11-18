@@ -1,0 +1,194 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94034df9284644846ab12eff88881eb0, type: 3}
+  m_Name: TraitsStats
+  m_EditorClassIdentifier: 
+  Goblin2:
+    sheild: 0
+    hp: 10
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 2
+    attackDelay: 0
+    criticalRate: 0
+  Goblin3:
+    sheild: 0
+    hp: 20
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Goblin4:
+    sheild: 0
+    hp: 20
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 4
+    attackDelay: 0
+    criticalRate: 0
+  Goblin5:
+    sheild: 0
+    hp: 30
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Skeleton2:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0.1
+  Skeleton3:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0.2
+  Skeleton4:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0.3
+  Skeleton5:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0.4
+  Demon2:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0.5
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Demon3:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 1
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Demon4:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 1.5
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Demon5:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 2
+    damage: 0
+    attackDelay: 0
+    criticalRate: 0
+  Human2:
+    sheild: 0
+    hp: 0
+    mp: 10
+    energy: 0
+    walkSpeed: 0
+    damage: 1
+    attackDelay: 0
+    criticalRate: 0
+  Human3:
+    sheild: 0
+    hp: 0
+    mp: 20
+    energy: 0
+    walkSpeed: 0
+    damage: 2
+    attackDelay: 0
+    criticalRate: 0
+  Human4:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 30
+    walkSpeed: 0
+    damage: 3
+    attackDelay: 0
+    criticalRate: 0
+  Human5:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 40
+    walkSpeed: 0
+    damage: 4
+    attackDelay: 0
+    criticalRate: 0
+  Elf2:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: -0.05
+    criticalRate: 0
+  Elf3:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: -0.1
+    criticalRate: 0
+  Elf4:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: -0.15
+    criticalRate: 0
+  Elf5:
+    sheild: 0
+    hp: 0
+    mp: 0
+    energy: 0
+    walkSpeed: 0
+    damage: 0
+    attackDelay: -0.2
+    criticalRate: 0

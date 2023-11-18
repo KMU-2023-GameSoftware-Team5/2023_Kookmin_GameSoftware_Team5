@@ -22,8 +22,11 @@ namespace battle
         public SpriteLibrary spriteLibrary;
         public CharacterBuilder builder;
         [SerializeField] Animator m_animator;
+        public Animator GetAnimator() { return m_animator; }
+
         [SerializeField] Transform m_bodyScaler;
         [SerializeField] SpriteRenderer m_sr;
+        public SpriteRenderer GetSpriteRenderer() { return m_sr; }
 
         public override void SetDirection(Utility.Direction2 direction)
         {
@@ -58,13 +61,24 @@ namespace battle
             defaultAttackType = data.defualtAttackType;
             stats.damage = data.damage;
             stats.criticalRate = data.criticalRate;
+            traits = data.traits;
 
-            StateSet set = StateSet.CreateStateSetWithSkill(data.skill);
+            StateSet set;
+            if (data.useCustomSkil)
+            {
+                set = StateSet.CreateStateSetWithCustomSkill(data.customSkillName);
+            }
+            else
+            {
+                set = StateSet.CreateStateSetWithSkill(data.skill);
+            }
             m_fsm = new FSM(set, EState.Waiting);
             m_isDead = false;
         }
 
         private FSM m_fsm;
+        public FSM GetFsm() { return m_fsm; }
+
         // public override bool IsDead() { return m_fsm.GetCurrentState() == EState.Dead; }
         public override bool IsDead() { return m_isDead; }
 
@@ -107,7 +121,7 @@ namespace battle
         public override void OnBattleStarted(PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             targetId = 0;
-            m_fsm.SetTransitionToSearch(true);
+            m_fsm.SetForcedNextState(EState.Searching);
         }
 
         private bool m_isDead;
@@ -121,7 +135,7 @@ namespace battle
         public override void OnDead(PixelCharacter killer, PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             base.OnDead(killer, allies, enemies);   // invalidate headBar
-            m_fsm.SetTransitionToDead(true);
+            m_fsm.SetForcedNextState(EState.Dead);
             m_isDead = true;
 
             m_sr.sortingOrder = -1;
@@ -150,6 +164,11 @@ namespace battle
         public override void OnDamaged(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
         {
             m_animator.SetTrigger("Hit");
+        }
+
+        public override void OnHealed(PixelCharacter byWho, PixelCharacter[] allies, PixelCharacter[] enemies)
+        {
+            m_animator.SetTrigger("Heal");
         }
     }
 }

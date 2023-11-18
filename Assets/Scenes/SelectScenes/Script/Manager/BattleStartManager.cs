@@ -34,7 +34,7 @@ public class BattleStartManager : MonoBehaviour
 
         // battle scene과 연동
         BattleTest bt = BattleTest.Instance();
-        bt.SetTeam0(characters);
+        bt.SetTeam0(characters.ToArray());
         BattleTest.Instance().StartBattle();
     }
 }

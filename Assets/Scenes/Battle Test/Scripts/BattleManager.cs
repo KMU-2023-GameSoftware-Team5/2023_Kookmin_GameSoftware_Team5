@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using data;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace battle
@@ -22,6 +23,30 @@ namespace battle
             All
         }
 
+        public class Statistics
+        {
+            public Statistics(PixelCharacter character)
+            {
+                this.character = character;
+                Clear();
+            }
+
+            public void Clear()
+            {
+                DamageApplied = 0;
+                TakenDamage = 0;
+                HealApplied = 0;
+                TakenHeal = 0;
+            }
+
+            public PixelCharacter character;
+            public int DamageApplied;
+            public int TakenDamage;
+            public int HealApplied;
+            public int TakenHeal;
+        }
+        private Dictionary<uint, Statistics> m_statistics;   // key: id
+
         [SerializeField] private EStatus status = EStatus.Waiting;
         public EStatus GetStatus() { return status; }
 
@@ -29,6 +54,65 @@ namespace battle
         {
             status = EStatus.Waiting;
             m_entityMap = new Dictionary<uint, PixelCharacter>();
+            m_statistics = new Dictionary<uint, Statistics>(); 
+        }
+
+        public class TraitsCount
+        {
+            public TraitsCount(List<PixelCharacter> list)
+            {
+                GoblinCount = 0;
+                SkeletonCount = 0;
+                DemonCount = 0;
+                HumanCount = 0;
+                ElfCount = 0;
+
+                foreach (PixelCharacter character in list)
+                {
+                    if (character == null) continue;
+
+                    switch(character.traits)
+                    {
+                        case ETraits.Goblin:
+                            GoblinCount++;
+                            break;
+                        case ETraits.Skeleton:
+                            SkeletonCount++;
+                            break;
+                        case ETraits.Demon:
+                            DemonCount++;
+                            break;
+                        case ETraits.Human:
+                            HumanCount++;
+                            break;
+                        case ETraits.Elf:
+                            ElfCount++;
+                            break;
+                    }
+                }
+            }
+
+            public int GoblinCount;
+            public int SkeletonCount;
+            public int DemonCount;
+            public int HumanCount;
+            public int ElfCount;
+        }
+
+        public static CommonStats CalculcateTraitsStats(List<PixelCharacter> characters)
+        {
+            CommonStats ret = new CommonStats();
+            TraitsCount traitsCount = new TraitsCount(characters);
+
+            TraitsStats traitsStats = StaticLoader.Instance().GetTraitsStats();
+            
+            ret.Add(traitsStats.GetStats(ETraits.Goblin, traitsCount.GoblinCount));
+            ret.Add(traitsStats.GetStats(ETraits.Skeleton, traitsCount.SkeletonCount));
+            ret.Add(traitsStats.GetStats(ETraits.Demon, traitsCount.DemonCount));
+            ret.Add(traitsStats.GetStats(ETraits.Human, traitsCount.HumanCount));
+            ret.Add(traitsStats.GetStats(ETraits.Elf, traitsCount.ElfCount));
+
+            return ret;
         }
 
         private Dictionary<uint, PixelCharacter> m_entityMap;
@@ -59,10 +143,26 @@ namespace battle
             return ret;
         }
 
+        private CommonStats team0TraitStats;
+        private CommonStats team1TraitStats;
+
+        public CommonStats GetTraitsStats(PixelHumanoid humanoid)
+        {
+            if (humanoid.teamIndex == 0)
+                return team0TraitStats;
+            else
+                return team1TraitStats;
+        }
+
         private List<PixelCharacter> m_team0Characters;
         private List<PixelCharacter> m_team1Characters;
         public bool StartBattle(List<PixelCharacter> team0, List<PixelCharacter> team1)
         {
+            m_statistics.Clear();
+
+            team0TraitStats = CalculcateTraitsStats(team0);
+            team1TraitStats = CalculcateTraitsStats(team1);
+
             if (status == EStatus.Fighting)
             {
                 Debug.LogError("already fighting");
@@ -77,22 +177,62 @@ namespace battle
             {
                 character.entityId = lastEntityNumber++;
                 m_entityMap[character.entityId] = character;
+
+                m_statistics[character.entityId] = new Statistics(character);
+
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+                humanoid.GetSpriteRenderer().sortingLayerName = "Default";
             }
             foreach (PixelCharacter character in m_team1Characters)
             {
                 character.entityId = lastEntityNumber++;
                 m_entityMap[character.entityId] = character;
+
+                m_statistics[character.entityId] = new Statistics(character);
+
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+                humanoid.GetSpriteRenderer().sortingLayerName = "Default";
             }
 
             Debug.Log("battle started");
 
             foreach(PixelCharacter character in m_team0Characters)
             {
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+                
+                // apply traits synergy
+                CommonStats traitsStats = GetTraitsStats(humanoid);
+
+                humanoid.stats.sheild += traitsStats.sheild;
+                humanoid.stats.hp += traitsStats.hp;
+                humanoid.maxHp += traitsStats.hp;
+                humanoid.stats.mp += traitsStats.mp;
+                humanoid.stats.energy += traitsStats.energy;
+                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
+                humanoid.stats.damage += traitsStats.damage;
+                humanoid.stats.attackDelay -= traitsStats.attackDelay;
+                humanoid.stats.criticalRate += traitsStats.criticalRate;
+
                 character.OnBattleStarted(m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
 
             foreach (PixelCharacter character in m_team1Characters)
             {
+                PixelHumanoid humanoid = (PixelHumanoid)character;
+
+                // apply traits synergy
+                CommonStats traitsStats = GetTraitsStats(humanoid);
+
+                humanoid.stats.sheild += traitsStats.sheild;
+                humanoid.stats.hp += traitsStats.hp;
+                humanoid.maxHp += traitsStats.hp;
+                humanoid.stats.mp += traitsStats.mp;
+                humanoid.stats.energy += traitsStats.energy;
+                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
+                humanoid.stats.damage += traitsStats.damage;
+                humanoid.stats.attackDelay -= traitsStats.attackDelay;
+                humanoid.stats.criticalRate += traitsStats.criticalRate;
+
                 character.OnBattleStarted(m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
 
@@ -150,6 +290,40 @@ namespace battle
             }
         }
 
+        public PixelHumanoid GetClosestDead(PixelCharacter from)
+        {
+            PixelHumanoid ret = null;
+
+            float min_distance = float.MaxValue;
+            foreach (PixelHumanoid iCharacter in m_team0Characters)
+            {
+                if (iCharacter.IsDead())
+                {
+                    float distance = Utility.GetSquaredDistanceBetween(from.transform, iCharacter.transform);
+                    if (distance < min_distance)
+                    {
+                        min_distance = distance;
+                        ret = iCharacter;
+                    }
+                }
+            }
+
+            foreach (PixelHumanoid iCharacter in m_team1Characters)
+            {
+                if (iCharacter.IsDead())
+                {
+                    float distance = Utility.GetSquaredDistanceBetween(from.transform, iCharacter.transform);
+                    if (distance < min_distance)
+                    {
+                        min_distance = distance;
+                        ret = iCharacter;
+                    }
+                }
+            }
+
+            return ret;
+        }
+
         public void GetAliveEnemiesFromClosest(PixelCharacter from, out PixelCharacter[] out_enemies)
         {
             List<PixelCharacter> ret = new List<PixelCharacter>();
@@ -177,17 +351,91 @@ namespace battle
             out_enemies = ret.ToArray();
         }
 
-        public void ApplyDefaultAttack(PixelCharacter from, PixelCharacter to)
+        public void GetAliesFromLowestHp(PixelCharacter from, out PixelCharacter[] out_enemies)
         {
-            ApplyDamage(from, to, from.stats.damage, true);
+            List<PixelCharacter> ret = new List<PixelCharacter>();
+            
+            List<PixelCharacter> alies = m_team0Characters;
+            if (from.teamIndex == 1)
+                alies = m_team1Characters;
+
+            foreach (PixelCharacter iCharacter in alies)
+            {
+                if (iCharacter.IsDead()) continue;
+
+                ret.Add(iCharacter);
+            }
+
+            ret.Sort((PixelCharacter x, PixelCharacter y) =>
+            {
+
+                return x.stats.hp - y.stats.hp;
+            }
+            );
+
+            out_enemies = ret.ToArray();
         }
 
-        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical, Color color)
+        public void ApplyDefaultAttack(PixelCharacter from, PixelCharacter to)
+        {
+            if (from.teamIndex == 0)
+            {
+                ApplyDamage(from, to, from.stats.damage + team0TraitStats.damage, true);
+            }
+            else if (from.teamIndex == 1)
+            {
+                ApplyDamage(from, to, from.stats.damage + team1TraitStats.damage, true);
+            }
+        }
+
+        public void ApplyHeal(PixelCharacter from, PixelCharacter to, int amount)
+        {
+            if (to.IsDead())
+                return;
+
+            to.stats.hp += amount;
+            if (to.stats.hp > to.maxHp)
+            {
+                amount -= to.stats.hp - to.maxHp;
+
+                to.stats.hp = to.maxHp;
+            }
+                
+
+            m_statistics[from.targetId].HealApplied += amount;
+            m_statistics[to.targetId].TakenHeal += amount;
+
+            UnityEngine.Color damageTextColor = UnityEngine.Color.green;
+
+            // creat damage text
+            GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
+            GameObject damageTextGo = Instantiate(damageTextPrefap, Vector3.zero, Quaternion.identity, to.transform);
+            damageTextGo.transform.localPosition = new Vector3(0.0f, 2.0f, 0.0f);
+            FloatingText floatingText = damageTextGo.GetComponent<FloatingText>();
+            floatingText.Initialize(amount.ToString(), damageTextColor);
+
+            // callback on damaged
+            if (to.teamIndex == 0)
+            {
+                to.OnHealed(from, m_team0Characters.ToArray(), m_team1Characters.ToArray());
+            }
+            else if (to.teamIndex == 1)
+            {
+                to.OnHealed(from, m_team1Characters.ToArray(), m_team0Characters.ToArray());
+            }
+        }
+
+        public void ApplyDamage(PixelCharacter from, PixelCharacter to, int damage, bool checkCritical, UnityEngine.Color color)
         {
             if (to.IsDead())
                 return;
 
             to.stats.hp -= damage;
+            if (to.stats.hp < 0)
+                damage += to.stats.hp;
+
+            m_statistics[from.targetId].DamageApplied += damage;
+            m_statistics[from.targetId].TakenDamage += damage;
 
             from.stats.mp += 10;
             if (from.stats.mp > 100)
@@ -197,7 +445,7 @@ namespace battle
                 // TODO: notify mp 100 maybe?
             }
 
-            Color damageTextColor = color;
+            UnityEngine.Color damageTextColor = color;
 
             // creat damage text
             GameObject damageTextPrefap = StaticLoader.Instance().GetFlatingTextPrefap();
@@ -247,6 +495,11 @@ namespace battle
                 return;
 
             to.stats.hp -= damage;
+            if (to.stats.hp < 0)
+                damage += to.stats.hp;
+
+            m_statistics[from.targetId].DamageApplied += damage;
+            m_statistics[from.targetId].TakenDamage += damage;
 
             from.stats.mp += 10;
             if (from.stats.mp > 100)
@@ -256,12 +509,12 @@ namespace battle
                 // TODO: notify mp 100 maybe?
             }
 
-            Color damageTextColor = Color.white;
+            UnityEngine.Color damageTextColor = UnityEngine.Color.white;
             if (checkCritical)
             {
                 if (UnityEngine.Random.Range(0.0f, 1.0f) <= from.stats.criticalRate)
                 {
-                    damageTextColor = Color.yellow;
+                    damageTextColor = UnityEngine.Color.yellow;
                     damage *= 2;
                 }
             }
@@ -306,6 +559,27 @@ namespace battle
                     to.OnKill(to, m_team1Characters.ToArray(), m_team0Characters.ToArray());
                 }
             }
+        }
+
+        public virtual void Vulture(PixelCharacter from, PixelHumanoid to)
+        {
+            if (!to.IsDead())
+            {
+                return;
+            }
+
+            PixelHumanoid.FSM fsm = to.GetFsm();
+
+            PixelHumanoid.StateFactory.BeingVulturedState state = (PixelHumanoid.StateFactory.BeingVulturedState)fsm.GetStateSet().Get(PixelHumanoid.EState.BeingVultured);
+            state.vulturerId = from.entityId;
+
+            // delete vultured humanoid so that can't be queryed even for DEAD state
+            if (to.teamIndex == 0)
+                m_team0Characters.Remove(to);
+            else if (to.teamIndex == 1)
+                m_team1Characters.Remove(to);
+
+            fsm.SetForcedNextState(PixelHumanoid.EState.BeingVultured);
         }
 
         public void Pause()

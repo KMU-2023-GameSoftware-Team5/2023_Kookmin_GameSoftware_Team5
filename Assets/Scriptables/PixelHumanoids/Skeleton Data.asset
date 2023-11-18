@@ -22,6 +22,7 @@ MonoBehaviour:
   criticalRate: 0
   characterName: Skeleton
   attackRange: 1
+  traits: 1
   Head: Skeleton#FFFFFF/0:0:0
   Ears: Skeleton#FFFFFF/0:0:0
   Eyes: Skeleton#FFFFFF/0:0:0
@@ -35,4 +36,6 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 0
-  skill: 1
+  useCustomSkil: 0
+  skill: 3
+  customSkillName: 

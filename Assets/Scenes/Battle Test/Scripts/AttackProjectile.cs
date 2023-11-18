@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace battle
 {
-    // TODO: line Renderer∑Œ ±À¿˚ ¿Ãª⁄∞‘ ±◊∏Æ±‚
+    // TODO: line RendererÎ°ú Í∂§Ï†Å Ïù¥ÏÅòÍ≤å Í∑∏Î¶¨Í∏∞
     public class AttackProjectile : MonoBehaviour
     {
         public BattleManager bm;
@@ -16,26 +16,66 @@ namespace battle
         public float speed;
         public int damage;
         public bool isAlive;
-        public bool lodge;  // EXPERIMENTAL
 
         [Header("Reference")]
         public SpriteRenderer sr;
 
-        // TODO: too many initializers: just use prefap default value and make more prefab
-        public void Initialize(BattleManager bm, PixelHumanoid parent, Vector3 birthPosition, uint targetId, float radius, bool rotateDirection, float lifeTime, float speed, int damage, bool lodge)
+        public void InitializeAsDefaultAttack(
+            BattleManager bm,
+            PixelHumanoid parent,
+            uint targetId,
+            float radius,
+            bool rotateDirection,
+            float lifeTime,
+            float speed
+        )
         {
             isAlive = true;
 
             this.parent = parent;
             this.bm = bm;
-            this.birthPosition = birthPosition;
+            this.targetId = targetId;
+            this.radius = radius;
+            this.rotateDirection = rotateDirection;
+            leftLifeTime = lifeTime;
+            this.speed = speed;
+            damage = -1;
+
+            PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
+            if (target == null)
+            {
+                transform.position += transform.right * speed * Time.deltaTime;
+                return;
+            }
+
+            Vector3 targetPos = target.transform.position + Vector3.up;
+            if (rotateDirection)
+            {
+                rotate(targetPos);
+            }
+        }
+
+        public void InitializeAsSkill(
+            BattleManager bm, 
+            PixelHumanoid parent, 
+            uint targetId, 
+            float radius, 
+            bool rotateDirection, 
+            float lifeTime, 
+            float speed, 
+            int damage
+        )
+        {
+            isAlive = true;
+
+            this.parent = parent;
+            this.bm = bm;
             this.targetId = targetId;
             this.radius = radius;
             this.rotateDirection = rotateDirection;
             leftLifeTime = lifeTime;
             this.speed = speed;
             this.damage = damage;
-            this.lodge = lodge;
 
             PixelCharacter target = bm.GetEntity(targetId, BattleManager.EDeadOrAlive.Alive);
             if (target == null)
@@ -81,17 +121,13 @@ namespace battle
             {
                 // TODO: handle HIT
                 transform.SetParent(target.transform);
-                bm.ApplyDefaultAttack(parent, target);
 
-                if (lodge)
-                {
-                    isAlive = false;
-                    leftLifeTime = 5.0f;    // ≈∏∞Ÿø° √Êµπ«œ∏È ≈∏ƒœ ∏ˆø° n√ µøæ» ∫ŸæÓ¿÷¥¬¥Ÿ. 
-                }
+                if (damage == -1f)
+                    bm.ApplyDefaultAttack(parent, target);
                 else
-                {
-                    Destroy(gameObject);
-                }
+                    bm.ApplyDamage(parent, target, damage, true);
+
+                Destroy(gameObject);
             }
 
         } /* end of Update() */

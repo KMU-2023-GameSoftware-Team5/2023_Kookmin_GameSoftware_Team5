@@ -16,16 +16,14 @@ namespace battle
             Delaying,
             Skill,
             Dead,
-            None,
+            None,       // 현재 스테이트 유지
+            BeingVultured, 
         }
 
         public partial class State
         {
             public State() { }
 
-            // 이 부분을 상속으로 구현하면 상태 하나마다 클래스 하나가 되는데, 코드가 길어지는 것이 싫다. 
-            // 그래서 대리자로 했다. 
-            // 대리자 구현은 PixelHumnaoid.StateFactory에서 확인할 수 있다.
             public Action<PixelHumanoid> OnEnter;
             public Func<PixelHumanoid, EState> OnUpdate;
             public Action<PixelHumanoid> OnEnd;
@@ -58,6 +56,7 @@ namespace battle
             public State Delaying;
             public State Dead;
             public State Skill;
+            public StateFactory.BeingVulturedState BeingVultured;
 
             // maps between EState and State
             public State Get(EState state)
@@ -80,10 +79,28 @@ namespace battle
                         return Delaying;
                     case EState.Skill:
                         return Skill;
+                    case EState.BeingVultured:
+                        return BeingVultured;
                     default:
                         Debug.LogError("FATAL: PixelHumanoid.State.Get() switch defatul case: INVALID MAPPING");
                         return null;
                 }
+            }
+
+            public static StateSet CreateStateSetWithCustomSkill(string skillName)
+            {
+                return new StateSet()
+                {
+                    Waiting = StateFactory.GetWaitingState(),
+                    Searching = StateFactory.GetSearchingState(),
+                    Chasing = StateFactory.GetChasingState(),
+                    MeleeAttacking = StateFactory.GetMeleeAttackingState(),
+                    RangedAttacking = StateFactory.GetRangedAttackingState(),
+                    Delaying = StateFactory.GetDelayingState(),
+                    Dead = StateFactory.GetDeadState(),
+                    Skill = StaticLoader.Instance().GetCustomSkillState(skillName),
+                    BeingVultured = new StateFactory.BeingVulturedState()
+                };
             }
 
             public static StateSet CreateStateSetWithSkill(ESkill skill)
@@ -97,7 +114,8 @@ namespace battle
                     RangedAttacking = StateFactory.GetRangedAttackingState(),
                     Delaying = StateFactory.GetDelayingState(),
                     Dead = StateFactory.GetDeadState(),
-                    Skill = SkillFactory.Instance().GetSkill(skill)
+                    Skill = SkillFactory.Instance().GetStaticSkill(skill),
+                    BeingVultured = new StateFactory.BeingVulturedState()
                 };
             }
         }
@@ -108,15 +126,14 @@ namespace battle
             public FSM() 
             { 
                 m_currentEState = EState.None;
-                m_transitionToDead = false;
-                m_transitionToSearching = false;
+                m_forcedNextState = EState.None;
             }
 
             public FSM(StateSet stateSet) : this()
             {
                 m_stateSet = stateSet;
                 m_currentState = m_stateSet.Get(EState.Waiting);
-                m_currentEState = EState.Waiting;
+                m_forcedNextState = EState.None;
             }
 
             public FSM(StateSet stateSet, EState initialState) : this()
@@ -124,7 +141,7 @@ namespace battle
                 m_stateSet = stateSet;
                 m_currentState = m_stateSet.Get(initialState);
                 m_currentEState = initialState;
-                m_transitionToDead = false;
+                m_forcedNextState = EState.None;
             }
 
             public void Update(PixelHumanoid owner)
@@ -136,10 +153,12 @@ namespace battle
                     return;
 
                 EState newState = EState.Dead;
-                if (!m_transitionToDead)
-                    newState = m_currentState.OnUpdate(owner);
-                if (m_transitionToSearching)
-                    newState = EState.Searching;
+                newState = m_currentState.OnUpdate(owner);
+                if (m_forcedNextState != EState.None)
+                {       
+                    newState = m_forcedNextState;
+                    m_forcedNextState = EState.None;
+                }
 
                 if (newState != EState.None)
                 {
@@ -149,21 +168,18 @@ namespace battle
                     m_currentEState = newState;
                     m_currentState = m_stateSet.Get(newState);
 
+                    if (m_currentState == null)
+                        Debug.Log("new state is NULL: " + newState.ToString());
+
                     if (m_currentState.OnEnter != null)
                         m_currentState.OnEnter(owner);
                 }
             }
 
-            private bool m_transitionToDead;
-            public void SetTransitionToDead(bool yesOrNo)  // from any state
+            private EState m_forcedNextState;
+            public void SetForcedNextState(EState newState)
             {
-                m_transitionToDead = yesOrNo;
-            }
-
-            private bool m_transitionToSearching;
-            public void SetTransitionToSearch(bool yesOrNo)    // from any state
-            {
-                m_transitionToSearching = yesOrNo;
+                m_forcedNextState = newState;
             }
 
             private EState m_currentEState;
@@ -171,6 +187,7 @@ namespace battle
 
             private State m_currentState;
             private StateSet m_stateSet;
+            public StateSet GetStateSet() {  return m_stateSet; } 
         }
     }
 }
