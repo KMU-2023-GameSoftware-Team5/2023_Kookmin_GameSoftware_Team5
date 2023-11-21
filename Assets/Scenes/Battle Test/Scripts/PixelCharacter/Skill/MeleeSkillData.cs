@@ -7,6 +7,7 @@ using battle;
 [CreateAssetMenu(fileName = "MeleeSkill", menuName = "data/Skill/Melee", order = 1)]
 public class MeleeSkillData : CustomSkillData
 {
+    [Header("MeleeSkillData")]
     public GameObject effect;
     public int effectRepeatCount;   // 최소 1
     public float effectGapSec;

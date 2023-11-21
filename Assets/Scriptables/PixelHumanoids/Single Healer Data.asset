@@ -22,6 +22,7 @@ MonoBehaviour:
   criticalRate: 0
   characterName: Single Healer
   attackRange: 1
+  traits: 0
   Head: Elf#FFFFFF/0:0:0
   Ears: Elf#FFFFFF/0:0:0
   Eyes: Elf#FFFFFF/-33:-5:100
@@ -35,4 +36,6 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 2
+  useCustomSkil: 1
   skill: 3
+  customSkillName: magic skill 1

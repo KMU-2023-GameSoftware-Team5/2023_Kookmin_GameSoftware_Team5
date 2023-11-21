@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using battle;
-using static UnityEngine.GraphicsBuffer;
 
 [CreateAssetMenu(fileName = "magicSkill", menuName ="data/Skill/Magic", order = 1)]
 public class MagicSkillData : CustomSkillData
 {
+    [Header("MagicSkillData")]
     public GameObject effect;
     public int effectCount;
     public int damage;

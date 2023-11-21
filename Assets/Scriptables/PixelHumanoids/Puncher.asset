@@ -36,6 +36,6 @@ MonoBehaviour:
   Back: 
   Mask: 
   defualtAttackType: 0
-  useCustomSkil: 0
+  useCustomSkil: 1
   skill: 5
-  customSkillName: 
+  customSkillName: magic skill 1

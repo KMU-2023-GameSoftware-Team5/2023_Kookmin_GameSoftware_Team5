@@ -16,7 +16,7 @@ namespace data
     [CreateAssetMenu(fileName = "ItemData", menuName = "data/ItemData", order = 2)]
     public class ItemData: scriptable.CommonStats
     {
-        [Header("PixelHumanoidData")]
+        [Header("ItemData")]
         // WARNUNG: MUST BE UNIQUE!
         public string itemName = "unique_name";
 

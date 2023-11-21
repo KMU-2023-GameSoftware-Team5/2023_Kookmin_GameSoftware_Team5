@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace data
@@ -96,6 +95,34 @@ namespace data
             ret.attackDelay = attackDelay;
 
             return ret;
+        }
+
+        public CommonStats GetUpgradedStats(int upgradeLevel)
+        {
+            switch (upgradeLevel)
+            {
+                case 1:
+                    return CreateMultiflied(1.0f);
+                case 2:
+                    return CreateMultiflied(1.7f);
+                case 3:
+                    return CreateMultiflied(2.6f);
+                case 4:
+                    return CreateMultiflied(3.7f);
+                case 5:
+                    return CreateMultiflied(4.8f);
+                case 6:
+                    return CreateMultiflied(5.8f);
+                case 7:
+                    return CreateMultiflied(6.9f);
+                case 8:
+                    return CreateMultiflied(7.9f);
+                case 9:
+                    return CreateMultiflied(9.0f);
+                default:
+                    Debug.LogError("invalid upgrade level: " + upgradeLevel.ToString());
+                    return CreateMultiflied(1.0f);
+            }
         }
     }
 

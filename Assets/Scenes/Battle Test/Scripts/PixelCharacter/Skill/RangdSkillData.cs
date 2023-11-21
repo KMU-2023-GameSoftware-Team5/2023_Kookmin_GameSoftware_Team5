@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RangedSkill", menuName = "data/Skill/RangedSkill", order = 1)]
 public class RangedSkillData : CustomSkillData
 {
+    [Header("RangedSkillData")]
     public GameObject projectile;
     public float projectileRadius;
     public int projectileCount;

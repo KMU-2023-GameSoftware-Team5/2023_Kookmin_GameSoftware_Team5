@@ -38,6 +38,20 @@ namespace battle
 
         [Header("Humanoid")]
         [SerializeField] private List<PixelHumanoidData> pixelHumanoidDatas = new List<PixelHumanoidData>();
+        private Dictionary<string, PixelHumanoidData> m_pixelHumanoidDataMap = new Dictionary<string, PixelHumanoidData>();
+
+        public PixelHumanoidData GetPixelHumanoidData(string name)
+        {
+            if (m_pixelHumanoidDataMap.ContainsKey(name))
+            {
+                return m_pixelHumanoidDataMap[name];
+            }
+            else
+            {
+                Debug.LogError("PixelHumanoidData not registered: " + name);
+                return null;
+            }
+        }
         public int GetPixelHumanoidCount() { return pixelHumanoidDatas.Count; }
         public List<PixelHumanoidData> GetPixelHumanoidDatas() { return pixelHumanoidDatas; }
         public PixelHumanoidData GetPixelHumanoidData(int index)
@@ -58,16 +72,31 @@ namespace battle
 
         [Header("CustomSkills")]
         [SerializeField] private List<CustomSkillData> m_customSkillDatas = new List<CustomSkillData>();
-        private Dictionary<string, PixelHumanoid.State> m_customSkillDataMap = new Dictionary<string, PixelHumanoid.State>();
-        public PixelHumanoid.State GetCustomSkillState(string skill_name)
+        private Dictionary<string, CustomSkillData> m_customSkillDataMap = new Dictionary<string, CustomSkillData>();
+        private Dictionary<string, PixelHumanoid.State> m_customSkillStateMap = new Dictionary<string, PixelHumanoid.State>();
+        
+        public CustomSkillData GetCustomSkillData(string skillName) 
         {
-            if (m_customSkillDataMap.ContainsKey(skill_name))
+            if(m_customSkillDataMap.ContainsKey(skillName))
             {
-                return m_customSkillDataMap[skill_name];
+                return m_customSkillDataMap[skillName];
             }
             else
             {
-                Debug.LogError("custom skill not registered: " + skill_name);
+                Debug.LogError("custom skill not registered: " + skillName);
+                return null;
+            }
+        }
+
+        public PixelHumanoid.State GetCustomSkillState(string skillName)
+        {
+            if (m_customSkillStateMap.ContainsKey(skillName))
+            {
+                return m_customSkillStateMap[skillName];
+            }
+            else
+            {
+                Debug.LogError("custom skill not registered: " + skillName);
                 return null;
             }
         }
@@ -78,8 +107,26 @@ namespace battle
             {
                 if (data != null)
                 {
-                    m_customSkillDataMap[data.skillName] = data.CreateSkillState();
+                    if (m_customSkillStateMap.ContainsKey(data.skillName))
+                    {
+                        Debug.LogError("duplicated custom skill name: " + data.skillName);
+                        continue;
+                    }
+
+                    m_customSkillDataMap[data.skillName] = data;
+                    m_customSkillStateMap[data.skillName] = data.CreateSkillState();
                 }
+            }
+
+            foreach(PixelHumanoidData data in pixelHumanoidDatas)
+            {
+                if (m_pixelHumanoidDataMap.ContainsKey(data.characterName))
+                {
+                    Debug.LogError("duplicated PixelHumanoidData name: " + data.characterName);
+                    continue;
+                }
+
+                m_pixelHumanoidDataMap[data.characterName] = data;
             }
 
             return true;

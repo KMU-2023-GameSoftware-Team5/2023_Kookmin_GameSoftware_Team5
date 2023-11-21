@@ -60,64 +60,6 @@ namespace battle
             m_statistics = new Dictionary<uint, Statistics>(); 
         }
 
-        public class TraitsCount
-        {
-            public TraitsCount(List<PixelCharacter> list)
-            {
-                GoblinCount = 0;
-                SkeletonCount = 0;
-                DemonCount = 0;
-                HumanCount = 0;
-                ElfCount = 0;
-
-                foreach (PixelCharacter character in list)
-                {
-                    if (character == null) continue;
-
-                    switch(character.traits)
-                    {
-                        case ETraits.Goblin:
-                            GoblinCount++;
-                            break;
-                        case ETraits.Skeleton:
-                            SkeletonCount++;
-                            break;
-                        case ETraits.Demon:
-                            DemonCount++;
-                            break;
-                        case ETraits.Human:
-                            HumanCount++;
-                            break;
-                        case ETraits.Elf:
-                            ElfCount++;
-                            break;
-                    }
-                }
-            }
-
-            public int GoblinCount;
-            public int SkeletonCount;
-            public int DemonCount;
-            public int HumanCount;
-            public int ElfCount;
-        }
-
-        public static CommonStats CalculcateTraitsStats(List<PixelCharacter> characters)
-        {
-            CommonStats ret = new CommonStats();
-            TraitsCount traitsCount = new TraitsCount(characters);
-
-            TraitsStats traitsStats = StaticLoader.Instance().GetTraitsStats();
-            
-            ret.Add(traitsStats.GetStats(ETraits.Goblin, traitsCount.GoblinCount));
-            ret.Add(traitsStats.GetStats(ETraits.Skeleton, traitsCount.SkeletonCount));
-            ret.Add(traitsStats.GetStats(ETraits.Demon, traitsCount.DemonCount));
-            ret.Add(traitsStats.GetStats(ETraits.Human, traitsCount.HumanCount));
-            ret.Add(traitsStats.GetStats(ETraits.Elf, traitsCount.ElfCount));
-
-            return ret;
-        }
-
         private Dictionary<uint, PixelCharacter> m_entityMap;
         public PixelCharacter GetEntity(uint id, EDeadOrAlive doa)
         {
@@ -163,8 +105,11 @@ namespace battle
         {
             m_statistics.Clear();
 
-            team0TraitStats = CalculcateTraitsStats(team0);
-            team1TraitStats = CalculcateTraitsStats(team1);
+            TraitsCount team0TraitsStats = new TraitsCount(team0);
+            TraitsCount team1TraitsStats = new TraitsCount(team1);
+
+            team0TraitStats = team0TraitsStats.GetTraitsStats();
+            team1TraitStats = team1TraitsStats.GetTraitsStats();
 
             if (status == EStatus.Fighting)
             {

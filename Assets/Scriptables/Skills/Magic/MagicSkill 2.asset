@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 413aad6bc6d42f44b9d8951f5a98931e, type: 3}
   m_Name: MagicSkill 2
   m_EditorClassIdentifier: 
-  skillName: magic skill 1
+  skillName: magic skill 2
   skillDescription: 
+  skillIcon: {fileID: 0}
   effect: {fileID: 5980311250256988142, guid: 1eaaf01e0bb97254a9347289189019b4, type: 3}
   effectCount: 2
   damage: 5
