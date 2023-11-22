@@ -7,13 +7,15 @@ namespace deck
     public class NewGameSceneManager : MonoBehaviour
     {
 
+        PlayerManager playerManager;
+
         [Header("intial setting")]
         [SerializeField] int playerGold;
         [SerializeField] int playerLife;
 
-        [Header("saveLoad System")]
-        [SerializeField] SaveLoadManager saveLoadManager;
-        PlayerManager playerManager;
+        [Header("Canvas")]
+        public Canvas newGameCanvas;
+        public Canvas loadGameCanvas;
 
         [Header("current Player Status")]
         [SerializeField] Transform characterGrid;
@@ -29,19 +31,33 @@ namespace deck
 
             List<PixelCharacter> characters = playerManager.playerCharacters;
             List<EquipItem> items = playerManager.playerEquipItems;
-            // 현재 보유중인 캐릭터 출력
-            for (int i = 0; i < characters.Count; i++)
-            {
-                // MyDeckFactory.Instance().createCharacterInventoryPrefab(characters[i], characterGrid);
-                MyDeckFactory.Instance().createCharacterCardPrefab(characters[i], characterGrid);
-            }
-            // 플레이어 보유 아이템에 대한 UI 생성
-            foreach (EquipItem item in items)
-            {
-                MyDeckFactory.Instance().createLightEquipItemUI(item, itemGrid);
-            }
 
-            newGameSelector.Initialize(this);
+            if (characters.Count == 0)
+            {
+                newGameCanvas.gameObject.SetActive(true);
+                loadGameCanvas.gameObject.SetActive(false);
+            }
+            else
+            {
+                newGameCanvas.gameObject.SetActive(false);
+                loadGameCanvas.gameObject.SetActive(true);
+                // 현재 보유중인 캐릭터 출력
+                for (int i = 0; i < characters.Count; i++)
+                {
+                    // MyDeckFactory.Instance().createCharacterInventoryPrefab(characters[i], characterGrid);
+                    // MyDeckFactory.Instance().createCharacterCardPrefab(characters[i], characterGrid);
+                    MyDeckFactory.Instance().createLightCharacterInfo(characters[i], characterGrid);
+                }
+            }
+                /*
+                }
+                // 플레이어 보유 아이템에 대한 UI 생성
+                foreach (EquipItem item in items)
+                {
+                    MyDeckFactory.Instance().createLightEquipItemUI(item, itemGrid);
+                }
+                */
+                newGameSelector.Initialize(this);
         } 
 
         /// <summary>

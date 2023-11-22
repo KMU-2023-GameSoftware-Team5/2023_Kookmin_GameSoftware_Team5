@@ -18,6 +18,7 @@ namespace deck
         
         [Header("characterIconLayer")]
         [SerializeField] CharacterIcon characterIcon;
+        [SerializeField] GameObject[] star;
 
 
         [Header("characterStatLayer")]
@@ -46,10 +47,8 @@ namespace deck
         /// <summary>
         /// 캐릭터 세부 정보 보여줄 텍스트 컴포넌트
         /// </summary>
-        [SerializeField] TextMeshProUGUI characterDescription;
+        [SerializeField] CharacterDetailDesc characterDescription;
         [SerializeField] GameObject itemTab;
-
-        [SerializeField] GameObject[] star;
 
         void Awake()
         {
@@ -87,7 +86,7 @@ namespace deck
         {
             characterIcon.Initialize(character);
             this.character = character;
-            characterDescription.text = this.character.getDescribe();
+            characterDescription.openCharacterDesc(character);
             characterStats.setCharacter(character);
             for(int i = 0; i < this.character.Inventory.Length; i++)
             {
@@ -101,6 +100,8 @@ namespace deck
             }
             star[character.tier - 1].SetActive(true);
             nickNameInput.readOnly = !character.playerOwned;
+
+            // detail setting 
         }
 
         /// <summary>

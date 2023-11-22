@@ -47,6 +47,26 @@ namespace deck
             Inventory = new EquipItem[PlayerManager.MAX_INVENTORY_SIZE];
         }
 
+        public PixelHumanoid(string characterName, PixelHumanoidData characterData)
+        {
+            ID = Guid.NewGuid().ToString();
+            this.characterName = characterName;
+            characterNickName = nickNameMaker();
+
+            // 캐릭터 초기 위치 설정
+            worldPosition = characterInitPosition();
+
+            // 캐릭터 설정
+            characterStat = new CommonStats();
+            characterStat.CopyFrom(characterData);
+            defualtAttackType = characterData.defualtAttackType;
+            skill = characterData.customSkillName;
+
+            // 아이템 인벤토리
+            Inventory = new EquipItem[PlayerManager.MAX_INVENTORY_SIZE];
+
+        }
+
         /// <summary>
         /// 임시로 닉네임 만드는 메서드
         /// </summary>
@@ -106,6 +126,9 @@ namespace deck
             characterName = (string)json["name"];
             characterNickName = (string)json["nickname"];
             characterStat = JsonConvert.DeserializeObject<CommonStats>((string)json["stat"]);
+            PixelHumanoidData ph = MyDeckFactory.Instance().getPixelHumanoidData(characterName);
+            skill = ph.customSkillName; 
+            defualtAttackType = ph.defualtAttackType;
             worldPosition = new Vector3(
                 (float)json["position"]["x"],
                 (float)json["position"]["y"],

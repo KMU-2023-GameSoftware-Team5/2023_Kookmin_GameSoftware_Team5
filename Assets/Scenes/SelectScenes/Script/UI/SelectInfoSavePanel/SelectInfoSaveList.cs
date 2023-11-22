@@ -10,6 +10,7 @@ namespace deck
         [SerializeField]GameObject listGameObject;
         [SerializeField]GameObject selectInfoSaveListPrefab;
         List<SelectInfoSaveListItem> childs;
+        [SerializeField] GameObject presetCharacterInfo;
 
         int _loadIdx;
         public int loadIdx
@@ -71,5 +72,12 @@ namespace deck
             listSetActive(false);
         }
 
+        public void createPresetCharacterInfo(PixelCharacter character, Transform target)
+        {
+            GameObject go = Instantiate(presetCharacterInfo, target);
+            RectTransform parent = target.gameObject.GetComponent<RectTransform>();
+            go.GetComponent<ParentResizer>().initialize(parent);
+            go.GetComponent<CharacterIcon>().Initialize(character);
+        }
     }
 }

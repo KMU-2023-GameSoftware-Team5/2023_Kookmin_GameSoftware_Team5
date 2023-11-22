@@ -27,13 +27,19 @@ namespace deck
         /// </summary>
         public Dictionary<string, PixelHumanoidData>  m_humanoidDataMap;
 
-
         /// <summary>
         /// CreateBuilderControl을 위한 sprite collection
         /// </summary>
         private SpriteCollection collection;
         public SpriteCollection GetCollection() { return collection; }
 
+
+        /// <summary>
+        /// 캐릭터 설명 모음
+        /// </summary>
+        public PixelCharacterDescription pixelCharacterDescription;
+        public Dictionary<EDefualtAttackType, string> attackTypeDescriptionMap;
+        public Dictionary<battle.PixelHumanoid.ESkill, string> skillDescriptionMap;
 
 
         [SerializeField] private ItemData[] itemDatas;
@@ -66,13 +72,38 @@ namespace deck
             characterSpritePool = new Dictionary<string, Sprite>();
             m_humanoidDataMap =  battle.MyCharacterFactory.Instance().getPixelHumanoidDataMap();
             collection = battle.StaticLoader.Instance().GetCollection();
+            // 아이템 목록
             itemDataMap = new Dictionary<string, ItemData>();
             foreach (var itemData in itemDatas)
             {
                 if (itemData != null)
                     itemDataMap[itemData.itemName] = itemData;
             }
+
+            // 캐릭터 공격타입 설명 목록
+            attackTypeDescriptionMap = new Dictionary<EDefualtAttackType, string>();
+            foreach (var attackTypeDescriptions  in pixelCharacterDescription.attackTypeDescriptions)
+            {
+                attackTypeDescriptionMap[attackTypeDescriptions.type] = attackTypeDescriptions.desc;
+            }
+
+            // 스킬 설명 목록 
+            skillDescriptionMap = new Dictionary<battle.PixelHumanoid.ESkill, string>();
+            foreach (var skillDescriptions in pixelCharacterDescription.skillDescriptions)
+            {
+                skillDescriptionMap[skillDescriptions.type] = skillDescriptions.desc;
+            }
+
             buildSpritePool();
+        }
+
+        public GameObject lightCharacterInfo;
+        public void createLightCharacterInfo(PixelCharacter character, Transform target)
+        {
+            GameObject go = Instantiate(lightCharacterInfo, target);
+            RectTransform parent = target.gameObject.GetComponent<RectTransform>();
+            go.GetComponent<ParentResizer>().initialize(parent);
+            go.GetComponent<CharacterIcon>().Initialize(character);
         }
 
         public Dictionary<string, Sprite> characterSpritePool;
@@ -119,9 +150,8 @@ namespace deck
         /// <param name="characterName"></param>
         /// <returns>생성한 픽셀 캐릭터</returns>
         public PixelCharacter buildPixelCharacter(string characterName) {
-            CommonStats characterStat = new CommonStats();
-            characterStat.CopyFrom(getPixelHumanoidData(characterName));
-            PixelCharacter ret = new PixelHumanoid(characterName, characterStat);
+            PixelHumanoidData pixelHumanoidData = getPixelHumanoidData(characterName);
+            PixelCharacter ret = new PixelHumanoid(characterName, pixelHumanoidData);
             return ret;
         }
 

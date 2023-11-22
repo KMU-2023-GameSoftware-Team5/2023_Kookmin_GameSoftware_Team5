@@ -16,6 +16,7 @@ namespace placement
     {
         public GameObject headName;
         public TextMeshProUGUI characterName;
+        public TextMeshProUGUI characterUpgrade;
         public GameObject hp;
         public GameObject mp;
         public PixelCharacter character;
@@ -25,6 +26,7 @@ namespace placement
         {
             this.character = character;
             characterName.text  = character.characterNickName;
+            characterUpgrade.text = $"★{character.tier}";
             hp.SetActive(false);
             mp.SetActive(false);
             MyDeckFactory.Instance().nickNameChangeEvent.AddListener(onNickNameChange);

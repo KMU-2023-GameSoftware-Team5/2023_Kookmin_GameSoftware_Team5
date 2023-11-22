@@ -5,6 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 전투의 시작 및 종료를 주관하는 class
+/// </summary>
 public class BattleStartManager : MonoBehaviour
 {
     public GameObject[] destroyTarget;

@@ -9,6 +9,8 @@ using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using Castle.Core;
+using static UnityEngine.GraphicsBuffer;
 
 namespace deck
 {
@@ -96,7 +98,7 @@ namespace deck
 
         [Header("Character Placement")]
         /// <summary>
-        /// 임시속성 - 캐릭터 배치 오브젝트의 parent canvas
+        ///  캐릭터 배치 오브젝트의 parent canvas
         /// </summary>
         [SerializeField] Transform placementCanvas;
 
@@ -116,14 +118,27 @@ namespace deck
         [SerializeField] GameObject characterHeadNamePrefab;
 
         /// <summary>
-        /// 세이브 로드 매니저
-        /// </summary>
-        SaveLoadManager saveLoadManager;
-        
-        /// <summary>
         /// 캐릭터 선택 및 배치 게임오브젝트
         /// </summary>
         [SerializeField]GameObject selectCharacter;
+
+
+        /////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// 현재 배치된 deck character
+        /// </summary>
+        List<PixelCharacter> selectedDeckCharacters;
+        /// <summary>
+        /// 현재 배치된 battle character
+        /// </summary>
+        List<battle.PixelCharacter> selectedBattleCharacters;
+        /// <summary>
+        /// 시너지
+        /// </summary>
+        battle.TraitsCount traitsCount;
+        /////////////////////////////////////////////////////////////////////////////////
+
+        public SynergyUI synergyUI;
 
         void Start()
         {
@@ -160,6 +175,8 @@ namespace deck
             // 저장된 배치 정보 가져오기
             placementUIs = new List<PlacementCharacter>();
             selectedCharacters = new List<SelectCharacter>();
+            selectedDeckCharacters = new List<PixelCharacter>();
+            selectedBattleCharacters = new List<battle.PixelCharacter> ();
             if (PlayerManager.Instance().selectedCharacters == null || PlayerManager.Instance().selectedCharacters.Count == 0) // 배치 프리셋 정보가 없으면 초기화
             {
                 selectedCharacterSaveList = new JArray();
@@ -245,17 +262,19 @@ namespace deck
         /// <summary>
         /// 배틀씬으로 보내줌
         /// </summary>
-        /// <returns></returns>
+        /// <returns>현재 선택된 캐릭터의 battle.PixelCharacter</returns>
         public List<battle.PixelCharacter> battleStart()
         {
-            List<battle.PixelCharacter> ret = new List<battle.PixelCharacter> ();
+            // List<battle.PixelCharacter> ret = new List<battle.PixelCharacter> ();
             foreach(PlacementCharacter target in placementUIs)
             {
-                ret.Add(target.gameObject.GetComponent<battle.PixelCharacter>());
+                //ret.Add(target.gameObject.GetComponent<battle.PixelCharacter>());
                 target.battleStart();
             }
+            List<battle.PixelCharacter>  ret = selectedBattleCharacters;
             return ret;
         }
+
         /// <summary>
         /// 좌표를 받아서 캐릭터 배치
         /// </summary>
@@ -278,6 +297,12 @@ namespace deck
                 createSelectedCharacterLI(character);
                 characterLI.isPlaced = true;
                 selectedCharacters.Add(characterLI);
+
+                // Deck-battle
+                selectedBattleCharacters.Add(ret.gameObject.GetComponent<battle.PixelCharacter>());
+                selectedDeckCharacters.Add(character);
+
+                calSynergyStat();
                 return true;
             }
             else
@@ -293,27 +318,43 @@ namespace deck
         /// <param name="character">배치해제할 캐릭터</param>
         public void unPlaceCharacter(PixelCharacter character)
         {
+            int idx = placementUIs.Count - 1;
             // 배치된 캐릭터의 게임 오브젝트 삭제
-            for (int i = placementUIs.Count - 1; i >= 0; i--)
+            for (; idx >= 0; idx--)
             {
-                if (placementUIs[i].compareCharacter(character))
+                if (placementUIs[idx].compareCharacter(character))
                 {
-                    PlacementCharacter pm = placementUIs[i];
-                    placementUIs.RemoveAt(i);
+                    PlacementCharacter pm = placementUIs[idx];
+                    placementUIs.RemoveAt(idx);
                     pm.unSelect();
                     break;
                 }
             }
             // 배치된 캐릭터 정보 객체 삭제 
-            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
-            {
-                if (selectedCharacters[i].character.ID == character.ID)
-                {
-                    selectedCharacters[i].isPlaced = false;
-                    selectedCharacters.RemoveAt(i);
-                    break;
-                }
+            selectedCharacters[idx].isPlaced = false;
+            selectedCharacters[idx].character.unPlaceCharacter(); // 시너지 스텟 초기화
+            selectedCharacters.RemoveAt(idx);
+
+            // Deck-battle
+            selectedDeckCharacters[idx].unPlaceCharacter();
+            selectedDeckCharacters.RemoveAt(idx);
+
+            selectedBattleCharacters.RemoveAt(idx);
+
+            calSynergyStat();
+        }
+
+        /// <summary>
+        /// 캐릭터 배치시 시너지 정보 저장
+        /// </summary>
+        public void calSynergyStat()
+        {
+            traitsCount = new battle.TraitsCount(selectedBattleCharacters);
+            CommonStats traitsSynergyStats = traitsCount.GetTraitsStats();
+            foreach(PixelCharacter character in selectedDeckCharacters) {
+                character.synergyStat = traitsSynergyStats;
             }
+            synergyUI.Initialize(traitsCount);
         }
 
         /// <summary>
@@ -323,15 +364,18 @@ namespace deck
         {
             for(int i=placementUIs.Count - 1;i >= 0; i--)
             {
+                selectedBattleCharacters.RemoveAt(i);
                 placementUIs[i].unSelect();
                 placementUIs.RemoveAt(i);
-            }
-            for (int i = selectedCharacters.Count - 1; i >= 0; i--)
-            {
+
                 selectedCharacters[i].isPlaced = false;
                 selectedCharacters.RemoveAt(i);
+
+                selectedDeckCharacters[i].unPlaceCharacter();
+                selectedDeckCharacters.RemoveAt(i);
             }
             initializePlaecmentEvent.Invoke();
+            calSynergyStat();
         }
 
         /*** 배치된 캐릭터 정보 저장 및 불러오기 ***/
@@ -343,9 +387,8 @@ namespace deck
         public JArray saveSelectedCharacterInfo()
         {
             JArray ret = new JArray ();
-            foreach(var characterLI in selectedCharacters)
+            foreach(PixelCharacter character in selectedDeckCharacters)
             {
-                PixelCharacter character = characterLI.character;
                 JObject tmp = new JObject();
                 tmp["id"] = character.ID;
                 tmp["position"] = new JObject {

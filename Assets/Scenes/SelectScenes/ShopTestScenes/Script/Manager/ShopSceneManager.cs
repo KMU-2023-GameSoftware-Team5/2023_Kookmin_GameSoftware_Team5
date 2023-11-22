@@ -24,8 +24,8 @@ namespace deck
         
         private void Start()
         {
-            playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             initialize();
+            loadPlayerCharacters();
         }
 
         private void Update()
@@ -42,13 +42,12 @@ namespace deck
 
         /// <summary>
         /// 초기화 함수
-        /// TODO - 맵의 진행사항과 연계하여 판매할 캐릭터 및 아이템 수준 결정하기
         /// </summary>
         void initialize()
         {
+            playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             shopParameterSetting();
             makeShopGoods();
-            loadPlayerCharacters();
         }
 
         /// <summary>
@@ -64,7 +63,6 @@ namespace deck
 
         public void shopParameterSetting()
         {
-
             int idx = 0;
             while (stageNum > tiers.tierProbabilities[idx].stage)
             {
@@ -137,6 +135,12 @@ namespace deck
         }
 
 
+        /// <summary>
+        /// 캐릭터 구매
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
         public bool buyCharacter(PixelCharacter character, int price)
         {
             bool ret = PlayerManager.Instance().buyCharacter(character, price);
@@ -153,6 +157,12 @@ namespace deck
             }
         }
 
+        /// <summary>
+        /// 플레이어 보유 캐릭터 판매 메서드
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
         public bool sellCharacter(PixelCharacter character, int price)
         {
             bool ret = PlayerManager.Instance().sellCharacter(character, price);
@@ -180,7 +190,7 @@ namespace deck
         public TextMeshProUGUI[] probText;
         public void loadPlayerCharacters()
         {
-            if(nowPlayerCharacterUI != null)
+            if (nowPlayerCharacterUI != null)
             {
                 for(int i = nowPlayerCharacterUI.Count-1; i >= 0; i--)
                 {
@@ -190,7 +200,7 @@ namespace deck
             }
             nowPlayerCharacterUI = new List<PlayerCharacterGoods>();
             List<PixelCharacter> characters = PlayerManager.Instance().playerCharacters;
-            foreach(PixelCharacter character in characters)
+            foreach (PixelCharacter character in characters)
             {
                 
                 GameObject go = Instantiate(playerCharacterPreset, playerCharacterGrid);
