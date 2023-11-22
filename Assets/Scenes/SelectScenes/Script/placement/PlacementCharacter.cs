@@ -27,11 +27,10 @@ namespace placement
 
 
         // Drag가능한 영역
-        // TODO 어딘가로 뺴둘 것
-        float maxX = 0.0f;
-        float minX = -6.0f;
-        float maxY = 3.0f;
-        float minY = -4.0f;
+        public static float maxX = 0.0f;
+        public static float minX = -6.0f;
+        public static float maxY = 3.0f;
+        public static float minY = -4.0f;
         
         public bool dragMode { private get;  set; }
 

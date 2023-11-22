@@ -9,6 +9,7 @@ namespace deck
         [SerializeField] RectTransform parentRect;
         [SerializeField] RectTransform myRect;
         public bool useHeight=true;
+        public float sizeFactor = 0.84f;
 
         private void Start()
         {
@@ -17,14 +18,12 @@ namespace deck
             if(useHeight )
             {
                 size = rect.rect.height;
-                Debug.Log($"{rect.rect.height}");
             }
             else
             {
                 size = rect.rect.width;
-                Debug.Log($"{rect.rect.width}");
             }
-            size *= 0.84f;
+            size *= sizeFactor;
             parentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
             parentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);
             myRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);

@@ -19,6 +19,13 @@ namespace deck{
         public string characterName { get; set; }
         public EquipItem[] Inventory;
         protected CommonStats characterStat;
+        public EDefualtAttackType defualtAttackType;
+        public string skill;
+
+        /// <summary>
+        /// 배치 후 시너지로 추가된 스텟
+        /// </summary>
+        public CommonStats synergyStat;
 
         /// <summary>
         /// 이 캐릭터는 플레이어의 캐릭터입니까?
@@ -93,17 +100,6 @@ namespace deck{
             string ret = $"{characterNickName}({characterName})\n";
             return ret;
         }
-
-        /// <summary>
-        /// 캐릭터에 대한 설명 출력 메서드
-        /// </summary>
-        /// <returns>캐릭터에 대한 설명</returns>
-        public string getDescribe()
-        {
-            string ret = "Character Description\n";
-            ret += $"{getName()}";
-            return ret;
-        }
         
         /// <summary>
         /// 현재 장착한 아이템 스텟의 총합
@@ -119,6 +115,7 @@ namespace deck{
                     ret += item.itemStat;
                 }
             }
+            ret += synergyStat;
             return ret;
         }
 
@@ -129,8 +126,14 @@ namespace deck{
         public CommonStats getCharacterStats()
         {
             CommonStats equipItemStat = getEquipItemStats();
-            CommonStats ret = characterStat + equipItemStat;
+            CommonStats upgradeStat = characterStat.GetUpgradedStats(tier);
+            CommonStats ret = upgradeStat + equipItemStat;
             return ret;
+        }
+
+        public void unPlaceCharacter()
+        {
+            synergyStat = new CommonStats();
         }
 
         /// <summary>

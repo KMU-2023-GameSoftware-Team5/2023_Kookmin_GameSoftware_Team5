@@ -19,14 +19,26 @@ namespace deck
         /// </summary>
         [SerializeField]
         GameObject itemInventory;
+        /// <summary>
+        /// 선택된 캐릭터 보이기
+        /// </summary>
+        [SerializeField]
+        GameObject selectedCharacter;
+
+        void unActive()
+        {
+            characterInventory.SetActive(false);
+            itemInventory.SetActive(false);
+            selectedCharacter.SetActive(false);
+        }
 
         /// <summary>
         /// 캐릭터 인벤토리를 보여줌
         /// </summary>
         public void openCharacterInventory()
         {
+            unActive();
             characterInventory.SetActive(true);
-            itemInventory.SetActive(false);
         }
 
         /// <summary>
@@ -34,10 +46,17 @@ namespace deck
         /// </summary>
         public void openItemInventory()
         {
-            characterInventory.SetActive(false);
+            unActive();
             itemInventory.SetActive(true);
         }
-
+        /// <summary>
+        /// 선택된 캐릭터를 보여줌
+        /// </summary>
+        public void openSelectedCharacter()
+        {
+            unActive();
+            selectedCharacter.SetActive(true);
+        }
     }
 
 }

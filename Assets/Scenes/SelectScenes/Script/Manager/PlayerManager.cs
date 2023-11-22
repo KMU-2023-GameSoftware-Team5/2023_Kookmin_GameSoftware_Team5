@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.Purchasing;
 
 namespace deck
 {
@@ -367,7 +368,7 @@ namespace deck
             if (useGold(price))
             {
                 // 돈계산 
-                playerGold -= price;
+                // playerGold -= price;
 
                 // 캐릭터 추가
                 addCharacter(character);
@@ -381,6 +382,36 @@ namespace deck
                 // 구매 실패
                 return false;
             }
+        }
+
+        public void removeCharacter(PixelCharacter character) {
+            PixelCharacter removeTarget = null;
+            for (int i = playerCharacters.Count - 1; i >= 0; i--)
+            {
+                if (playerCharacters[i].ID == character.ID)
+                {
+                    removeTarget = playerCharacters[i];
+                    playerCharacters.RemoveAt(i);
+                    break;
+                }
+            }
+            if (removeTarget == null)
+            {
+                return;
+            }
+            else
+            {
+                for (int i = 0; i < removeTarget.Inventory.Length; i++)
+                {
+                    if (removeTarget.Inventory[i] != null) // 안정성을 위해 장착 아이템 해제 
+                    {
+                        removeTarget.unEquip(i);
+                    }
+                }
+                save();
+                return;
+            }
+
         }
 
         public bool sellCharacter(PixelCharacter character, int price)

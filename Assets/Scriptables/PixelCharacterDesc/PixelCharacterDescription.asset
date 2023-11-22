@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be80ea83135e0f745b26b57535aa53ad, type: 3}
+  m_Name: PixelCharacterDescription
+  m_EditorClassIdentifier: 
+  attackTypeDescriptions:
+  - {fileID: 11400000, guid: 96c3d9bfb3a952f43bbe30e39152dae3, type: 2}
+  - {fileID: 11400000, guid: fb6d86a2831f63d44b776463ed554cd4, type: 2}
+  - {fileID: 11400000, guid: a82ca2bb22356cc4296cbdb095e2a171, type: 2}
+  - {fileID: 11400000, guid: dd7d7b97926d1844ebb75e0b48c1d932, type: 2}
+  skillDescriptions:
+  - {fileID: 11400000, guid: e84018871410d1c469b28742c7cde38a, type: 2}
+  - {fileID: 11400000, guid: c210f78a03cfc00488c81871350c16a2, type: 2}

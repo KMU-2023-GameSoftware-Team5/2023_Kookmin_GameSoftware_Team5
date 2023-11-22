@@ -12,6 +12,7 @@ namespace deck
     /// </summary>
     public class CharacterIcon : MonoBehaviour
     {
+        [Header("Character name-nickname")]
         /// <summary>
         /// 캐릭터의 이름을 보여주는 UI
         /// </summary>
@@ -20,15 +21,22 @@ namespace deck
         /// 캐릭터의 닉네임을 보여주는 UI
         /// </summary>
         public TextMeshProUGUI characterNickNameText;
+        
         /// <summary>
         /// 미사용, 추후 삭제 예정
         /// </summary>
-        public SpriteBuilderForUI characterSprite;
+        SpriteBuilderForUI characterSprite;
+
+        [Header("CharacterSprite")]
         public CharacterSpriteLoader characterSpriteLoader;
+        [Header("Detail Opener Component")]
         public CharacterDetailOpener characterDetailOpener;
 
+        
+        [Header("character upgrade")]
         public TextMeshProUGUI characterTierText;
         public Image characterTierColor;
+        public float alpha = 0.78f;
 
         /// <summary>
         /// 이 객체가 보여줄 캐릭터 객체
@@ -62,14 +70,14 @@ namespace deck
             {
                 characterSpriteLoader.loadCharacterSprite(character.characterName);
             }
-            if(characterTierText != null)
+            if (characterTierText != null)
             {
-                characterTierText.text = $"+{character.tier}";
+                characterTierText.text = $"☆{character.tier}";
             }
             if (characterTierColor != null && character.tier != 1)
             {
                 Color color = MyDeckFactory.Instance().tierColors[character.tier - 1];
-                color.a = 0.78f;
+                color.a = alpha;
                 characterTierColor.color = color;
             }
             MyDeckFactory.Instance().nickNameChangeEvent.AddListener(onNickNameChange);
@@ -86,6 +94,10 @@ namespace deck
             }
         }
 
+        /// <summary>
+        /// 미사용
+        /// </summary>
+        /// <param name="sortingOrder"></param>
         public void setSortingOrder(int sortingOrder)
         {
             if(characterSprite != null)
