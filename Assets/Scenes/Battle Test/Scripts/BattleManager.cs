@@ -142,8 +142,6 @@ namespace battle
                 humanoid.GetSpriteRenderer().sortingLayerName = "Default";
             }
 
-            Debug.Log("battle started");
-
             foreach(PixelCharacter character in m_team0Characters)
             {
                 PixelHumanoid humanoid = (PixelHumanoid)character;

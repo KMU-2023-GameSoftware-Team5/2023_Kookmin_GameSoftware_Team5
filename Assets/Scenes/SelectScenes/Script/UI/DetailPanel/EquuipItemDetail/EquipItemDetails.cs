@@ -16,20 +16,23 @@ namespace deck
         /// <summary>
         /// 아이템 이미지를 보여줄 컴포넌트
         /// </summary>
-        [SerializeField]
-        Image itemImage;
+        public Image itemImage;
         /// <summary>
         /// 아이템 이름 출력할 컴포넌트
         /// </summary>
-        [SerializeField]
-        TextMeshProUGUI itemName;
+        public TextMeshProUGUI itemName;
         /// <summary>
         /// 아이템 설명 출력할 컴포넌트
         /// </summary>
-        [SerializeField]
-        TextMeshProUGUI itemDescription;
-
-        [SerializeField] TextMeshProUGUI itemStat;
+        public TextMeshProUGUI itemDescription;
+        /// <summary>
+        /// 아이템에 의해 변동되는 스텟
+        /// </summary>
+        public TextMeshProUGUI itemStat;
+        /// <summary>
+        /// 아이템의 주인
+        /// </summary>
+        public TextMeshProUGUI itemOwner;
         /// <summary>
         /// 캐릭터 세부창이 보여줄 아이템 객체
         /// </summary>
@@ -43,11 +46,37 @@ namespace deck
         public void openItemDetail(EquipItem item)
         {
             this.item = item;
-            itemName.text = this.item.getItemName();
-            itemDescription.text = this.item.getItemDescription();
+
+            if (itemImage != null)
+            {
+                itemImage.sprite = this.item.getItemIconImage();
+            }
+            if (itemName != null)
+            {
+                itemName.text = this.item.getItemName();
+            }
+            if (itemStat != null)
+            {
+                itemStat.text = itemStatToString();
+            }
+            if (itemOwner != null)
+            {
+                if (item.ItemOwner != null)
+                {
+                    itemOwner.text = item.ItemOwner.getName();
+                }
+                else
+                {
+                    itemOwner.text = "주인없음";
+                }
+            }
+            if(itemDescription != null)
+            {
+                itemDescription.text = this.item.getItemDescription();
+            }
+
+
             //itemImage.color = this.item.itemColor;
-            itemImage.sprite = this.item.getItemIconImage();
-            itemStat.text = itemStatToString();
         }
 
         string itemStatToString()
