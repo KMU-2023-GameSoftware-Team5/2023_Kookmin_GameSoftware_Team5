@@ -25,6 +25,7 @@ namespace deck
         /// 아이템 설명 출력할 컴포넌트
         /// </summary>
         public TextMeshProUGUI itemDescription;
+        public bool overLine = true;
         /// <summary>
         /// 아이템에 의해 변동되는 스텟
         /// </summary>
@@ -61,9 +62,9 @@ namespace deck
             }
             if (itemOwner != null)
             {
-                if (item.ItemOwner != null)
+                if (item.isEquip())
                 {
-                    itemOwner.text = item.ItemOwner.getName();
+                    itemOwner.text = item.getOwnerName();
                 }
                 else
                 {
@@ -81,22 +82,27 @@ namespace deck
 
         string itemStatToString()
         {
+            string sep = "\n";
+            if (!overLine)
+            {
+                sep = ",";
+            }
             CommonStats itemStat = item.itemStat;
             string ret = "";
             if(itemStat.hp > 0)
-                ret += $"HP {statToString(itemStat.hp)}\n";
+                ret += $"HP {statToString(itemStat.hp)}{sep}";
             if (itemStat.mp > 0)
-                ret += $"MP {statToString(itemStat.mp)}\n";
+                ret += $"MP {statToString(itemStat.mp)}{sep}";
             if (itemStat.damage > 0)
-                ret += $"Damage {statToString(itemStat.damage)}\n";
+                ret += $"Damage {statToString(itemStat.damage)}{sep}";
             if (itemStat.sheild > 0)
-                ret += $"sheild  {statToString(itemStat.sheild)}\n";
+                ret += $"sheild  {statToString(itemStat.sheild)}{sep}";
             if (itemStat.walkSpeed > 0)
-                ret += $"Attack Delay {statToString(itemStat.walkSpeed)}\n";
+                ret += $"Attack Delay {statToString(itemStat.walkSpeed)}{sep}";
             if (itemStat.energy > 0)
-                ret += $"Energy {statToString(itemStat.energy)}\n";
+                ret += $"Energy {statToString(itemStat.energy)}{sep}";
             if (itemStat.criticalRate > 0)
-                ret += $"CriticalRate {statToString(itemStat.criticalRate)}\n";
+                ret += $"CriticalRate {statToString(itemStat.criticalRate)}{sep}";
 
             return ret;
         }

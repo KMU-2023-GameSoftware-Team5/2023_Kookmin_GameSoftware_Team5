@@ -104,6 +104,11 @@ namespace deck
             return itemData;
         }
 
+        public String getOwnerName()
+        {
+            return itemOwner.getName();
+        }
+
         /// <summary>
         /// 아이템 착용 메서드
         /// </summary>

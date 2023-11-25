@@ -33,20 +33,11 @@ namespace deck
         /// </summary>
         CanvasGroup canvasGroup;
         /// <summary>
-        /// 아이템이름 출력하는 텍스트 컴포넌트
-        /// </summary>
-        [SerializeField]
-        TextMeshProUGUI itemName;
-        /// <summary>
-        /// 아이템 이미지 출력하는 이미지 컴포넌트
-        /// </summary>
-        [SerializeField]
-        Image itemImage;
-        /// <summary>
         /// 아이템 착용여부를 보여주는 이미지 컴포넌트
         /// </summary>
         [SerializeField]
         GameObject itemEquipMark;
+        [SerializeField]EquipItemDetails details;
 
         void Awake()
         {
@@ -93,9 +84,7 @@ namespace deck
             this.item = item;
             this.itemInventorySlot = itemInventorySlot;
             this.canvas = canvas;
-            itemName.text = this.item.getItemName();
-            // itemImage.color = this.item.itemColor;
-            itemImage.sprite = this.item.getItemIconImage(); 
+            details.openItemDetail(item);
         }
 
         /// <summary>

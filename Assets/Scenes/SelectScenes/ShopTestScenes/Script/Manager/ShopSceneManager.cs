@@ -152,6 +152,10 @@ namespace deck
                 makeShopGoods();
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             }
+            else
+            {
+                MyDeckFactory.Instance().displayInfoMessage($"돈이 없습니다.\n리롤비용은 {rerollPrice}코인입니다.");
+            }
         }
 
         public int makeTier()

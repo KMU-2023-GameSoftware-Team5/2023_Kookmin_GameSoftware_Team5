@@ -527,7 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a79d983c8266e2488ebf10ab99502ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizefactor: 0.9
+  sizefactor: 0.7
   myRect: {fileID: 3438066306095259131}
   isHeight: 1
 --- !u!1001 &9177288059259342525
