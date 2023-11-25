@@ -95,8 +95,8 @@ namespace deck
         {
             // 다음씬으로 점프 
             // SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
-            // SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
-            SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
+            SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+            //SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
 
         }
 
@@ -132,15 +132,15 @@ namespace deck
                 // 플레이어매니저 대체하기
                 List<PixelCharacter> characters = new List<PixelCharacter>();
 
-                for (int i=0;i< startCharacters.idx;i++) {
+                for (int i=0;i< startCharacters.idx + 5;i++) {
                     PixelCharacter character = MyDeckFactory.Instance().buildCharcterByPrice(1);
                     character.playerOwned = true;
                     characters.Add(character);
                 }
 
                 PlayerManager playerManager = new PlayerManager(characters, 0, 0);
-                playerManager.max_character = maxCharacter.idx;
-                playerManager.max_selectable = maxSelector.idx;
+                playerManager.max_character = maxCharacter.idx + 5;
+                playerManager.max_selectable = maxSelector.idx + 5;
 
                 PlayerManager.replace(playerManager);
 

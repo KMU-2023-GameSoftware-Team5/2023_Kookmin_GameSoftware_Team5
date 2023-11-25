@@ -1,3 +1,4 @@
+using deck;
 using GameMap;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,4 +53,12 @@ public class SceneParamter : StaticGetter<SceneParamter>
 
     // battle scene result
     public bool isWin;
+
+    public void settingEnemyLevel()
+    {
+        EnemyTotalLevel = 5 + PlayerManager.Instance().StageCount;
+        EnemyTotalLevel += 1 * ((PlayerManager.Instance().playerBattleCount - PlayerManager.Instance().playerLoseCount) / 1); // 플레이어의 승리 1번당 적의 레벨 1 증가 
+        EnemyTotalLevel += 1 * ((PlayerManager.Instance().playerWinCount / 3)); // 플레이어의 3연승당 적의 레벨 1 증가 
+
+    }
 }

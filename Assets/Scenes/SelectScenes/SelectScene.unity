@@ -459,6 +459,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1742567082621565604, guid: 98aae291e3fd1244f9d79a7144c876e0, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1900617415929337639, guid: 98aae291e3fd1244f9d79a7144c876e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.8787714
@@ -1097,6 +1101,10 @@ PrefabInstance:
       propertyPath: characterHeadNameCanvas
       value: 
       objectReference: {fileID: 789893209}
+    - target: {fileID: 4380979437306435177, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 970789927}
     - target: {fileID: 5907048886649190794, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
       value: 

@@ -14,6 +14,7 @@ namespace deck
     public class BattleEndManager : MonoBehaviour
     {
         public GameObject battleEndPannel;
+        public TextMeshProUGUI shopButtonText;
         public TextMeshProUGUI buttonText;
         public Transform battleEndCanvas;
 
@@ -53,8 +54,22 @@ namespace deck
 
             isWin = SceneParamter.Instance().isWin;
             PlayerManager.Instance().playerBattleCount += 1;
-            //isWin = true;
-            if (isWin)
+
+            if(PlayerManager.Instance().shopCount > 0 )
+            {
+                PlayerManager.Instance().shopCount--;
+            }
+            if(PlayerManager.Instance().shopCount > 0)
+            {
+                shopButtonText.text = $"{PlayerManager.Instance().shopCount}턴간 상점 방문불가";
+            }
+            else
+            {
+                shopButtonText.text = "방문시 3턴간 재방문 불가";
+            }
+
+                //isWin = true;
+                if (isWin)
             {
                 openWinPannel();
             }
@@ -114,7 +129,7 @@ namespace deck
             equipItemInfo.openItemDetail(rewardItem);
 
             // 점수 계산 
-            PlayerManager.Instance().playerScore += 1;
+            PlayerManager.Instance().playerScore += SceneParamter.Instance().Score;
         }
 
         /// <summary>
@@ -143,6 +158,8 @@ namespace deck
             {
                 sacrificeCount = PlayerManager.Instance().playerCharacters.Count;
             }
+            if (sacrificeCount == PlayerManager.Instance().playerCharacters.Count)
+                shopButtonText.text = "다음턴에 게임오버. 상점방문불가";
 
             // 패배 하면 캐릭터 바치기
             altarSlots = new List<AltarSlot>();
@@ -214,14 +231,18 @@ namespace deck
             nowsacrificeCount -= 1;
         }
 
-        public void returnMap()
+        /// <summary>
+        /// 패배시 캐릭터를 죽이고, 승리시 그냥 넘어가는 코드. 
+        /// </summary>
+        /// <returns></returns>
+        public bool killCharacter()
         {
             if (!isWin)
             {
-                if(nowsacrificeCount < sacrificeCount)
+                if (nowsacrificeCount < sacrificeCount)
                 {
                     MyDeckFactory.Instance().displayInfoMessage("정해진 수만큼 제물을 바쳐야합니다.");
-                    return;
+                    return false; 
                 }
                 else
                 {
@@ -230,7 +251,17 @@ namespace deck
                         PlayerManager.Instance().removeCharacter(altarSlot.character);
                     }
                     PlayerManager.save();
+                    return true;
                 }
+            }
+            return true;
+        }
+
+        public void returnMap()
+        {
+            if (!killCharacter())
+            {
+                return;
             }
             if(PlayerManager.Instance().playerCharacters.Count == 0)
             {
@@ -240,10 +271,32 @@ namespace deck
             {
                 PlayerManager.Instance().stageCount+=1;
                 PlayerManager.save();
-                if(PlayerManager.Instance().stageCount % 3 == 0)
-                    SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
-                else
-                    SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+                SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+            }
+        }
+
+        public void visitShop()
+        {
+            if (!killCharacter())
+            {
+                return;
+            }
+
+            if (PlayerManager.Instance().playerCharacters.Count == 0)
+            {
+                gameOver();
+            }
+            else
+            {
+                if(PlayerManager.Instance().shopCount != 0)
+                {
+                    MyDeckFactory.Instance().displayInfoMessage($"앞으로 {PlayerManager.Instance().shopCount}턴간 상점방문이 불가합니다.");
+                    return;
+                }
+                PlayerManager.Instance().stageCount += 2; // 상점방문했으니까 2개씩 올림
+                PlayerManager.Instance().shopCount = 3;
+                PlayerManager.save();
+                SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
             }
         }
 

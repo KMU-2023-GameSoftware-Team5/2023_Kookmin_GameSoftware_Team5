@@ -141,30 +141,24 @@ namespace deck
 
         public SynergyUI synergyUI;
 
+        private void Awake()
+        {
+            // setting enemy level
+            SceneParamter.Instance().settingEnemyLevel();
+        }
+
         /// <summary>
         /// 플레이어가 최대 배치 가능한 캐릭터의 수
         /// </summary>
         int maxSelectAble; 
         void Start()
         {
-            MyDeckFactory.Instance().displayInfoMessage($"스테이지 {PlayerManager.Instance().StageCount}");
+            MyDeckFactory.Instance().displayInfoMessage($"스테이지 {PlayerManager.Instance().StageCount+1}\n적의 레벨 : {SceneParamter.Instance().EnemyTotalLevel}");
             maxSelectAble = PlayerManager.Instance().max_selectable;
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
             characters = PlayerManager.Instance().playerCharacters;
-
-
-            // 더미데이터 생성
-            if(characters.Count == 0)
-            {
-                string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
-                System.Random random = new System.Random();
-                for (int i = 0; i < 15; i++)
-                {
-                    PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
-                }
-            }
 
             // 현재 보유중인 캐릭터 출력 - 배치가능한 사양으로
             characterUIs = new List<SelectCharacter>();

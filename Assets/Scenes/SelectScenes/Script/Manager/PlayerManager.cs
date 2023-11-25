@@ -140,6 +140,10 @@ namespace deck
         /// </summary>
         public int stageCount=0;
         public int StageCount { get { return stageCount; } }
+        /// <summary>
+        /// shopCount
+        /// </summary>
+        public int shopCount = 0;
 
         public int playerScore;
         
@@ -280,6 +284,7 @@ namespace deck
             saveJson["playerScore"] = playerScore;
             saveJson["playerBattleCount"] = playerBattleCount;
             saveJson["playerLoseCount"] = playerLoseCount;
+            saveJson["shopCount"] = shopCount;
 
             // item save
             JArray itemArray = new JArray();
@@ -385,6 +390,14 @@ namespace deck
             else
             {
                 playerLoseCount = 5;
+            }
+            if (json.ContainsKey("shopCount"))
+            {
+                shopCount = (int)json["shopCount"];
+            }
+            else
+            {
+                shopCount = 5;
             }
 
 
