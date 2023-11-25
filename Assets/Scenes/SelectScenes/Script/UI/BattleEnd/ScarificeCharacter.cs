@@ -11,7 +11,6 @@ namespace deck
         BattleEndManager battleEndManager;
 
         bool isSelected = false;
-        int selectNum = -1;
         // 위는 drag 처리를 위한 코드 
         public CharacterIcon characterIcon;
         public PixelCharacter character;
@@ -28,17 +27,22 @@ namespace deck
         public void onClickScarifice()
         {
             if(!isSelected) {
-                selectNum = battleEndManager.sacrificeCharacter(character);
-                isSelected = selectNum != -1;
+                isSelected = battleEndManager.sacrificeCharacter(character);
                 mark.SetActive(isSelected);
             }
             else
             {
                 // unSelect
-                battleEndManager.unSacrificeCharacter(selectNum);
-                isSelected = false;
-                mark.SetActive(isSelected);
+                battleEndManager.unSacrificeCharacter(character);
+//                isSelected = false; // 이거는 battleManager가 해줌 
+//                mark.SetActive(isSelected);
             }
+        }
+
+        public void unSelect()
+        {
+            isSelected = false;
+            mark.SetActive(isSelected);
         }
     }
 

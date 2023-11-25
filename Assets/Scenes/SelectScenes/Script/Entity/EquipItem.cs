@@ -30,7 +30,8 @@ namespace deck
         /// 아이템 주인에 대한 레퍼런스
         /// </summary>
         private PixelCharacter itemOwner;
-        
+        public PixelCharacter ItemOwner { get; private set; }
+
         /// <summary>
         /// 아이템 주인의 인벤토리 몇번째 칸에 아이템이 저장되어 있는 지 확인하는 변수
         /// </summary>

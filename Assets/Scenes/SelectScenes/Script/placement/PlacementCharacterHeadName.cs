@@ -33,7 +33,7 @@ namespace placement
             if(character.tier > 1)
             {
                 Color bgColor = MyDeckFactory.Instance().tierColors[character.tier - 1];
-                bgColor.a = 0.784f;
+                bgColor.a = 0.2f;
                 bg.color = bgColor;
             }
         }

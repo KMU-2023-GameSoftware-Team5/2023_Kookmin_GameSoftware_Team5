@@ -228,7 +228,7 @@ namespace deck
         /// <returns></returns>
         public List<List<PixelCharacter>> getNGSelectos()
         {
-            string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
+            List<string> characterNames = new List<string>(m_humanoidDataMap.Keys); //{ "Demon", "Skeleton", "Goblin Archor" };
             System.Random random = new System.Random();
 
             List<List<PixelCharacter>> ret = new List<List<PixelCharacter>>();
@@ -237,13 +237,12 @@ namespace deck
                 ret.Add( new List<PixelCharacter>());
                 for(int j = 0; j < 5; j++)
                 {
-                    PixelCharacter character = buildPixelCharacter(characterNames[random.Next(0, characterNames.Length)]);
+                    PixelCharacter character = buildPixelCharacter(characterNames[random.Next(0, characterNames.Count)]);
                     ret[i].Add(character);
                 }
             }
             return ret;
         }
-
 
         public PixelCharacter buildCharcterByPrice(int price)
         {
@@ -252,6 +251,15 @@ namespace deck
             ret.tier = price;
             return ret;
         }
+
+        public EquipItem buildRandomItem()
+        {
+            List<string> itemNames = new List<string>(itemDataMap.Keys);
+            EquipItem ret = buildEquipItem(itemNames[UnityEngine.Random.Range(0, itemNames.Count)]);
+            return ret;
+        }
+
+
 
         /// <summary>
         /// 사용자에게 전달할 메시지

@@ -850,6 +850,10 @@ PrefabInstance:
       propertyPath: characterHeadNameCanvas
       value: 
       objectReference: {fileID: 789893209}
+    - target: {fileID: 4380979437306435177, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 970789927}
     - target: {fileID: 5907048886649190794, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
       value: 
@@ -860,7 +864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -7.3333855
+      value: -12.40974
       objectReference: {fileID: 0}
     - target: {fileID: 8024431453402245008, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera

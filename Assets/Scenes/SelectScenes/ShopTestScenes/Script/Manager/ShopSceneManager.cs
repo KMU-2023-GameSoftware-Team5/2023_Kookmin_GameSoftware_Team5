@@ -1,3 +1,4 @@
+using battle;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace deck
         
         private void Start()
         {
+            stageNum = PlayerManager.Instance().StageCount;
             initialize();
             loadPlayerCharacters();
         }
@@ -48,6 +50,7 @@ namespace deck
             playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
             shopParameterSetting();
             makeShopGoods();
+            displayCurrentUpgrade();
         }
 
         /// <summary>
@@ -60,6 +63,59 @@ namespace deck
         public int stageNum;
 
         [SerializeField] TierProbabilitiesData tiers;
+
+        [Header("upgrade")]
+        public TextMeshProUGUI selectableText;
+        public TextMeshProUGUI inventoryText;
+        public int selectPrice=15;
+        public int inventoryPrice=20;
+        public TextMeshProUGUI selectablePriceText;
+        public TextMeshProUGUI inventoryPriceText;
+        public TextMeshProUGUI playerMaxCharacterText;
+
+        public void displayPlayersCharacter()
+        {
+            playerMaxCharacterText.text = $"{PlayerManager.Instance().playerCharacters.Count} / {PlayerManager.Instance().max_character}";
+        }
+
+        public void displayCurrentUpgrade()
+        {
+            selectPrice = PlayerManager.Instance().max_selectable;
+            selectablePriceText.text = selectPrice.ToString();
+            inventoryPrice = PlayerManager.Instance().max_character;
+            inventoryPriceText.text = inventoryPrice.ToString();
+            selectableText.text = PlayerManager.Instance().max_selectable.ToString();
+            inventoryText.text = PlayerManager.Instance().max_character.ToString();
+            displayPlayersCharacter();
+        }
+
+        public void upGradeSelectAble()
+        {
+            if (PlayerManager.Instance().useGold(selectPrice))
+            {
+                PlayerManager.Instance().max_selectable++;
+                playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
+                displayCurrentUpgrade();
+            }
+            else
+            {
+                MyDeckFactory.Instance().displayInfoMessage("잔액이 부족합니다.");
+            }
+        }
+
+        public void upGradeInventory()
+        {
+            if (PlayerManager.Instance().useGold(inventoryPrice))
+            {
+                PlayerManager.Instance().max_character++;
+                playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
+                displayCurrentUpgrade();
+            }
+            else
+            {
+                MyDeckFactory.Instance().displayInfoMessage("잔액이 부족합니다.");
+            }
+        }
 
         public void shopParameterSetting()
         {
@@ -143,10 +199,17 @@ namespace deck
         /// <returns></returns>
         public bool buyCharacter(PixelCharacter character, int price)
         {
+            if (PlayerManager.Instance().max_character <= PlayerManager.Instance().playerCharacters.Count)
+            {
+                MyDeckFactory.Instance().displayInfoMessage("보유 가능 캐릭터 수보다\n더 많은 캐릭터를 구매할 수 없습니다.");
+                return false;
+            }
+
             bool ret = PlayerManager.Instance().buyCharacter(character, price);
             if (ret)
             {
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
+                displayPlayersCharacter();
                 loadPlayerCharacters();
                 return ret;
             }
@@ -169,6 +232,7 @@ namespace deck
             if (ret)
             {
                 playerGoldText.text = $"{PlayerManager.Instance().playerGold}";
+                displayPlayersCharacter();
                 loadPlayerCharacters();
                 return ret;
             }
@@ -180,6 +244,7 @@ namespace deck
 
         }
 
+        [Header("preset")]
         [SerializeField] GameObject playerCharacterPreset;
         [SerializeField] Transform playerCharacterGrid;
         [SerializeField] Transform dragCanvas;
@@ -217,6 +282,5 @@ namespace deck
             SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
             // SceneManager.LoadScene("Scenes/Parameter Test Scene/Parameter Test");
         }
-
     }
 }

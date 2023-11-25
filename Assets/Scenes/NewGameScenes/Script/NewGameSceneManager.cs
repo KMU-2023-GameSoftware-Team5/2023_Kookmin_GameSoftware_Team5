@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -94,8 +95,8 @@ namespace deck
         {
             // 다음씬으로 점프 
             // SceneManager.LoadScene("Scenes/SelectScenes/SaveLoadTestScene/SaveLoadTestScene");
-            // SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
-            SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
+            SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
+            //SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
 
         }
 
@@ -106,5 +107,46 @@ namespace deck
         {
             newGameSelector.openNGSelector();
         }
+
+        [Header("new game option")]
+        [SerializeField] DifficultyOptionItem maxCharacter;
+        [SerializeField] DifficultyOptionItem maxSelector;
+        [SerializeField] DifficultyOptionItem startCharacters;
+        [SerializeField] TextMeshProUGUI leftPoint;
+
+        public void pressedOption()
+        {
+            int point = 9 - (maxCharacter.idx + maxSelector.idx + startCharacters.idx);
+            leftPoint.text = point.ToString();
+        }
+
+        public void optionGameStart()
+        {
+            int point = 9 - (maxCharacter.idx + maxSelector.idx + startCharacters.idx);
+            if (point < 0)
+            {
+                MyDeckFactory.Instance().displayInfoMessage("포인트가 부족하여 게임을 시작할 수 없습니다.");
+            }
+            else
+            {
+                // 플레이어매니저 대체하기
+                List<PixelCharacter> characters = new List<PixelCharacter>();
+
+                for (int i=0;i< startCharacters.idx + 5;i++) {
+                    PixelCharacter character = MyDeckFactory.Instance().buildCharcterByPrice(1);
+                    character.playerOwned = true;
+                    characters.Add(character);
+                }
+
+                PlayerManager playerManager = new PlayerManager(characters, 0, 0);
+                playerManager.max_character = maxCharacter.idx + 5;
+                playerManager.max_selectable = maxSelector.idx + 5;
+
+                PlayerManager.replace(playerManager);
+
+                onClickGameStart();
+            }
+        }
+
     }
 }

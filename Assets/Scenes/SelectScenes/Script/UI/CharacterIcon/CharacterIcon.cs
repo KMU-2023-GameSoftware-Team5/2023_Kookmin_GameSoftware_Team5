@@ -72,7 +72,7 @@ namespace deck
             }
             if (characterTierText != null)
             {
-                characterTierText.text = $"☆{character.tier}";
+                characterTierText.text = $"★{character.tier}";
             }
             if (characterTierColor != null && character.tier != 1)
             {

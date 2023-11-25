@@ -11,6 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 using Castle.Core;
 using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 namespace deck
 {
@@ -140,24 +141,24 @@ namespace deck
 
         public SynergyUI synergyUI;
 
+        private void Awake()
+        {
+            // setting enemy level
+            SceneParamter.Instance().settingEnemyLevel();
+        }
+
+        /// <summary>
+        /// 플레이어가 최대 배치 가능한 캐릭터의 수
+        /// </summary>
+        int maxSelectAble; 
         void Start()
         {
+            MyDeckFactory.Instance().displayInfoMessage($"스테이지 {PlayerManager.Instance().StageCount+1}\n적의 레벨 : {SceneParamter.Instance().EnemyTotalLevel}");
+            maxSelectAble = PlayerManager.Instance().max_selectable;
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
             characters = PlayerManager.Instance().playerCharacters;
-
-
-            // 더미데이터 생성
-            if(characters.Count == 0)
-            {
-                string[] characterNames = { "Demon", "Skeleton", "Goblin Archor" };
-                System.Random random = new System.Random();
-                for (int i = 0; i < 15; i++)
-                {
-                    PlayerManager.Instance().addCharacterByName(characterNames[random.Next(0, characterNames.Length)]);
-                }
-            }
 
             // 현재 보유중인 캐릭터 출력 - 배치가능한 사양으로
             characterUIs = new List<SelectCharacter>();
@@ -187,6 +188,7 @@ namespace deck
                 selectedCharacterSaveList = (JArray)PlayerManager.Instance().selectedCharacters[0];
                 loadSelectedCharacterInfo(selectedCharacterSaveList);
             }
+            display();
         }
 
         /// <summary>
@@ -283,7 +285,7 @@ namespace deck
         /// <returns>배치 성공여부</returns>
         public bool placeCharacter(SelectCharacter characterLI, Vector3 characterPosition)
         {
-            if (placementUIs.Count + 1 <= PlayerManager.MAX_SELECTED_CHARACTER) 
+            if (placementUIs.Count + 1 <= maxSelectAble) 
             {
                 // 자신이 배치한 캐릭터 정보 받기 
                 PixelCharacter character = characterLI.character;
@@ -307,7 +309,7 @@ namespace deck
             }
             else
             {
-                MyDeckFactory.Instance().displayInfoMessage($"{PlayerManager.MAX_SELECTED_CHARACTER}캐릭터 이상 배치할 수 없습니다.");
+                MyDeckFactory.Instance().displayInfoMessage($"{maxSelectAble}캐릭터 이상 배치할 수 없습니다.");
                 return false;
             }
         }
@@ -355,6 +357,7 @@ namespace deck
                 character.synergyStat = traitsSynergyStats;
             }
             synergyUI.Initialize(traitsCount);
+            display(); // 시너지를 재계산할 필요가 있다 = 인원교체가 있다.
         }
 
         /// <summary>
@@ -449,6 +452,14 @@ namespace deck
         {
             PlayerManager.Instance().selectedCharacters[0] = saveSelectedCharacterInfo();
             PlayerManager.save();
+        }
+
+        [Header("display")]
+        public TextMeshProUGUI limitSelect;
+
+        public void display()
+        {
+            limitSelect.text = $"{selectedCharacters.Count} / {PlayerManager.Instance().max_selectable}";
         }
 
     }

@@ -2,6 +2,8 @@ using GameMap;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -19,7 +21,7 @@ namespace deck
          * Static Pref Field
          */
         public static int MAX_INVENTORY_SIZE = 2;
-        public static int MAX_SELECTED_CHARACTER = 5;
+        // public static int MAX_SELECTED_CHARACTER = 5;
 
         ///////////////////
         /* start of static */
@@ -110,6 +112,44 @@ namespace deck
         /// </summary>
         public int playerLife;
 
+        /// <summary>
+        /// 연승, 연패 카운트
+        /// </summary>
+        public int playerWinCount;
+
+        /// <summary>
+        /// 플레이어의 총 전투 수
+        /// </summary>
+        public int playerBattleCount;
+        /// <summary>
+        /// 플레이어의 패배횟수
+        /// </summary>
+        public int playerLoseCount;
+
+        /// <summary>
+        /// 플레이어의 최대 배치 가능 개수
+        /// </summary>
+        public int max_selectable = 3;
+        /// <summary>
+        /// 보유가능 캐릭터 개수
+        /// </summary>
+        public int max_character = 3;
+
+        /// <summary>
+        /// stage가 몇번 진행되었는가
+        /// </summary>
+        public int stageCount=0;
+        public int StageCount { get { return stageCount; } }
+        /// <summary>
+        /// shopCount
+        /// </summary>
+        public int shopCount = 0;
+
+        public int playerScore;
+        
+        /// <summary>
+        /// 배치 정보 프리셋
+        /// </summary>
         public JArray selectedCharacters;
 
         /* 생성자 모음 */
@@ -238,6 +278,13 @@ namespace deck
             // gold & life
             saveJson["playerGold"] = playerGold;
             saveJson["playerLife"] = playerLife;
+            saveJson["playerWinCount"] = playerWinCount;
+            saveJson["selectable"] = max_selectable;
+            saveJson["stageCount"] = stageCount;
+            saveJson["playerScore"] = playerScore;
+            saveJson["playerBattleCount"] = playerBattleCount;
+            saveJson["playerLoseCount"] = playerLoseCount;
+            saveJson["shopCount"] = shopCount;
 
             // item save
             JArray itemArray = new JArray();
@@ -280,8 +327,81 @@ namespace deck
             }
 
             // gold & life 불러오기 
-            playerGold = (int)json["playerGold"];
-            playerLife = (int)json["playerLife"];
+            if (json.ContainsKey("playerGold"))
+            {
+                playerGold = (int)json["playerGold"];
+            }
+            else
+            {
+                playerGold = 5;
+            }
+            if (json.ContainsKey("playerWinCount"))
+            {
+                playerWinCount = (int)json["playerWinCount"];
+            }
+            else
+            {
+                playerWinCount = 5;
+            }
+            if (json.ContainsKey("selectable"))
+            {
+                max_selectable = (int)json["selectable"];
+            }
+            else
+            {
+                max_selectable = 1;
+            }
+            if (json.ContainsKey("max_character"))
+            {
+                max_character = (int)json["max_character"];
+            }
+            else
+            {
+                max_character = 5;
+            }
+            if (json.ContainsKey("stageCount"))
+            {
+                stageCount = (int)json["stageCount"];
+            }
+            else
+            {
+                stageCount = 0;
+            }
+            if (json.ContainsKey("playerScore"))
+            {
+                playerScore = (int)json["playerScore"];
+            }
+            else
+            {
+                playerScore = 5;
+            }
+            if (json.ContainsKey("playerBattleCount"))
+            {
+                playerBattleCount = (int)json["playerBattleCount"];
+            }
+            else
+            {
+                playerBattleCount = 5;
+            }
+            if (json.ContainsKey("playerLoseCount"))
+            {
+                playerLoseCount = (int)json["playerLoseCount"];
+            }
+            else
+            {
+                playerLoseCount = 5;
+            }
+            if (json.ContainsKey("shopCount"))
+            {
+                shopCount = (int)json["shopCount"];
+            }
+            else
+            {
+                shopCount = 5;
+            }
+
+
+
 
             // 아이템 장착처리를 위한 map 
             Dictionary<string, EquipItem> itemMap = new Dictionary<string, EquipItem>();
@@ -452,6 +572,18 @@ namespace deck
             }
         }
 
+
+        public List<PixelCharacter> sortingCharacter()
+        {
+            playerCharacters = playerCharacters.OrderByDescending(c => c.tier).ToList();
+            return playerCharacters;
+        }
+
+        /// <summary>
+        /// 플레이어가 돈을 소모해야할 때 사용. 돈이 충분한지 검사 및 돈소모까지 진행
+        /// </summary>
+        /// <param name="gold">지불해야할 돈</param>
+        /// <returns>플레이어가 지불을 했는가?</returns>
         public bool useGold(int gold)
         {
             if(playerGold < gold)
@@ -464,6 +596,8 @@ namespace deck
                 return true;
             }
         }
+
+
 
     }
 }
