@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f59075b9a40f3154aa7c1d2b1e9638f5, type: 3}
+  m_Name: battleScene
+  m_EditorClassIdentifier: 
+  title: "\uC804\uD22C\uC640 \uBC30\uCE58"
+  description: "\uD50C\uB808\uC774\uC5B4\uB294 \uC801\uAD70\uC758 \uBC30\uCE58\uB97C
+    \uBCF4\uACE0 \uCE90\uB9AD\uD130\uB97C \uBC30\uCE58\uD574\uC57C\uD569\uB2C8\uB2E4.
+    \uC804\uD22C\uAC00 \uB05D\uB098\uB3C4 \uCE90\uB9AD\uD130\uB294 \uC8FD\uC9C0 \uC54A\uC73C\uB2C8
+    \uAC71\uC815\uB9C8\uC2DC\uACE0 \uCD5C\uACE0\uC758 \uCE90\uB9AD\uD130\uB97C \uBC30\uCE58\uD558\uC5EC\uC8FC\uC2ED\uC2DC\uC624.
+    \uCE90\uB9AD\uD130\uB97C \uD074\uB9AD\uD558\uBA74 \uCE90\uB9AD\uD130 \uC0C1\uC138\uC815\uBCF4\uB97C
+    \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\uCE90\uB9AD\uD130\uAC04\uC5D0 \uC2DC\uB108\uC9C0\uB97C "
+  helpImg: {fileID: 21300000, guid: f549c6f26d93370439d6179b46f2017c, type: 3}

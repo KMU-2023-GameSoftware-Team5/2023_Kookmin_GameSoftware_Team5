@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -84,25 +85,31 @@ namespace deck
         public void openHelpContent(int idx)
         {
             if (idx < 0)
-                return;
-            if (idx >= helpInfoList.Count)
-                return;
-            this.idx = idx;
+            {
+                this.idx = helpInfoList.Count - 1;
+            }
+            else if (idx >= helpInfoList.Count)
+            {
+                this.idx = 0;
+            }
+            else{
+                this.idx = idx;
+            }
             closeAll();
             helpContent.SetActive(true);
 
-            if (helpInfoList[idx].helpImg == null)
+            if (helpInfoList[this.idx].helpImg == null)
             {
                 image.gameObject.SetActive(false);
             }
             else
             {
                 image.gameObject.SetActive(true);
-                image.sprite = helpInfoList[idx].helpImg;
+                image.sprite = helpInfoList[this.idx].helpImg;
             }
             
-            title.text = helpInfoList[idx].title;
-            description.text = helpInfoList[idx].description;
+            title.text = helpInfoList[this.idx].title;
+            description.text = helpInfoList[this.idx].description;
         }
     }
 

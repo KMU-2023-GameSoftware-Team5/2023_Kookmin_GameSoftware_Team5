@@ -1093,6 +1093,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: _SelectScene
       objectReference: {fileID: 0}
+    - target: {fileID: 3398084541870330642, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_fontSize
+      value: 23.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 3398084541870330642, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4133693710777610395, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: placementCanvas
       value: 
@@ -1105,6 +1113,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 970789927}
+    - target: {fileID: 5468772532176086064, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468772532176086064, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5907048886649190794, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1115,12 +1131,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -14.20813
+      value: -9.471985
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827097816319476441, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_fontSize
+      value: 19.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827097816319476441, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8024431453402245008, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 970789927}
+    - target: {fileID: 8044368718253760093, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_fontSize
+      value: 19.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044368718253760093, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
