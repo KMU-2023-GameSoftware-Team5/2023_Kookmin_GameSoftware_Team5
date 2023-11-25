@@ -7,7 +7,7 @@ namespace GameMap
 {
     public class AreaManager : MonoBehaviour
     {
-        static MapStageData MapData = new();
+        static MapStageData MapData = null;
 
         [SerializeField] MobSetData[] m_mobSetDatas;
         [SerializeField] MobSetData m_bossMobSet;
@@ -38,18 +38,17 @@ namespace GameMap
         {
             BuildAreas();
 
+            // MapData must not to be null at this point
+            if (MapData is null)
+            {
+                Debug.LogError("MapData is null!");
+                return;
+            }
+
             m_bossArea.GetComponent<Button>().onClick.AddListener(() =>
             {
-                var sceneParameter = SceneParamter.Instance();
-
-                sceneParameter.EnemyReinforce = 0;
-                sceneParameter.MapStage++;
-
-                MapData = new();
-
-                // THIS IS TEMP!
-                SceneParamter.Instance().MobSet = m_bossMobSet;
-                SceneManager.LoadScene("CombineScene");
+                MapData = null;
+                AreaOnClickCommon(true);
             });
 
             // Add common onClick event to areas
@@ -60,14 +59,10 @@ namespace GameMap
 
                 m_areas[i].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    ChangeMobSetData();
-
                     MapData.AreaVisitCount++;
                     MapData.AreaIndex = t_index;
 
-                    // THIS IS TEMP!
-                    SceneParamter.Instance().EnemyReinforce = MapData.AreaVisitCount;
-                    SceneManager.LoadScene("CombineScene");
+                    AreaOnClickCommon();
                 });
             }
 
@@ -76,13 +71,9 @@ namespace GameMap
             foreach (var area in m_areas)
                 area.SetActive(false);
 
-            // Get index of start(now) area
-            int startAreaIndex = MapData.NeedInit ?
-                Random.Range(0, m_areas.Count) : MapData.AreaIndex;
-
             // Activate now and near areas
-            ActivateNearAreas(m_areas[startAreaIndex]);
-            m_areas[startAreaIndex].SetActive(true);
+            ActivateNearAreas(m_areas[MapData.AreaIndex]);
+            m_areas[MapData.AreaIndex].SetActive(true);
         }
 
         void BuildAreas()
@@ -124,8 +115,10 @@ namespace GameMap
                 builder.AddCanditiateTarget(image, button);
             }
 
-            if (MapData.NeedInit)
+            if (MapData is null)
             {
+                MapData = new();
+
                 foreach (AreaData areaData in m_areaData)
                     builder.AddAreaData(areaData);
 
@@ -142,13 +135,23 @@ namespace GameMap
 
             MapData.AreaDatas = builder.AreaData.ToArray();
             m_areas = builder.AreaResult;
+
+            if (MapData.AreaIndex == -1)
+                MapData.AreaIndex = Random.Range(0, m_areas.Count);
         }
 
-        void ChangeMobSetData()
+        void AreaOnClickCommon(bool isBoss = false)
         {
-            // THIS IS TEMP!
-            int index = MapData.AreaVisitCount % m_mobSetDatas.Length;
-            SceneParamter.Instance().MobSet = m_mobSetDatas[index];
+            var sceneParameter = SceneParamter.Instance();
+
+            sceneParameter.IsBoss = isBoss;
+            sceneParameter.EnemyReinforce = isBoss ? 0 : MapData.AreaVisitCount;
+            sceneParameter.MapStage += isBoss ? 1 : 0;
+
+            sceneParameter.MobSet = isBoss ? m_bossMobSet :
+                m_mobSetDatas[sceneParameter.EnemyReinforce % m_mobSetDatas.Length];
+
+            SceneManager.LoadScene("CombineScene");
         }
 
         void ActivateNearAreas(GameObject target)

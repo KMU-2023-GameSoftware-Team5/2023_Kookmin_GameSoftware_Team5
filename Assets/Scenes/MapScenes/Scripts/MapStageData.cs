@@ -5,11 +5,9 @@ namespace GameMap
 {
     public class MapStageData
     {
-        public bool NeedInit = true;
-
         public AreaData[] AreaDatas;
         public int AreaVisitCount;
-        public int AreaIndex;
+        public int AreaIndex = -1;
 
         public string fromJson(JObject json)
         {
@@ -17,7 +15,6 @@ namespace GameMap
             foreach (JObject t_areaData in (JArray)json["area_data"])
                 temp.Add(AreaData.GetAreaDataByName((string)t_areaData));
 
-            NeedInit = (bool)json["need_init"];
             AreaVisitCount = (int)json["area_visit_count"];
             AreaIndex = (int)json["area_index"];
 
@@ -29,13 +26,12 @@ namespace GameMap
             JObject ret = new();
 
             JArray temp = new();
-            
-            if(AreaDatas != null)
+
+            if (AreaDatas != null)
                 foreach (AreaData areaData in AreaDatas)
                     temp.Add(areaData.areaName);
             ret["area_data"] = temp;
 
-            ret["need_init"] = NeedInit;
             ret["area_visit_count"] = AreaVisitCount;
             ret["area_index"] = AreaIndex;
 
