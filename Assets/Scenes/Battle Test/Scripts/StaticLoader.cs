@@ -134,5 +134,8 @@ namespace battle
 
         [SerializeField] private TraitsStats m_traitsStats;
         public TraitsStats GetTraitsStats() { return m_traitsStats; }
+
+        [SerializeField] private SoundData m_soundData;
+        public SoundData GetSoundData() {  return m_soundData; }
     }
 }

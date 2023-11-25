@@ -9,6 +9,7 @@ public class CustomSkillData : ScriptableObject
     public string skillName;
     public string skillDescription;
     public Sprite skillIcon;
+    public AudioClip audioClip;
 
     public virtual PixelHumanoid.State CreateSkillState() { return null; }
 }

@@ -53,6 +53,15 @@ namespace battle
         [SerializeField] private EStatus status = EStatus.Waiting;
         public EStatus GetStatus() { return status; }
 
+        public void Start()
+        {
+            AudioListener[] listeners = GameObject.FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
+            foreach (AudioListener listener in listeners)
+            {
+                Debug.Log("listenr: " + listener.gameObject.name);
+            }
+        }
+
         public void Awake()
         {
             status = EStatus.Waiting;
@@ -384,6 +393,10 @@ namespace battle
             if (to.IsDead())
                 return;
 
+            PixelHumanoid toHumanoid = (PixelHumanoid)to;
+            toHumanoid.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().hit;
+            toHumanoid.GetAudioSource().Play();
+
             to.stats.hp -= damage;
             if (to.stats.hp < 0)
                 damage += to.stats.hp;
@@ -449,6 +462,10 @@ namespace battle
         {
             if (to.IsDead())
                 return;
+
+            PixelHumanoid toHumanoid =  (PixelHumanoid)to;
+            toHumanoid.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().hit;
+            toHumanoid.GetAudioSource().Play();
 
             to.stats.hp -= damage;
             if (to.stats.hp < 0)
@@ -542,6 +559,9 @@ namespace battle
 
             if (isAllDead)
             {
+                if (SceneParamter.Instance().isWin == true)
+                    SceneParamter.Instance().Score += SceneParamter.Instance().EnemyTotalLevel;
+
                 onBattleEnd.Invoke();
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using data;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Assertions.Must;
 
 // PixelHumanoid가 가질 수 있는 State를 정의하는 파일
 
@@ -144,6 +145,9 @@ namespace battle
                     }
                     else
                     {
+                        owner.m_audioSource.clip = StaticLoader.Instance().GetSoundData().meleeAttack;
+                        owner.m_audioSource.Play();
+
                         owner.m_animator.SetTrigger("Slash");
                         owner.bm.ApplyDefaultAttack(owner, target);
 
@@ -168,6 +172,9 @@ namespace battle
                     }
                     else
                     {
+                        owner.m_audioSource.clip = StaticLoader.Instance().GetSoundData().rangedAttack;
+                        owner.m_audioSource.Play();
+
                         switch (owner.defaultAttackType)
                         {
                             case EDefualtAttackType.RangedShot:

@@ -29,6 +29,16 @@ namespace battle
         [SerializeField] Transform m_bodyScaler;
         [SerializeField] SpriteRenderer m_sr;
         public SpriteRenderer GetSpriteRenderer() { return m_sr; }
+        [SerializeField] private AudioSource m_audioSource;
+        public AudioSource GetAudioSource() 
+        {  
+            if (m_audioSource == null)
+            {
+                m_audioSource = GetComponent<AudioSource>();
+            }
+
+            return m_audioSource;
+        }
 
         public override int GetUpgradelLevel()
         {
