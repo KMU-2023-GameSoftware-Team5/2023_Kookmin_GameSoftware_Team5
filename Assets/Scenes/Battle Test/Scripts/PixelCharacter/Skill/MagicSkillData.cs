@@ -21,11 +21,13 @@ public class MagicSkillData : CustomSkillData
             effect = skillData.effect;
             effectCount = skillData.effectCount;
             damage = skillData.damage;
+            audioClip = skillData.audioClip;
         }
 
         public GameObject effect;
         public int effectCount;
         public int damage;
+        public AudioClip audioClip;
 
         protected override void onEnter(PixelHumanoid owner)
         {
@@ -33,6 +35,8 @@ public class MagicSkillData : CustomSkillData
 
             owner.stats.mp = 0;
 
+            owner.GetAudioSource().clip = audioClip;
+            owner.GetAudioSource().Play();
 
             PixelCharacter[] enemies;
             owner.bm.GetAliveEnemiesFromClosest(owner, out enemies);

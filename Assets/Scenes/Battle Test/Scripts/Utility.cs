@@ -186,8 +186,7 @@ namespace battle
         {
             if (count > sum)    // 5를 10개로 나누려 하는 경우
             {
-                Debug.LogError("partition count is bigger than sum");
-                return null;
+                count = sum;
             }
             if (sum > max * count)  // 10을 5개로 나눠야 하는데 최대값이 1인 경우
             {

@@ -34,6 +34,8 @@ public class RangedSkillData : CustomSkillData
 
             damage = data.damage;
             range = data.range;
+
+            audioClip = data.audioClip;
         }
 
         public GameObject projectile;
@@ -44,6 +46,8 @@ public class RangedSkillData : CustomSkillData
 
         public int damage;
         public float range;         // move towards enemy till in range
+
+        public AudioClip audioClip;
 
         protected override PixelHumanoid.EState onUpdate(PixelHumanoid owner)
         {
@@ -80,6 +84,9 @@ public class RangedSkillData : CustomSkillData
             {
                 owner.stats.mp = 0;
 
+                owner.GetAudioSource().clip = audioClip;
+                owner.GetAudioSource().Play();
+                
                 for (int i = 0; i < projectileCount; i++)
                 {
                     Utility.InstantiateProjectileAsDamageAfter(

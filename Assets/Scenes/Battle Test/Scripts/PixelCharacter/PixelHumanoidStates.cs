@@ -145,8 +145,8 @@ namespace battle
                     }
                     else
                     {
-                        owner.m_audioSource.clip = StaticLoader.Instance().GetSoundData().meleeAttack;
-                        owner.m_audioSource.Play();
+                        owner.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().meleeAttack;
+                        owner.GetAudioSource().Play();
 
                         owner.m_animator.SetTrigger("Slash");
                         owner.bm.ApplyDefaultAttack(owner, target);
@@ -172,8 +172,8 @@ namespace battle
                     }
                     else
                     {
-                        owner.m_audioSource.clip = StaticLoader.Instance().GetSoundData().rangedAttack;
-                        owner.m_audioSource.Play();
+                        owner.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().rangedAttack;
+                        owner.GetAudioSource().Play();
 
                         switch (owner.defaultAttackType)
                         {

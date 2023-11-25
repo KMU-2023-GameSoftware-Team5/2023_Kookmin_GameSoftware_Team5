@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
+  m_Name: Human Warrior
+  m_EditorClassIdentifier: 
+  sheild: 0
+  hp: 550
+  mp: 0
+  energy: 0
+  walkSpeed: 5
+  damage: 12
+  attackDelay: 0.3
+  criticalRate: 0
+  characterName: Human Warrior
+  attackRange: 1
+  traits: 3
+  Head: Human#FFFFFF/0:0:0
+  Ears: Human#FFFFFF/0:0:0
+  Eyes: Human#FFFFFF/0:0:0
+  Body: Human#FFFFFF/0:0:0
+  Hair: Hair1#FFFFFF/0:0:0
+  Armor: HornsKnight#FFFFFF/0:0:0
+  Helmet: VikingHelmet#FFFFFF/0:0:0
+  Weapon: Pitchfork#FFFFFF/0:0:0
+  Shield: 
+  Cape: 
+  Back: 
+  Mask: 
+  defualtAttackType: 0
+  useCustomSkil: 1
+  skill: 0
+  customSkillName: "\uD3ED\uBC1C"

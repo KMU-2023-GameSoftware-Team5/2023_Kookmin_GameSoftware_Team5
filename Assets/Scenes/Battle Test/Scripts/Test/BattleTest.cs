@@ -93,7 +93,7 @@ namespace battle
                 return;
             }
 
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < randomLevels.Length; i++)
             {
                 int maxExcludeIdex = StaticLoader.Instance().GetPixelHumanoidCount();
                 int randomIdx = UnityEngine.Random.Range(0, maxExcludeIdex);
@@ -102,8 +102,8 @@ namespace battle
                     StaticLoader.Instance().GetPixelHumanoidData(randomIdx);
 
                 Vector2 pos = new Vector3(4.5f, 0.5f, 0);
-                pos += UnityEngine.Random.insideUnitCircle * 2.5f;
-                
+                pos += new Vector2(UnityEngine.Random.Range(-2, 3), UnityEngine.Random.Range(-2, 3));
+
                 PixelHumanoid humanoid = MyCharacterFactory.Instance().
                     CreatePixelHumanoid(pixelHumanoidData.characterName, pos, transform);
 
