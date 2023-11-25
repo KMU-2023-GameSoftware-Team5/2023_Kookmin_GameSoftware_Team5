@@ -762,7 +762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5898397441645098441, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
       propertyPath: m_Name
-      value: Dependencydency
+      value: _DeckDependencydency
       objectReference: {fileID: 0}
     - target: {fileID: 7833029721484219361, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1112,6 +1112,10 @@ PrefabInstance:
     - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -14.20813
       objectReference: {fileID: 0}
     - target: {fileID: 8024431453402245008, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera

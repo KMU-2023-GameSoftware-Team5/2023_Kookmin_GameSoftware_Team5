@@ -21,10 +21,12 @@ namespace deck
         [Header("current Player Status")]
         [SerializeField] Transform characterGrid;
         [SerializeField] Transform itemGrid;
+        [SerializeField] TextMeshProUGUI playerMaxCharacter;
+        [SerializeField] TextMeshProUGUI playerMaxSelector;
+        [SerializeField] TextMeshProUGUI playerCoin;
 
         [Header("New Game")]
         [SerializeField] NewGameSelectorList newGameSelector;
-
 
         private void Start()
         {
@@ -49,6 +51,10 @@ namespace deck
                     // MyDeckFactory.Instance().createCharacterCardPrefab(characters[i], characterGrid);
                     MyDeckFactory.Instance().createLightCharacterInfo(characters[i], characterGrid);
                 }
+
+                playerMaxCharacter.text = PlayerManager.Instance().max_character.ToString();
+                playerMaxSelector.text = PlayerManager.Instance().max_selectable.ToString();
+                playerCoin.text = PlayerManager.Instance().playerGold.ToString();
             }
                 /*
                 }
@@ -58,7 +64,7 @@ namespace deck
                     MyDeckFactory.Instance().createLightEquipItemUI(item, itemGrid);
                 }
                 */
-                newGameSelector.Initialize(this);
+            newGameSelector.Initialize(this);
         } 
 
         /// <summary>
