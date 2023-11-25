@@ -43,7 +43,7 @@ namespace battle
             data.SetOutToBuilder(ret.builder);
             ret.builder.Rebuild();
 
-            ret.Initilize(data);
+            ret.Initilize(data, null);
 
             // head bar
             GameObject characterHeadBarPrefap = StaticLoader.Instance().GetPixelCharacterHeadBarPrefap();

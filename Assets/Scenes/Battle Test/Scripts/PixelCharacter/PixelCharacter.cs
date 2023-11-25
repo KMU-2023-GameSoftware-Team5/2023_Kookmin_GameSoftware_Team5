@@ -14,7 +14,7 @@ namespace battle
         public CommonStats stats;
         public int maxHp;
         public uint targetId;
-        public int upgradeLevel = 0;
+        public int upgradeLevel = 1;
         public ETraits traits;
 
         [Header("Setting: PixelCharacter")]
@@ -28,6 +28,11 @@ namespace battle
         public PixelCharacterHeadBar headBar;
 
         public virtual bool IsDead() { return true; }
+
+        public virtual int GetUpgradelLevel()
+        {
+            return upgradeLevel;
+        }
 
         [SerializeField] protected Utility.Direction2 m_direction;
         public virtual void SetDirection(Utility.Direction2 direction) { }

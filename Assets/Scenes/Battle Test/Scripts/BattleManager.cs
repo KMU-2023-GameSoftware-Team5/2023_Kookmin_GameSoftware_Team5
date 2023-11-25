@@ -53,6 +53,15 @@ namespace battle
         [SerializeField] private EStatus status = EStatus.Waiting;
         public EStatus GetStatus() { return status; }
 
+        public void Start()
+        {
+            AudioListener[] listeners = GameObject.FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
+            foreach (AudioListener listener in listeners)
+            {
+                Debug.Log("listenr: " + listener.gameObject.name);
+            }
+        }
+
         public void Awake()
         {
             status = EStatus.Waiting;
@@ -145,19 +154,21 @@ namespace battle
             foreach(PixelCharacter character in m_team0Characters)
             {
                 PixelHumanoid humanoid = (PixelHumanoid)character;
-                
+
+                // apply upgrade level
+                int upgradeLevel = character.GetUpgradelLevel();
+
                 // apply traits synergy
                 CommonStats traitsStats = GetTraitsStats(humanoid);
+                humanoid.stats += traitsStats;
 
-                humanoid.stats.sheild += traitsStats.sheild;
-                humanoid.stats.hp += traitsStats.hp;
-                humanoid.maxHp += traitsStats.hp;
-                humanoid.stats.mp += traitsStats.mp;
-                humanoid.stats.energy += traitsStats.energy;
-                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
-                humanoid.stats.damage += traitsStats.damage;
-                humanoid.stats.attackDelay -= traitsStats.attackDelay;
-                humanoid.stats.criticalRate += traitsStats.criticalRate;
+                // apply item stats
+                if (humanoid.deckHumanoid != null)
+                {
+                    humanoid.stats += humanoid.deckHumanoid.getEquipItemStats();
+                }
+
+                humanoid.maxHp = humanoid.stats.hp;
 
                 character.OnBattleStarted(m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
@@ -166,18 +177,22 @@ namespace battle
             {
                 PixelHumanoid humanoid = (PixelHumanoid)character;
 
+                // apply upgrade level
+                int upgradeLevel = character.GetUpgradelLevel();
+                humanoid.stats = humanoid.stats.GetUpgradedStats(upgradeLevel);
+
                 // apply traits synergy
                 CommonStats traitsStats = GetTraitsStats(humanoid);
+                humanoid.stats += traitsStats;
 
-                humanoid.stats.sheild += traitsStats.sheild;
-                humanoid.stats.hp += traitsStats.hp;
-                humanoid.maxHp += traitsStats.hp;
-                humanoid.stats.mp += traitsStats.mp;
-                humanoid.stats.energy += traitsStats.energy;
-                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
-                humanoid.stats.damage += traitsStats.damage;
-                humanoid.stats.attackDelay -= traitsStats.attackDelay;
-                humanoid.stats.criticalRate += traitsStats.criticalRate;
+                // apply item stats
+                if (humanoid.deckHumanoid != null)
+                {
+                    humanoid.stats += humanoid.deckHumanoid.getEquipItemStats();
+                }
+
+                humanoid.maxHp = humanoid.stats.hp;
+
 
                 character.OnBattleStarted(m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
@@ -376,6 +391,10 @@ namespace battle
             if (to.IsDead())
                 return;
 
+            PixelHumanoid toHumanoid = (PixelHumanoid)to;
+            toHumanoid.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().hit;
+            toHumanoid.GetAudioSource().Play();
+
             to.stats.hp -= damage;
             if (to.stats.hp < 0)
                 damage += to.stats.hp;
@@ -441,6 +460,10 @@ namespace battle
         {
             if (to.IsDead())
                 return;
+
+            PixelHumanoid toHumanoid =  (PixelHumanoid)to;
+            toHumanoid.GetAudioSource().clip = StaticLoader.Instance().GetSoundData().hit;
+            toHumanoid.GetAudioSource().Play();
 
             to.stats.hp -= damage;
             if (to.stats.hp < 0)
@@ -534,6 +557,9 @@ namespace battle
 
             if (isAllDead)
             {
+                if (SceneParamter.Instance().isWin == true)
+                    SceneParamter.Instance().Score += SceneParamter.Instance().EnemyTotalLevel;
+
                 onBattleEnd.Invoke();
             }
         }

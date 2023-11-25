@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 using data;
+using SharpUI.Source.Common.UI.Elements.State;
 
 namespace battle
 {
@@ -11,6 +12,7 @@ namespace battle
         [Header("Status: PixelHumanoid")]
         public EState state;
         public float leftAttackDelay;
+        public deck.PixelHumanoid deckHumanoid;
 
         [Header("Setting: PixelCharacter")]
         public float searchingRange = 5.0f;
@@ -27,6 +29,28 @@ namespace battle
         [SerializeField] Transform m_bodyScaler;
         [SerializeField] SpriteRenderer m_sr;
         public SpriteRenderer GetSpriteRenderer() { return m_sr; }
+        [SerializeField] private AudioSource m_audioSource;
+        public AudioSource GetAudioSource() 
+        {  
+            if (m_audioSource == null)
+            {
+                m_audioSource = GetComponent<AudioSource>();
+            }
+
+            return m_audioSource;
+        }
+
+        public override int GetUpgradelLevel()
+        {
+            if (deckHumanoid != null)
+            {
+                return deckHumanoid.tier;
+            }
+            else
+            {
+                return base.GetUpgradelLevel();
+            }
+        }
 
         public override void SetDirection(Utility.Direction2 direction)
         {
@@ -50,7 +74,7 @@ namespace battle
         }
 
         // TODO: PixelHumanoidData와 PixelCharacterData 구분하기
-        public void Initilize(PixelHumanoidData data)
+        public void Initilize(PixelHumanoidData data, deck.PixelHumanoid deckHumanoid)
         {
             stats.walkSpeed = data.walkSpeed;
             maxHp = data.hp;
@@ -74,6 +98,8 @@ namespace battle
             }
             m_fsm = new FSM(set, EState.Waiting);
             m_isDead = false;
+
+            this.deckHumanoid = deckHumanoid;
         }
 
         private FSM m_fsm;

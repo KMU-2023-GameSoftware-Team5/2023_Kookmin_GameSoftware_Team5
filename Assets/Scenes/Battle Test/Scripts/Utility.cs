@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
@@ -177,6 +179,48 @@ namespace battle
 
             from.GetAnimator().SetBool("Idle", false);
             from.GetAnimator().SetBool("Walking", true);
+        }
+
+
+        public static int[] Partition(int sum, int count, int max)
+        {
+            if (count > sum)    // 5를 10개로 나누려 하는 경우
+            {
+                Debug.LogError("partition count is bigger than sum");
+                return null;
+            }
+            if (sum > max * count)  // 10을 5개로 나눠야 하는데 최대값이 1인 경우
+            {
+                Debug.LogError("partition max is too small");
+                return null;
+            }
+
+            int[] ret = new int[count];
+
+            int left = sum;
+            for(int i = 0; i < count - 1; i++)
+            {
+                ret[i] = sum / count;
+                left -= ret[i];
+            }
+            ret[count - 1] = left;
+
+            for(int i = 0; i < count / 2; i++)
+            {
+                int i1 = i * 2;
+                int i2 = i * 2 + 1;
+
+                int delta = Math.Min(max - ret[i1], ret[i1] - 1);
+
+                if (delta == 0)
+                    break;
+
+                int randomDelta = UnityEngine.Random.Range(0, delta + 1);
+                ret[i1] += randomDelta;
+                ret[i2] -= randomDelta;
+            }
+
+            return ret;
         }
     }
 }

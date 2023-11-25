@@ -1,5 +1,8 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using UnityEngine;
 
 namespace battle
@@ -13,19 +16,104 @@ namespace battle
             public Vector3 position;
         }
 
-        public bool doRandom;
-        public bool loadTeam1FromMobset;
+        public ESpawnMode spawnMode;
+
         public BuildTarget[] team0Characters;
         public BuildTarget[] team1Characters;
 
+        public enum ESpawnMode
+        {
+            Random100, 
+            SceneParam,
+            MobSet, 
+            Inspector, 
+        }
+
+        private void Update()
+        {
+            /*
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // partition test
+                int[] ret = Utility.Partition(45, 5, 9);
+                Debug.Log("45: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(40, 5, 9);
+                Debug.Log("40: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(35, 5, 9);
+                Debug.Log("35: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(30, 5, 9);
+                Debug.Log("30: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(20, 5, 9);
+                Debug.Log("20: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(10, 5, 9);
+                Debug.Log("10: " + $"[{string.Join(",", ret)}]");
+                ret = Utility.Partition(5, 5, 9);
+                Debug.Log("5: " + $"[{string.Join(",", ret)}]");
+            }
+            */
+        }
+
         private void Start()
         {
-            if (loadTeam1FromMobset)
-                spawnFromMobSet(SceneParamter.Instance().MobSet);
-            else if (doRandom)
-                spawnCharactersRandom();
-            else
-                spawnCharacters();
+            switch (spawnMode)
+            {
+                case ESpawnMode.Random100:
+                    spawnCharactersRandom();
+                    break;
+                case ESpawnMode.MobSet:
+                    spawnFromMobSet(SceneParamter.Instance().MobSet);
+                    break;
+                case ESpawnMode.SceneParam:
+                    {
+                        if (SceneParamter.Instance().IsBoss)
+                        {
+
+                        }
+                        else
+                        {
+                            spawnEnemyByTotalLevel();
+                        }
+
+                        break;
+                    }
+                case ESpawnMode.Inspector:
+                    spawnCharacters();
+                    break;
+            }
+        }
+
+        private void spawnEnemyByTotalLevel()
+        {
+            int sum  = SceneParamter.Instance().EnemyTotalLevel;
+            int[] randomLevels = Utility.Partition(sum, 5, 9);
+
+            if (randomLevels == null)
+            {
+                Debug.LogError("randomLevels is NULL");
+                return;
+            }
+
+            for(int i = 0; i < 5; i++)
+            {
+                int maxExcludeIdex = StaticLoader.Instance().GetPixelHumanoidCount();
+                int randomIdx = UnityEngine.Random.Range(0, maxExcludeIdex);
+
+                data.PixelHumanoidData pixelHumanoidData = 
+                    StaticLoader.Instance().GetPixelHumanoidData(randomIdx);
+
+                Vector2 pos = new Vector3(4.5f, 0.5f, 0);
+                pos += UnityEngine.Random.insideUnitCircle * 2.5f;
+                
+                PixelHumanoid humanoid = MyCharacterFactory.Instance().
+                    CreatePixelHumanoid(pixelHumanoidData.characterName, pos, transform);
+
+                humanoid.SetDirection(Utility.Direction2.Left);
+                humanoid.teamIndex = 1;
+                humanoid.bm = BattleManager.Instance();
+                humanoid.upgradeLevel = randomLevels[i];
+
+                m_team1Humanoids.Add(humanoid);
+            }
         }
 
         private void spawnFromMobSet(MobSetData mobset)

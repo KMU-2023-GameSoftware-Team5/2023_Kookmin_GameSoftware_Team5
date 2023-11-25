@@ -29,7 +29,7 @@ public class TraitsStats : ScriptableObject
                 return Skeleton3;
             else if (count == 4)
                 return Skeleton4;
-            else
+            else if (count == 5)
                 return Skeleton5;
         }
         else if (traits == ETraits.Demon)
