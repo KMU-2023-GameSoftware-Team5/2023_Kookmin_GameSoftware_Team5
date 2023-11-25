@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413aad6bc6d42f44b9d8951f5a98931e, type: 3}
+  m_Name: "\uB9C8\uB825 \uD769\uBFCC\uB9AC\uAE30"
+  m_EditorClassIdentifier: 
+  skillName: "\uB9C8\uB825 \uD769\uBFCC\uB9AC\uAE30"
+  skillDescription: "\uB9C8\uB825\uC744 \uD769\uBFCC\uB824 \uC801\uC744 \uACF5\uACA9\uD55C\uB2E4. "
+  skillIcon: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 5a7fb00406fc169448f85a755fa467c6, type: 3}
+  effect: {fileID: 6036818779175505147, guid: 2c6f15866a3ffdf48ad71d854af0a64d, type: 3}
+  effectCount: 2
+  damage: 5

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9dda1a980de554d8e955084b4d6785, type: 3}
+  m_Name: Demon Wizard
+  m_EditorClassIdentifier: 
+  sheild: 0
+  hp: 400
+  mp: 0
+  energy: 0
+  walkSpeed: 5
+  damage: 15
+  attackDelay: 0.3
+  criticalRate: 0.5
+  characterName: Demon Wizard
+  attackRange: 4
+  traits: 2
+  Head: Demon#FFFFFF/0:0:0
+  Ears: Demon#FFFFFF/0:0:0
+  Eyes: Demon#FFFFFF/0:0:0
+  Body: Demon#FFFFFF/0:0:0
+  Hair: Hair10#C7CFDD/0:0:0
+  Armor: Samurai#FFFFFF/0:0:0
+  Helmet: 
+  Weapon: FireWand#FFFFFF/0:0:0
+  Shield: 
+  Cape: 
+  Back: 
+  Mask: 
+  defualtAttackType: 0
+  useCustomSkil: 1
+  skill: 5
+  customSkillName: "\uBE5B \uAE30\uB465"

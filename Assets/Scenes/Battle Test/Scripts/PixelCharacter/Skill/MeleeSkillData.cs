@@ -15,6 +15,7 @@ public class MeleeSkillData : CustomSkillData
 
     public int damage;
     public float range;         // move towards enemy till in range
+    public float effectLifeTime;
 
     public override PixelHumanoid.State CreateSkillState() 
     {
@@ -31,15 +32,19 @@ public class MeleeSkillData : CustomSkillData
             damage = data.damage;
             range = data.range;
             effectGapSec = data.effectGapSec;
+            audioClip = data.audioClip;
+            effectLifeTime = data.effectLifeTime;
         }
 
         public GameObject effect;
         public int effectRepeatCount;
         public float effectSpawnRange;
         public float effectGapSec;
+        public AudioClip audioClip;
 
         public int damage;
         public float range;
+        public float effectLifeTime;
 
         protected override PixelHumanoid.EState onUpdate(PixelHumanoid owner) 
         {
@@ -76,6 +81,9 @@ public class MeleeSkillData : CustomSkillData
             {
                 owner.stats.mp = 0;
 
+                owner.GetAudioSource().clip = audioClip;
+                owner.GetAudioSource().Play();
+
                 for (int i = 0; i < effectRepeatCount; i++)
                 {
                     Vector3 world_pos = Vector3.zero;
@@ -89,7 +97,7 @@ public class MeleeSkillData : CustomSkillData
                     }
 
                     world_pos += target.transform.position;
-                    Utility.InstantiateAfter(effect, world_pos, effectGapSec * i, 1.0f);
+                    Utility.InstantiateAfter(effect, world_pos, effectGapSec * i, effectLifeTime);
                 }
 
                 
