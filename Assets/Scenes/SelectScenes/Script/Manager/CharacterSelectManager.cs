@@ -229,13 +229,13 @@ namespace deck
             characterGo.transform.position = worldPosition;
 
             // build battle.PixelHumaniod
-            battle.PixelHumanoid battlPixelHumanoid = characterGo.GetComponent<battle.PixelHumanoid>();
-            battlPixelHumanoid.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
-            battlPixelHumanoid.builder.SpriteLibrary = battlPixelHumanoid.spriteLibrary;
+            battle.PixelHumanoid battlePixelHumanoid = characterGo.GetComponent<battle.PixelHumanoid>();
+            battlePixelHumanoid.builder.SpriteCollection = StaticLoader.Instance().GetCollection();
+            battlePixelHumanoid.builder.SpriteLibrary = battlePixelHumanoid.spriteLibrary;
             PixelHumanoidData data = MyDeckFactory.Instance().getPixelHumanoidData(character.characterName);
-            data.SetOutToBuilder(battlPixelHumanoid.builder);
-            battlPixelHumanoid.builder.Rebuild();
-            battlPixelHumanoid.Initilize(data);
+            data.SetOutToBuilder(battlePixelHumanoid.builder);
+            battlePixelHumanoid.builder.Rebuild();
+            battlePixelHumanoid.Initilize(data, character);
 
             // PlacementCharacter build
             PlacementCharacter ret = characterGo.GetComponent<PlacementCharacter>();
@@ -246,8 +246,8 @@ namespace deck
 
             // head bar setting
             PixelCharacterHeadBar headBar = headBarGo.GetComponent<PixelCharacterHeadBar>();
-            headBar.Initialize(battlPixelHumanoid);
-            battlPixelHumanoid.headBar = headBar;
+            headBar.Initialize(battlePixelHumanoid);
+            battlePixelHumanoid.headBar = headBar;
 
             // head name setting
             PlacementCharacterHeadName headName = headBarGo.GetComponent<PlacementCharacterHeadName>();

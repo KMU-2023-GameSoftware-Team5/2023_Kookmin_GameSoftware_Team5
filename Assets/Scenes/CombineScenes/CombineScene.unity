@@ -787,7 +787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -12.424561
+      value: -14.208069
       objectReference: {fileID: 0}
     - target: {fileID: 8024431453402245008, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
@@ -919,8 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618590fc21385364d8229293461fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doRandom: 0
-  loadTeam1FromMobset: 1
+  spawnMode: 1
   team0Characters: []
   team1Characters:
   - name: Goblin Archor

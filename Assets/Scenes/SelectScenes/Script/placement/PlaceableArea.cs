@@ -39,10 +39,10 @@ namespace deck
         {
             Vector3[] vector3 = new Vector3[4];
             GetComponent<RectTransform>().GetWorldCorners(vector3);
-            Debug.Log($"{vector3[0].x}/{vector3[0].y}");
-            Debug.Log($"{vector3[1].x}/{vector3[1].y}");
-            Debug.Log($"{vector3[2].x}/{vector3[2].y}");
-            Debug.Log($"{vector3[3].x}/{vector3[3].y}");
+            // Debug.Log($"{vector3[0].x}/{vector3[0].y}");
+            // Debug.Log($"{vector3[1].x}/{vector3[1].y}");
+            // Debug.Log($"{vector3[2].x}/{vector3[2].y}");
+            // Debug.Log($"{vector3[3].x}/{vector3[3].y}");
             PlacementCharacter.minX = vector3[0].x;
             PlacementCharacter.minY = vector3[0].y;
             PlacementCharacter.maxY = vector3[1].y-1f;

@@ -147,19 +147,21 @@ namespace battle
             foreach(PixelCharacter character in m_team0Characters)
             {
                 PixelHumanoid humanoid = (PixelHumanoid)character;
-                
+
+                // apply upgrade level
+                int upgradeLevel = character.GetUpgradelLevel();
+
                 // apply traits synergy
                 CommonStats traitsStats = GetTraitsStats(humanoid);
+                humanoid.stats += traitsStats;
 
-                humanoid.stats.sheild += traitsStats.sheild;
-                humanoid.stats.hp += traitsStats.hp;
-                humanoid.maxHp += traitsStats.hp;
-                humanoid.stats.mp += traitsStats.mp;
-                humanoid.stats.energy += traitsStats.energy;
-                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
-                humanoid.stats.damage += traitsStats.damage;
-                humanoid.stats.attackDelay -= traitsStats.attackDelay;
-                humanoid.stats.criticalRate += traitsStats.criticalRate;
+                // apply item stats
+                if (humanoid.deckHumanoid != null)
+                {
+                    humanoid.stats += humanoid.deckHumanoid.getEquipItemStats();
+                }
+
+                humanoid.maxHp = humanoid.stats.hp;
 
                 character.OnBattleStarted(m_team0Characters.ToArray(), m_team1Characters.ToArray());
             }
@@ -168,18 +170,22 @@ namespace battle
             {
                 PixelHumanoid humanoid = (PixelHumanoid)character;
 
+                // apply upgrade level
+                int upgradeLevel = character.GetUpgradelLevel();
+                humanoid.stats = humanoid.stats.GetUpgradedStats(upgradeLevel);
+
                 // apply traits synergy
                 CommonStats traitsStats = GetTraitsStats(humanoid);
+                humanoid.stats += traitsStats;
 
-                humanoid.stats.sheild += traitsStats.sheild;
-                humanoid.stats.hp += traitsStats.hp;
-                humanoid.maxHp += traitsStats.hp;
-                humanoid.stats.mp += traitsStats.mp;
-                humanoid.stats.energy += traitsStats.energy;
-                humanoid.stats.walkSpeed += traitsStats.walkSpeed;
-                humanoid.stats.damage += traitsStats.damage;
-                humanoid.stats.attackDelay -= traitsStats.attackDelay;
-                humanoid.stats.criticalRate += traitsStats.criticalRate;
+                // apply item stats
+                if (humanoid.deckHumanoid != null)
+                {
+                    humanoid.stats += humanoid.deckHumanoid.getEquipItemStats();
+                }
+
+                humanoid.maxHp = humanoid.stats.hp;
+
 
                 character.OnBattleStarted(m_team1Characters.ToArray(), m_team0Characters.ToArray());
             }
