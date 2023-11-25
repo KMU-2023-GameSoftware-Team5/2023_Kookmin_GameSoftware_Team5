@@ -616,6 +616,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1519238030912379518, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1872174335116812242, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -754,7 +758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5898397441645098441, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
       propertyPath: m_Name
-      value: _DeckDependency
+      value: Dependencydency
       objectReference: {fileID: 0}
     - target: {fileID: 7833029721484219361, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
       propertyPath: m_AnchorMax.y

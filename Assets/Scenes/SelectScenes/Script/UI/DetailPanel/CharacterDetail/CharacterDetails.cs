@@ -18,7 +18,6 @@ namespace deck
         
         [Header("characterIconLayer")]
         [SerializeField] CharacterIcon characterIcon;
-        [SerializeField] GameObject[] star;
 
 
         [Header("characterStatLayer")]
@@ -40,7 +39,7 @@ namespace deck
         /// 캐릭터 인벤토리 정보 슬롯
         /// </summary>
         CharacterEquipItemSlot[] charactrerEquipItemSlot;
-
+        [SerializeField] CharacterDetailTabManager characterDetailTabManager;
 
 
         [Header("CharacterDescriptionLayer")]
@@ -94,14 +93,10 @@ namespace deck
             }
             itemTab.SetActive(character.playerOwned);
 
-            foreach(GameObject go in star)
-            {
-                go.SetActive(false);
-            }
-            star[character.tier - 1].SetActive(true);
             nickNameInput.readOnly = !character.playerOwned;
 
             // detail setting 
+            characterDetailTabManager.openCharacterDescription();
         }
 
         /// <summary>

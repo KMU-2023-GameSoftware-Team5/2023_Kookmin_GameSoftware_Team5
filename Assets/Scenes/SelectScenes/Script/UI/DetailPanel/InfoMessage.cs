@@ -10,7 +10,7 @@ namespace deck
         public GameObject self;
         public TextMeshProUGUI infoText;
         bool isInfoOn = false;
-        public float seconds = 2f;
+        public float seconds = 0.3f;
         float _seconds = 0f;
 
         public void displayInfoMessage(string text)

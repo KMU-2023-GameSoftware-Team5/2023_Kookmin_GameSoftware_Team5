@@ -147,6 +147,7 @@ namespace deck
         int maxSelectAble; 
         void Start()
         {
+            MyDeckFactory.Instance().displayInfoMessage($"스테이지 {PlayerManager.Instance().StageCount}");
             maxSelectAble = PlayerManager.Instance().max_selectable;
             isPlacementMode = false;
 
