@@ -966,6 +966,14 @@ PrefabInstance:
       propertyPath: m_nearbyStandardB
       value: 
       objectReference: {fileID: 7235786352540206571}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_areaData.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_areaData.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 70a0fd97e6548244b9c9bb266b25daa4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -22,6 +22,9 @@ public class SceneParamter : StaticGetter<SceneParamter>
 
     // == Map parameters ==
     public int MapStage = 1;
+    /// <summary>
+    /// The turns of map, also mean reinforce level of enemies.
+    /// </summary>
     public int EnemyReinforce;
 
     // 승리 시 EnemyTotalLevel의 값 만큼 올라간다. 

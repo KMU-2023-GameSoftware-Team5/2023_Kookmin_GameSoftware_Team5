@@ -7,7 +7,7 @@ namespace GameMap
 {
     public class AreaManager : MonoBehaviour
     {
-        static MapStageData MapData = new();
+        public static MapStageData MapData;
 
         [SerializeField] MobSetData[] m_mobSetDatas;
         [SerializeField] MobSetData m_bossMobSet;
@@ -20,11 +20,13 @@ namespace GameMap
 
         [SerializeField] GameObject m_bossArea;
         [SerializeField] AreaData m_bossData;
+        [SerializeField] Sprite m_defaultAreaSprite;
 
         [SerializeField] GameObject m_nearbyStandardA;
         [SerializeField] GameObject m_nearbyStandardB;
 
         [SerializeField][Range(0, 50)] int m_bossOpenMinimum = 5;
+        [SerializeField][Range(0, 10)] int m_marketTurnLimit = 3;
 
         List<GameObject> m_areas;
 
@@ -38,37 +40,74 @@ namespace GameMap
         {
             BuildAreas();
 
+            // MapData must not to be null at this point
+            if (MapData is null)
+            {
+                Debug.LogError("MapData is null!");
+                return;
+            }
+
             m_bossArea.GetComponent<Button>().onClick.AddListener(() =>
             {
-                var sceneParameter = SceneParamter.Instance();
-
-                sceneParameter.EnemyReinforce = 0;
-                sceneParameter.MapStage++;
-
-                MapData = new();
-
-                // THIS IS TEMP!
-                SceneParamter.Instance().MobSet = m_bossMobSet;
-                SceneManager.LoadScene("CombineScene");
+                MapData = null;
+                BattleAreaOnClick(true);
             });
 
             // Add common onClick event to areas
             for (int i = 0; i < m_areas.Count; i++)
             {
                 // Use this variable to resolve closure problem
+                string t_areaName = MapData.AreaDatas[i].areaName;
+                int t_marketTurnLimit = m_marketTurnLimit;
                 int t_index = i;
 
                 m_areas[i].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    ChangeMobSetData();
-
                     MapData.AreaVisitCount++;
                     MapData.AreaIndex = t_index;
 
-                    // THIS IS TEMP!
-                    SceneParamter.Instance().EnemyReinforce = MapData.AreaVisitCount;
-                    SceneManager.LoadScene("CombineScene");
+                    switch (t_areaName)
+                    {
+                        // case "Random":
+                        //     SceneManager.LoadScene("EventScene");
+                        //     break;
+                        case "Market":
+                            MapData.MarketDisableTurn = t_marketTurnLimit;
+                            SceneManager.LoadScene("ShopTestScene");
+                            break;
+                        case "Battle":
+                            BattleAreaOnClick();
+                            break;
+                    }
                 });
+            }
+
+            // Remove market's onclick if turn has not yet passed after using the market
+            if (MapData.MarketDisableTurn > 0)
+            {
+                for (int i = 0; i < m_areas.Count; i++)
+                {
+                    if (MapData.AreaDatas[i].areaName != "Market")
+                        continue;
+
+                    Image areaImage = m_areas[i].GetComponent<Image>();
+                    Button areaButton = m_areas[i].GetComponent<Button>();
+
+                    areaImage.sprite = m_defaultAreaSprite;
+                    areaButton.onClick.RemoveAllListeners();
+
+                    // Use this variable to resolve closure problem
+                    int t_index = i;
+
+                    areaButton.onClick.AddListener(() =>
+                    {
+                        MapData.AreaVisitCount++;
+                        MapData.AreaIndex = t_index;
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    });
+                }
+
+                MapData.MarketDisableTurn--;
             }
 
             // Disable all areas
@@ -76,13 +115,17 @@ namespace GameMap
             foreach (var area in m_areas)
                 area.SetActive(false);
 
-            // Get index of start(now) area
-            int startAreaIndex = MapData.NeedInit ?
-                Random.Range(0, m_areas.Count) : MapData.AreaIndex;
-
             // Activate now and near areas
-            ActivateNearAreas(m_areas[startAreaIndex]);
-            m_areas[startAreaIndex].SetActive(true);
+            GameObject nowArea = m_areas[MapData.AreaIndex];
+
+            ActivateNearAreas(nowArea);
+            nowArea.SetActive(true);
+
+            // Remove now area's onclick
+            nowArea.GetComponent<Button>().onClick.RemoveAllListeners();
+
+            // Change now area's icon
+            nowArea.GetComponent<Image>().sprite = m_defaultAreaSprite;
         }
 
         void BuildAreas()
@@ -124,8 +167,10 @@ namespace GameMap
                 builder.AddCanditiateTarget(image, button);
             }
 
-            if (MapData.NeedInit)
+            if (MapData is null)
             {
+                MapData = new();
+
                 foreach (AreaData areaData in m_areaData)
                     builder.AddAreaData(areaData);
 
@@ -142,21 +187,33 @@ namespace GameMap
 
             MapData.AreaDatas = builder.AreaData.ToArray();
             m_areas = builder.AreaResult;
+
+            if (MapData.AreaIndex == -1)
+                MapData.AreaIndex = Random.Range(0, m_areas.Count);
         }
 
-        void ChangeMobSetData()
+        void BattleAreaOnClick(bool isBoss = false)
         {
-            // THIS IS TEMP!
-            int index = MapData.AreaVisitCount % m_mobSetDatas.Length;
-            SceneParamter.Instance().MobSet = m_mobSetDatas[index];
+            var sceneParameter = SceneParamter.Instance();
+
+            sceneParameter.IsBoss = isBoss;
+            sceneParameter.EnemyReinforce = isBoss ? 0 : MapData.AreaVisitCount;
+            sceneParameter.MapStage += isBoss ? 1 : 0;
+
+            sceneParameter.MobSet = isBoss ? m_bossMobSet :
+                m_mobSetDatas[sceneParameter.EnemyReinforce % m_mobSetDatas.Length];
+
+            SceneManager.LoadScene("CombineScene");
         }
 
         void ActivateNearAreas(GameObject target)
         {
             Vector3 areaPos = target.transform.position;
 
-            foreach (GameObject other in m_areas)
+            for (int i = 0; i < m_areas.Count; i++)
             {
+                GameObject other = m_areas[i];
+
                 if (target == other)
                     continue;
 
@@ -171,7 +228,7 @@ namespace GameMap
 
             Vector3 bossPos = m_bossArea.transform.position;
 
-            // Other area is in range
+            // Boss area is in range
             if (MapData.AreaVisitCount >= m_bossOpenMinimum &&
                 (areaPos - bossPos).magnitude <= NearbyDistanceStandard)
                 m_bossArea.SetActive(true);

@@ -1601,6 +1601,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 399870838}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_areaData.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_areaData.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 70a0fd97e6548244b9c9bb266b25daa4, type: 2}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_mobSetDatas.Array.size
       value: 1
       objectReference: {fileID: 0}
