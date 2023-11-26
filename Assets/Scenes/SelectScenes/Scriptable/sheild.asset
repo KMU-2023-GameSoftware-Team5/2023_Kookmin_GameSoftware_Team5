@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: sheild
   m_EditorClassIdentifier: 
   sheild: 30
-  hp: 0
+  hp: 5
   mp: 0
   energy: 0
   walkSpeed: 0
   damage: -5
   attackDelay: 0
   criticalRate: 0
-  itemName: sheild
+  itemName: "\uC274\uB4DC"
   iconImage: {fileID: 21300000, guid: 9269fc8fc935af34bbffa401d0844a8c, type: 3}
   effect: 0
   description: this is sheild

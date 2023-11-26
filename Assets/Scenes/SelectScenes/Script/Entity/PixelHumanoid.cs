@@ -13,18 +13,6 @@ namespace deck
     /// </summary>
     public class PixelHumanoid : PixelCharacter
     {
-        /// <summary>
-        /// 임시로 모아놓은 캐릭터 닉네임들
-        /// </summary>
-        static string[] characterNickNames = {
-                "blue",
-                "magenta",
-                "yellow",
-                "cyan",
-                "red",
-                "green",
-            };
-
         public PixelHumanoid() { }
 
         /// <summary>
@@ -75,7 +63,7 @@ namespace deck
         {
             System.Random random = new System.Random();
 
-            string ret = characterNickNames[random.Next(0, characterNickNames.Length)];
+            string ret = $"용병 {random.Next(0, 999)}호";
             return ret;
         }
 

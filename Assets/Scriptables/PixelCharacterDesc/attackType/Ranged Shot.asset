@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Ranged Shot
   m_EditorClassIdentifier: 
   type: 1
-  desc: "Ranged Shot \uACF5\uACA9\uC744 \uC9C4\uD589\uD55C\uB2E4"
+  desc: "\uC7A5\uAC70\uB9AC \uACF5\uACA9\uC744 \uC9C4\uD589\uD569\uB2C8\uB2E4"
+  img: {fileID: 21300000, guid: 8f8e130d3d0c9c247b78be9804308002, type: 3}
