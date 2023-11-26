@@ -34,6 +34,8 @@ namespace deck
             winRate *= 100;
             winRateTxt.text = $"{pm.playerBattleCount}전 {pm.playerBattleCount - pm.playerLoseCount}승 {pm.playerLoseCount}패 ({winRate.ToString("F1")}%)";
             playerScoreTxt.text = $"{pm.playerScore}점";
+            GameObject ServerRequest = GameObject.Find("ServerRequest");
+            ServerRequest.GetComponent<ServerRequest>().SetScore(pm.playerScore);
         }
 
         public void regame()

@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 1334308064}
   - component: {fileID: 1334308063}
   m_Layer: 0
-  m_Name: ServerTest
+  m_Name: ServerRequest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -486,9 +486,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1334308062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd9b6df783ea436dbd403f7ef0e159d, type: 3}
+  m_Script: {fileID: 11500000, guid: e70eed0bf2c1b264ba3a09f80445e099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
 --- !u!4 &1334308064
 Transform:
   m_ObjectHideFlags: 0
