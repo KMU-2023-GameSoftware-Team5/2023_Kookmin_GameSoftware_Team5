@@ -2594,6 +2594,7 @@ MonoBehaviour:
   itemImage: {fileID: 1588040371364572241}
   itemName: {fileID: 5613610270278088367}
   itemDescription: {fileID: 0}
+  overLine: 1
   itemStat: {fileID: 595634010216865477}
   itemOwner: {fileID: 0}
 --- !u!1 &7983397022111415433
@@ -3585,6 +3586,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: shopSceneButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6632141326068229369, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7224983615695812697, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -3640,7 +3645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141325075871602, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_fontSize
-      value: 25.25
+      value: 35.35
       objectReference: {fileID: 0}
     - target: {fileID: 6632141325075871602, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_fontAsset
@@ -3720,7 +3725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.8
+      value: 0.64
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3728,7 +3733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.6
+      value: 0.36
       objectReference: {fileID: 0}
     - target: {fileID: 6632141326068229368, guid: 7a7207825d33c4b4aa8c774285d0c5e6, type: 3}
       propertyPath: m_AnchorMin.y

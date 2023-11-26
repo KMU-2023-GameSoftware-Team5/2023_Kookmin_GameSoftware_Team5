@@ -14,7 +14,6 @@ namespace deck
     public class BattleEndManager : MonoBehaviour
     {
         public GameObject battleEndPannel;
-        public TextMeshProUGUI shopButtonText;
         public TextMeshProUGUI buttonText;
         public Transform battleEndCanvas;
 
@@ -54,19 +53,6 @@ namespace deck
 
             isWin = SceneParamter.Instance().isWin;
             PlayerManager.Instance().playerBattleCount += 1;
-
-            if(PlayerManager.Instance().shopCount > 0 )
-            {
-                PlayerManager.Instance().shopCount--;
-            }
-            if(PlayerManager.Instance().shopCount > 0)
-            {
-                shopButtonText.text = $"{PlayerManager.Instance().shopCount}턴간 상점 방문불가";
-            }
-            else
-            {
-                shopButtonText.text = "방문시 3턴간 재방문 불가";
-            }
 
                 //isWin = true;
                 if (isWin)
@@ -158,8 +144,6 @@ namespace deck
             {
                 sacrificeCount = PlayerManager.Instance().playerCharacters.Count;
             }
-            if (sacrificeCount == PlayerManager.Instance().playerCharacters.Count)
-                shopButtonText.text = "다음턴에 게임오버. 상점방문불가";
 
             // 패배 하면 캐릭터 바치기
             altarSlots = new List<AltarSlot>();
@@ -272,31 +256,6 @@ namespace deck
                 PlayerManager.Instance().stageCount+=1;
                 PlayerManager.save();
                 SceneManager.LoadScene("Scenes/MapScenes/MapScene1");
-            }
-        }
-
-        public void visitShop()
-        {
-            if (!killCharacter())
-            {
-                return;
-            }
-
-            if (PlayerManager.Instance().playerCharacters.Count == 0)
-            {
-                gameOver();
-            }
-            else
-            {
-                if(PlayerManager.Instance().shopCount != 0)
-                {
-                    MyDeckFactory.Instance().displayInfoMessage($"앞으로 {PlayerManager.Instance().shopCount}턴간 상점방문이 불가합니다.");
-                    return;
-                }
-                PlayerManager.Instance().stageCount += 2; // 상점방문했으니까 2개씩 올림
-                PlayerManager.Instance().shopCount = 3;
-                PlayerManager.save();
-                SceneManager.LoadScene("Scenes/SelectScenes/ShopTestScenes/ShopTestScene");
             }
         }
 

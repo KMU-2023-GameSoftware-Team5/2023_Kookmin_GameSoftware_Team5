@@ -158,7 +158,7 @@ namespace deck
             isPlacementMode = false;
 
             // 플레이어매니저에게서 보유 캐릭터 받아오기
-            characters = PlayerManager.Instance().playerCharacters;
+            characters = PlayerManager.Instance().sortingCharacter();
 
             // 현재 보유중인 캐릭터 출력 - 배치가능한 사양으로
             characterUIs = new List<SelectCharacter>();

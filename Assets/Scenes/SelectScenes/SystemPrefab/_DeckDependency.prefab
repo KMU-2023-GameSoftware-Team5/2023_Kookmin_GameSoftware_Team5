@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 5445229453136967546}
   - component: {fileID: 3275364897478770411}
   - component: {fileID: 678842166936231914}
+  - component: {fileID: 2973332362137334589}
   m_Layer: 0
   m_Name: HelpButton
   m_TagString: Untagged
@@ -216,6 +217,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &2973332362137334589
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644851843449258158}
+  m_Enabled: 1
+  m_Alpha: 0.4
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &652182700330048594
 GameObject:
   m_ObjectHideFlags: 0
