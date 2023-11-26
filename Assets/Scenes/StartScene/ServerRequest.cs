@@ -165,13 +165,13 @@ public class ServerRequest : MonoBehaviour
 
         www.SendWebRequest();
 
-        Debug.Log(www.downloadHandler.text);
+        Debug.Log(www.downloadHandler.text.ToString());
 
         yield return null;  // 응답 대기
 
         if (www.error == null)
         {
-            Debug.Log(www.downloadHandler.text);    // 데이터 출력
+            Debug.Log(www.downloadHandler.text.ToString());    // 데이터 출력
             JObject obj = JObject.Parse(www.downloadHandler.text);
             JArray data = JArray.Parse(obj["data"].ToString());
             callback(data);
