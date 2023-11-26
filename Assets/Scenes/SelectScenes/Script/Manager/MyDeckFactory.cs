@@ -38,7 +38,7 @@ namespace deck
         /// 캐릭터 설명 모음
         /// </summary>
         public PixelCharacterDescription pixelCharacterDescription;
-        public Dictionary<EDefualtAttackType, string> attackTypeDescriptionMap;
+        public Dictionary<EDefualtAttackType, AttackTypeDescription> attackTypeDescriptionMap;
         public Dictionary<battle.PixelHumanoid.ESkill, string> skillDescriptionMap;
 
 
@@ -81,10 +81,10 @@ namespace deck
             }
 
             // 캐릭터 공격타입 설명 목록
-            attackTypeDescriptionMap = new Dictionary<EDefualtAttackType, string>();
+            attackTypeDescriptionMap = new Dictionary<EDefualtAttackType, AttackTypeDescription>();
             foreach (var attackTypeDescriptions  in pixelCharacterDescription.attackTypeDescriptions)
             {
-                attackTypeDescriptionMap[attackTypeDescriptions.type] = attackTypeDescriptions.desc;
+                attackTypeDescriptionMap[attackTypeDescriptions.type] = attackTypeDescriptions;
             }
 
             // 스킬 설명 목록 
@@ -152,6 +152,7 @@ namespace deck
         public PixelCharacter buildPixelCharacter(string characterName) {
             PixelHumanoidData pixelHumanoidData = getPixelHumanoidData(characterName);
             PixelCharacter ret = new PixelHumanoid(characterName, pixelHumanoidData);
+
             return ret;
         }
 

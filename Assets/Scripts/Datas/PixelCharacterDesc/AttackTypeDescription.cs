@@ -11,6 +11,7 @@ namespace deck
     {
         public EDefualtAttackType type;
         public string desc;
+        public Sprite img;
     }
 
 }

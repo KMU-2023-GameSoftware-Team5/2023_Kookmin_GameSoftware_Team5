@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Melee
   m_EditorClassIdentifier: 
   type: 0
-  desc: "Melee \uACF5\uACA9\uC774\uB2E4"
+  desc: "\uADFC\uC811\uD574\uC11C \uC801\uACFC\uC758 \uAD50\uC804\uC744 \uBC8C\uC785\uB2C8\uB2E4."
+  img: {fileID: 21300000, guid: 451cccb0eaa2acf43b799e06bb8af4e3, type: 3}

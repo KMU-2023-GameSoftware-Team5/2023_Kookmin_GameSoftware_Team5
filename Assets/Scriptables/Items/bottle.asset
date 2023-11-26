@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c3de4dfb7b27e4ea869ccb19444945, type: 3}
+  m_Name: bottle
+  m_EditorClassIdentifier: 
+  sheild: 0
+  hp: 75
+  mp: 75
+  energy: 20
+  walkSpeed: 0
+  damage: 5
+  attackDelay: 0
+  criticalRate: 0
+  itemName: "\uD3EC\uC158"
+  iconImage: {fileID: 21300000, guid: d44baa660cc84014091d6de98255e0f9, type: 3}
+  effect: 0
+  description: "\uC798\uB9CC\uB4E0 \uD3EC\uC158\uC740 \uBC31\uBA85\uC758 \uBC84\uD37C\uB3C4
+    \uBD80\uB7FD\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. (\uC774 \uAC8C\uC784\uC5D0 \uBC84\uD504\uB294
+    \uC5C6\uC2B5\uB2C8\uB2E4. \uC544\uC9C1\uC740\uC694)"
