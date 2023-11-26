@@ -15,7 +15,7 @@ namespace deck
         /// <summary>
         /// 도움말의 세부 내용입니다.
         /// </summary>
-        public string description;
+        [TextArea] public string description;
 
         /// <summary>
         /// 첨부사진이 필요한 경우 사용가능한 이미지입니다.

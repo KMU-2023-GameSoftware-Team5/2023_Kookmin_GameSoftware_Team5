@@ -35,5 +35,19 @@ namespace deck
         {
             myEquipItemListItem.Initialize(item, transform, canvas);
         }
+
+        RectTransform myItem;
+        RectTransform myRect;
+
+        private void Start()
+        {
+            myRect = GetComponent<RectTransform>();
+            myItem = myEquipItemListItem.gameObject.GetComponent<RectTransform>();
+
+        }
+        private void Update()
+        {
+            myItem.sizeDelta = myRect.sizeDelta;
+        }
     }
 }
