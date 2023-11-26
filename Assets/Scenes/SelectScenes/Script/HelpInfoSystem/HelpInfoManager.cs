@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,8 +32,7 @@ namespace deck
         {
             RectTransform imageRect = image.GetComponent<RectTransform>();
             float imageWidth = imageRect.rect.width;
-            float height = imageWidth / 16;
-            height *= 9;
+            float height = imageWidth;
             imageRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
 
             for (int i = 0; i < helpInfoList.Count; i++)

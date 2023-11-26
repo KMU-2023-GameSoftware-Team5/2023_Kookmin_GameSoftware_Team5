@@ -21,6 +21,6 @@ MonoBehaviour:
   attackDelay: 0
   criticalRate: 3
   itemName: "\uC2A4\uD06C\uB864"
-  iconImage: {fileID: 0}
+  iconImage: {fileID: 21300000, guid: 52119c06534ce854889415d70848c1ce, type: 3}
   effect: 0
   description: "\uAC15\uB825\uD55C \uB9C8\uBC95\uC774 \uB2F4\uAE34 \uC2A4\uD06C\uB864\uC785\uB2C8\uB2E4. "

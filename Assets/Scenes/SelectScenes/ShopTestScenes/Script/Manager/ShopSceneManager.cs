@@ -26,6 +26,7 @@ namespace deck
         private void Start()
         {
             stageNum = PlayerManager.Instance().StageCount;
+            stageNum = PlayerManager.Instance().stageCount += 1;
             initialize();
             loadPlayerCharacters();
         }
@@ -268,7 +269,7 @@ namespace deck
                 }
             }
             nowPlayerCharacterUI = new List<PlayerCharacterGoods>();
-            List<PixelCharacter> characters = PlayerManager.Instance().playerCharacters;
+            List<PixelCharacter> characters = PlayerManager.Instance().sortingCharacter();
             foreach (PixelCharacter character in characters)
             {
                 
