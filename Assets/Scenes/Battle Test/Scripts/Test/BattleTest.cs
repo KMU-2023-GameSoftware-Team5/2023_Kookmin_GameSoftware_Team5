@@ -67,10 +67,11 @@ namespace battle
                     {
                         if (SceneParamter.Instance().IsBoss)
                         {
-
+                            spawnBossEnemy();
                         }
                         else
                         {
+                            // spawnBossEnemy();
                             spawnEnemyByTotalLevel();
                         }
 
@@ -80,6 +81,30 @@ namespace battle
                     spawnCharacters();
                     break;
             }
+        }
+
+        private void spawnBossEnemy()
+        {
+            int pixelHumanoidCount = StaticLoader.Instance().GetPixelHumanoidCount();
+            int randomIndex =  UnityEngine.Random.Range(0, pixelHumanoidCount);
+            data.PixelHumanoidData randomHumanoidData = StaticLoader.Instance().GetPixelHumanoidData(randomIndex);
+
+            Vector2 pos = new Vector3(4.5f, 0.5f, 0);
+            PixelHumanoid humanoid = MyCharacterFactory.Instance().
+                CreatePixelHumanoid(randomHumanoidData.characterName, pos, transform);
+
+            int levelMultiplier = (int)(SceneParamter.Instance().EnemyTotalLevel * 0.8f);
+            humanoid.stats = humanoid.stats.CreateMultiflied(levelMultiplier);
+            humanoid.maxHp = humanoid.stats.hp;
+
+            float scale = 2.0f;
+            humanoid.transform.localScale = Vector3.one * scale;
+            humanoid.SetDirection(Utility.Direction2.Left);
+            humanoid.headBar.transform.localPosition = humanoid.headBar.transform.localPosition * scale;
+
+            humanoid.teamIndex = 1;
+            humanoid.bm = BattleManager.Instance();
+            m_team1Humanoids.Add(humanoid);
         }
 
         private void spawnEnemyByTotalLevel()

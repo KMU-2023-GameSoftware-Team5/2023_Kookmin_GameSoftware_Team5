@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: "\uB9C8\uB825 \uD769\uBFCC\uB9AC\uAE30"
   skillDescription: "\uB9C8\uB825\uC744 \uD769\uBFCC\uB824 \uC801\uC744 \uACF5\uACA9\uD55C\uB2E4. "
-  skillIcon: {fileID: 0}
+  skillIcon: {fileID: 21300000, guid: 86d98ebfdae5fec4f8ce00ca0dc20f3b, type: 3}
   audioClip: {fileID: 8300000, guid: 5a7fb00406fc169448f85a755fa467c6, type: 3}
   effect: {fileID: 6036818779175505147, guid: 2c6f15866a3ffdf48ad71d854af0a64d, type: 3}
   effectCount: 2

@@ -18,7 +18,7 @@ MonoBehaviour:
   energy: 0
   walkSpeed: 5
   damage: 14
-  attackDelay: 0.3
+  attackDelay: 0.6
   criticalRate: 0
   characterName: Human Archor
   attackRange: 3
@@ -38,4 +38,4 @@ MonoBehaviour:
   defualtAttackType: 1
   useCustomSkil: 1
   skill: 0
-  customSkillName: Ranged Skill 1
+  customSkillName: "\uC5D0\uB108\uC9C0 \uC0F7"
