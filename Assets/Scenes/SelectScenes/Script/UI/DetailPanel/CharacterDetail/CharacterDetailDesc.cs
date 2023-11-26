@@ -13,11 +13,12 @@ namespace deck
         [Header("Attack Type")]
         public TextMeshProUGUI attackTypeTitle;
         public TextMeshProUGUI attackTypeText;
+        public Image atIcon;
         [Header("Skill")]
         public TextMeshProUGUI skillTitle;
         public TextMeshProUGUI skillText;
         public Image skillIcon;
-        Dictionary<EDefualtAttackType, string> attackTypeDescriptionMap;
+        Dictionary<EDefualtAttackType, AttackTypeDescription> attackTypeDescriptionMap;
         Dictionary<battle.PixelHumanoid.ESkill, string> skillDescriptionMap;
 
         private void Awake()
@@ -33,7 +34,8 @@ namespace deck
             if (attackTypeDescriptionMap.ContainsKey(pixelCharacter.defualtAttackType))
             {
                 
-                attackTypeText.text = attackTypeDescriptionMap[pixelCharacter.defualtAttackType];
+                attackTypeText.text = attackTypeDescriptionMap[pixelCharacter.defualtAttackType].desc;
+                atIcon.sprite = attackTypeDescriptionMap[pixelCharacter.defualtAttackType].img;
             }
             else
             {
