@@ -864,7 +864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7122790136877776379, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -6.47871
+      value: -15.984142
       objectReference: {fileID: 0}
     - target: {fileID: 8024431453402245008, guid: f36bb4e55e2654a499db6463e4286082, type: 3}
       propertyPath: m_Camera
@@ -1149,6 +1149,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: _DeckDependency
       objectReference: {fileID: 0}
+    - target: {fileID: 7894637998257975897, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
+      propertyPath: helpInfoList.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894637998257975897, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
+      propertyPath: helpInfoList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: b01061028ca911d408fd0c986c578c85, type: 2}
+    - target: {fileID: 7894637998257975897, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
+      propertyPath: helpInfoList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: b908a6789691a3947a5c2f1baa2b52c3, type: 2}
+    - target: {fileID: 7894637998257975897, guid: f4e902d2dc40d384e87001e7a081f3e9, type: 3}
+      propertyPath: helpInfoList.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8db322dd3cca77c4f9d96685cba7d338, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
