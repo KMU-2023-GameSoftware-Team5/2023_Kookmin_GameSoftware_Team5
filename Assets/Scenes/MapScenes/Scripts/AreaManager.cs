@@ -7,7 +7,7 @@ namespace GameMap
 {
     public class AreaManager : MonoBehaviour
     {
-        static MapStageData MapData = null;
+        public static MapStageData MapData;
 
         [SerializeField] MobSetData[] m_mobSetDatas;
         [SerializeField] MobSetData m_bossMobSet;
@@ -20,11 +20,13 @@ namespace GameMap
 
         [SerializeField] GameObject m_bossArea;
         [SerializeField] AreaData m_bossData;
+        [SerializeField] Sprite m_defaultAreaSprite;
 
         [SerializeField] GameObject m_nearbyStandardA;
         [SerializeField] GameObject m_nearbyStandardB;
 
         [SerializeField][Range(0, 50)] int m_bossOpenMinimum = 5;
+        [SerializeField][Range(0, 10)] int m_marketTurnLimit = 3;
 
         List<GameObject> m_areas;
 
@@ -48,13 +50,15 @@ namespace GameMap
             m_bossArea.GetComponent<Button>().onClick.AddListener(() =>
             {
                 MapData = null;
-                AreaOnClickCommon(true);
+                BattleAreaOnClick(true);
             });
 
             // Add common onClick event to areas
             for (int i = 0; i < m_areas.Count; i++)
             {
                 // Use this variable to resolve closure problem
+                string t_areaName = MapData.AreaDatas[i].areaName;
+                int t_marketTurnLimit = m_marketTurnLimit;
                 int t_index = i;
 
                 m_areas[i].GetComponent<Button>().onClick.AddListener(() =>
@@ -62,8 +66,48 @@ namespace GameMap
                     MapData.AreaVisitCount++;
                     MapData.AreaIndex = t_index;
 
-                    AreaOnClickCommon();
+                    switch (t_areaName)
+                    {
+                        // case "Random":
+                        //     SceneManager.LoadScene("EventScene");
+                        //     break;
+                        case "Market":
+                            MapData.MarketDisableTurn = t_marketTurnLimit;
+                            SceneManager.LoadScene("ShopTestScene");
+                            break;
+                        case "Battle":
+                            BattleAreaOnClick();
+                            break;
+                    }
                 });
+            }
+
+            // Remove market's onclick if turn has not yet passed after using the market
+            if (MapData.MarketDisableTurn > 0)
+            {
+                for (int i = 0; i < m_areas.Count; i++)
+                {
+                    if (MapData.AreaDatas[i].areaName != "Market")
+                        continue;
+
+                    Image areaImage = m_areas[i].GetComponent<Image>();
+                    Button areaButton = m_areas[i].GetComponent<Button>();
+
+                    areaImage.sprite = m_defaultAreaSprite;
+                    areaButton.onClick.RemoveAllListeners();
+
+                    // Use this variable to resolve closure problem
+                    int t_index = i;
+
+                    areaButton.onClick.AddListener(() =>
+                    {
+                        MapData.AreaVisitCount++;
+                        MapData.AreaIndex = t_index;
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    });
+                }
+
+                MapData.MarketDisableTurn--;
             }
 
             // Disable all areas
@@ -72,8 +116,16 @@ namespace GameMap
                 area.SetActive(false);
 
             // Activate now and near areas
-            ActivateNearAreas(m_areas[MapData.AreaIndex]);
-            m_areas[MapData.AreaIndex].SetActive(true);
+            GameObject nowArea = m_areas[MapData.AreaIndex];
+
+            ActivateNearAreas(nowArea);
+            nowArea.SetActive(true);
+
+            // Remove now area's onclick
+            nowArea.GetComponent<Button>().onClick.RemoveAllListeners();
+
+            // Change now area's icon
+            nowArea.GetComponent<Image>().sprite = m_defaultAreaSprite;
         }
 
         void BuildAreas()
@@ -140,7 +192,7 @@ namespace GameMap
                 MapData.AreaIndex = Random.Range(0, m_areas.Count);
         }
 
-        void AreaOnClickCommon(bool isBoss = false)
+        void BattleAreaOnClick(bool isBoss = false)
         {
             var sceneParameter = SceneParamter.Instance();
 
@@ -158,8 +210,10 @@ namespace GameMap
         {
             Vector3 areaPos = target.transform.position;
 
-            foreach (GameObject other in m_areas)
+            for (int i = 0; i < m_areas.Count; i++)
             {
+                GameObject other = m_areas[i];
+
                 if (target == other)
                     continue;
 
@@ -174,7 +228,7 @@ namespace GameMap
 
             Vector3 bossPos = m_bossArea.transform.position;
 
-            // Other area is in range
+            // Boss area is in range
             if (MapData.AreaVisitCount >= m_bossOpenMinimum &&
                 (areaPos - bossPos).magnitude <= NearbyDistanceStandard)
                 m_bossArea.SetActive(true);

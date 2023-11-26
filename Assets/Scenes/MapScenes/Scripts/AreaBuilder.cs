@@ -7,28 +7,12 @@ using UnityEngine.UI;
 
 namespace GameMap
 {
-    static class NumberGenerator
+    class NumberGenerator
     {
-        static IEnumerator<int> Generate()
-        {
-            int ret = 0;
-            while (true)
-                yield return ret++;
-        }
+        int number = 0;
 
-        static IEnumerator<int> generator = Generate();
-
-        public static int Next(int maxVal)
-        {
-            int ret = generator.Current;
-
-            if (ret == maxVal - 1)
-                generator = Generate();
-            else
-                generator.MoveNext();
-
-            return ret;
-        }
+        public int Next(int _) =>
+            number++;
     }
 
     public class AreaBuilder : UnityEngine.Object
@@ -42,11 +26,12 @@ namespace GameMap
 
         readonly List<Tuple<Image, Button>> m_canditiateTargets = new();
         readonly List<AreaData> m_areaDatas = new();
+        readonly List<string> m_disabled = new();
 
         Button m_bossButton;
         AreaData m_bossData;
 
-        AreaPickStrategy m_areaPickStrategy = x => NumberGenerator.Next(x);
+        AreaPickStrategy m_areaPickStrategy = (new NumberGenerator()).Next;
 
         GameObject m_iconPrefab;
         Transform m_iconParent;
@@ -123,11 +108,12 @@ namespace GameMap
             foreach (var targetTuple in m_canditiateTargets)
             {
                 AreaData areaData = m_areaDatas[m_areaPickStrategy(m_areaDatas.Count)];
+                GameObject gameObject = targetTuple.Item1.gameObject;
 
                 targetTuple.Item1.sprite = areaData.sprite;
                 targetTuple.Item2.onClick.AddListener(areaData.onClick.Invoke);
 
-                AreaResult.Add(targetTuple.Item1.gameObject);
+                AreaResult.Add(gameObject);
                 AreaData.Add(areaData);
             }
 

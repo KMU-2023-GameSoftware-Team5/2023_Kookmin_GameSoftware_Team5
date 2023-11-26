@@ -51,6 +51,7 @@ MonoBehaviour:
   m_mobSetDatas:
   - {fileID: 11400000, guid: 5926767df8f388f45a9d3c27cb2650c8, type: 2}
   - {fileID: 11400000, guid: ea2ee0fdbd9ea044ebac56bdcadf325f, type: 2}
+  m_bossMobSet: {fileID: 0}
   m_iconGroupLayout: {fileID: 0}
   m_iconPrefab: {fileID: 9101710550927767454, guid: 5b0f3289ad469ff43993d65283151cb4, type: 3}
   m_areaData:
@@ -59,6 +60,8 @@ MonoBehaviour:
   m_canditiateGroup: {fileID: 0}
   m_bossArea: {fileID: 0}
   m_bossData: {fileID: 11400000, guid: 00c0494e565b44447b9278cc15be4166, type: 2}
+  m_defaultAreaSprite: {fileID: -49219734, guid: 9271de616f6451b46a8c27156aa82ebc, type: 3}
   m_nearbyStandardA: {fileID: 0}
   m_nearbyStandardB: {fileID: 0}
   m_bossOpenMinimum: 5
+  m_marketTurnLimit: 3

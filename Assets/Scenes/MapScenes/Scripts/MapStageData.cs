@@ -8,6 +8,7 @@ namespace GameMap
         public AreaData[] AreaDatas;
         public int AreaVisitCount;
         public int AreaIndex = -1;
+        public int MarketDisableTurn;
 
         public string fromJson(JObject json)
         {
@@ -17,6 +18,7 @@ namespace GameMap
 
             AreaVisitCount = (int)json["area_visit_count"];
             AreaIndex = (int)json["area_index"];
+            MarketDisableTurn = (int)json["market_disable_turn"];
 
             return string.Empty;
         }
@@ -34,6 +36,7 @@ namespace GameMap
 
             ret["area_visit_count"] = AreaVisitCount;
             ret["area_index"] = AreaIndex;
+            ret["market_disable_turn"] = MarketDisableTurn;
 
             return ret;
         }
