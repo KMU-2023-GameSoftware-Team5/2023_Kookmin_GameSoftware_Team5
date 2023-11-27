@@ -943,6 +943,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
+      propertyPath: m_nowArea
+      value: 
+      objectReference: {fileID: 11400000, guid: f5e55e40a87434341bd2d31b36e4f06b, type: 2}
+    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_bossArea
       value: 
       objectReference: {fileID: 752932733}
@@ -968,7 +972,7 @@ PrefabInstance:
       objectReference: {fileID: 7235786352540206571}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_areaData.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_areaData.Array.data[2]
