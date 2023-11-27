@@ -32,7 +32,7 @@ namespace deck
         {
             playerManager = PlayerManager.Instance();
 
-            List<PixelCharacter> characters = playerManager.playerCharacters;
+            List<PixelCharacter> characters = playerManager.sortingCharacter();
             List<EquipItem> items = playerManager.playerEquipItems;
 
             if (characters.Count == 0)

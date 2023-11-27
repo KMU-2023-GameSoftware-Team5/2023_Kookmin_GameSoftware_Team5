@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: "\uBAA8\uB798\uD3ED\uD48D"
   skillDescription: "\uBAA8\uB798\uD3ED\uD48D\uC744 \uC18C\uD658\uD558\uC5EC \uC801\uC744
     \uACF5\uACA9\uD55C\uB2E4. "
-  skillIcon: {fileID: 0}
+  skillIcon: {fileID: 21300000, guid: 55e0ee18898307847a3f781c79701378, type: 3}
   audioClip: {fileID: 8300000, guid: 5a7fb00406fc169448f85a755fa467c6, type: 3}
   effect: {fileID: 3782788811006804319, guid: 1ac763a2a31634343957a061b1fdaab5, type: 3}
   effectCount: 2

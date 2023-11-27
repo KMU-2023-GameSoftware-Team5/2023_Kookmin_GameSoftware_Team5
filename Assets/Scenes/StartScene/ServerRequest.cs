@@ -7,22 +7,47 @@ using Newtonsoft.Json.Linq;
 
 public class ServerRequest : MonoBehaviour
 {
+    public static ServerRequest Instance;
     public string id;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(UnityWebRequestPOSTTEST());
+        //StartCoroutine(UnityWebRequestPOSTTEST());
 
         //샘플
         /*StartCoroutine(GetRank((jarray)=>{
             Debug.Log(jarray.ToString());
         }));*/
+        SetId();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetScore(int score){
+        StartCoroutine(SetScore(this.id,score));
+    }
+
+    public void SetId(){
+        StartCoroutine(NewUser((id)=>{
+            this.id = id;
+            Debug.Log(this.id);
+        }));
     }
 
     IEnumerator UnityWebRequestPOSTTEST()
@@ -134,19 +159,19 @@ public class ServerRequest : MonoBehaviour
     //점수 확인
     public IEnumerator GetRank(System.Action<JArray> callback)
     {
-        string url = "http://13.125.165.205/process/userdata/getscore";
+        string url = "http://13.125.165.205/process/userdata/getrank";
         WWWForm form = new WWWForm();
         UnityWebRequest www = UnityWebRequest.Post(url, form);  // 보낼 주소와 데이터 입력
 
         www.SendWebRequest();
 
-        Debug.Log(www.downloadHandler.text);
+        Debug.Log(www.downloadHandler.text.ToString());
 
         yield return null;  // 응답 대기
 
         if (www.error == null)
         {
-            Debug.Log(www.downloadHandler.text);    // 데이터 출력
+            Debug.Log(www.downloadHandler.text.ToString());    // 데이터 출력
             JObject obj = JObject.Parse(www.downloadHandler.text);
             JArray data = JArray.Parse(obj["data"].ToString());
             callback(data);

@@ -18,7 +18,7 @@ MonoBehaviour:
   energy: 0
   walkSpeed: 3.5
   damage: 16
-  attackDelay: 1.2
+  attackDelay: 0.6
   criticalRate: 0.5
   characterName: Goblin Wizard
   attackRange: 5
