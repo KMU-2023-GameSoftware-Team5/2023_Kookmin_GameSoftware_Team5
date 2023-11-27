@@ -26,7 +26,7 @@ namespace GameMap
 
         readonly List<Tuple<Image, Button>> m_canditiateTargets = new();
         readonly List<AreaData> m_areaDatas = new();
-        readonly List<string> m_disabled = new();
+        readonly List<AreaData> m_onlyIcon = new();
 
         Button m_bossButton;
         AreaData m_bossData;
@@ -41,6 +41,9 @@ namespace GameMap
 
         public void AddCanditiateTarget(Image areaImage, Button areaButton) =>
             m_canditiateTargets.Add(Tuple.Create(areaImage, areaButton));
+
+        public void AddOnlyIconAreaData(AreaData areaData) =>
+            m_onlyIcon.Add(areaData);
 
         public void AddAreaData(AreaData areaData) =>
             m_areaDatas.Add(areaData);
@@ -96,8 +99,8 @@ namespace GameMap
             bossIcon.GetComponentInChildren<Image>().sprite = m_bossData.sprite;
             bossIcon.GetComponentInChildren<TMP_Text>().SetText(m_bossData.areaName);
 
-            // 1-3. Instantiate area icon from distincted m_areaDatas
-            foreach (AreaData areaData in m_areaDatas.Distinct())
+            // 1-3. Instantiate area icon from distincted m_areaDatas + m_onlyIcon
+            foreach (AreaData areaData in m_areaDatas.Concat(m_onlyIcon).Distinct())
             {
                 GameObject areaIcon = Instantiate(m_iconPrefab, m_iconParent);
                 areaIcon.GetComponentInChildren<Image>().sprite = areaData.sprite;

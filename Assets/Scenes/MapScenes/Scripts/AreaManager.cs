@@ -20,7 +20,7 @@ namespace GameMap
 
         [SerializeField] GameObject m_bossArea;
         [SerializeField] AreaData m_bossData;
-        [SerializeField] Sprite m_defaultAreaSprite;
+        [SerializeField] AreaData m_nowArea;
 
         [SerializeField] GameObject m_nearbyStandardA;
         [SerializeField] GameObject m_nearbyStandardB;
@@ -82,34 +82,6 @@ namespace GameMap
                 });
             }
 
-            // Remove market's onclick if turn has not yet passed after using the market
-            if (MapData.MarketDisableTurn > 0)
-            {
-                for (int i = 0; i < m_areas.Count; i++)
-                {
-                    if (MapData.AreaDatas[i].areaName != "Market")
-                        continue;
-
-                    Image areaImage = m_areas[i].GetComponent<Image>();
-                    Button areaButton = m_areas[i].GetComponent<Button>();
-
-                    areaImage.sprite = m_defaultAreaSprite;
-                    areaButton.onClick.RemoveAllListeners();
-
-                    // Use this variable to resolve closure problem
-                    int t_index = i;
-
-                    areaButton.onClick.AddListener(() =>
-                    {
-                        MapData.AreaVisitCount++;
-                        MapData.AreaIndex = t_index;
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                    });
-                }
-
-                MapData.MarketDisableTurn--;
-            }
-
             // Disable all areas
             m_bossArea.SetActive(false);
             foreach (var area in m_areas)
@@ -125,7 +97,7 @@ namespace GameMap
             nowArea.GetComponent<Button>().onClick.RemoveAllListeners();
 
             // Change now area's icon
-            nowArea.GetComponent<Image>().sprite = m_defaultAreaSprite;
+            nowArea.GetComponent<Image>().sprite = m_nowArea.sprite;
         }
 
         void BuildAreas()
@@ -183,6 +155,7 @@ namespace GameMap
             else
                 builder.AddAreaDatas(MapData.AreaDatas);
 
+            builder.AddOnlyIconAreaData(m_nowArea);
             builder.Build();
 
             MapData.AreaDatas = builder.AreaData.ToArray();
