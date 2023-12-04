@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: amulet3
   m_EditorClassIdentifier: 
   sheild: 0
-  hp: 10
-  mp: 30
+  hp: 75
+  mp: 50
   energy: 0
   walkSpeed: 0
   damage: 0

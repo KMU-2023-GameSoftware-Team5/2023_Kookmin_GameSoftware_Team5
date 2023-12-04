@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c3de4dfb7b27e4ea869ccb19444945, type: 3}
   m_Name: boot
   m_EditorClassIdentifier: 
-  sheild: 25
-  hp: 10
+  sheild: 30
+  hp: 125
   mp: 0
   energy: 0
-  walkSpeed: -0.5
+  walkSpeed: -3
   damage: 0
   attackDelay: 0
   criticalRate: 0

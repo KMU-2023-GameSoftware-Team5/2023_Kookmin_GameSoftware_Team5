@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: helmet2
   m_EditorClassIdentifier: 
   sheild: 30
-  hp: 0
+  hp: 120
   mp: 0
   energy: 0
-  walkSpeed: 5
+  walkSpeed: 3
   damage: 0
-  attackDelay: 3
+  attackDelay: 0.4
   criticalRate: 0
   itemName: "\uD22C\uAD6C"
   iconImage: {fileID: 21300000, guid: 655d782fbee6d604eb0f66efdbd67365, type: 3}

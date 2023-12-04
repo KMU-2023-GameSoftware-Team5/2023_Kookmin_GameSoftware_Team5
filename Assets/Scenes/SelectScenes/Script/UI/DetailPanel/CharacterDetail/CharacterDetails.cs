@@ -126,11 +126,12 @@ namespace deck
         [SerializeField] TMP_InputField nickNameInput;
         public void onNickNameChange(string value)
         {
-            if(value.Length <= 0)
+            if (value.Length <= 0)
             {
                 characterIcon.characterNickNameText.text = character.characterNickName;
                 return;
             }
+            nickNameInput.text = "";
             character.characterNickName = value;
             MyDeckFactory.Instance().nickNameChangeEvent.Invoke(character.ID);
         }

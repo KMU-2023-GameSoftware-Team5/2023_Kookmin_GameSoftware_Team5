@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bottle
   m_EditorClassIdentifier: 
   sheild: 0
-  hp: 75
+  hp: 300
   mp: 75
   energy: 20
   walkSpeed: 0

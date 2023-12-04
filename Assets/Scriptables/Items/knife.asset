@@ -17,8 +17,8 @@ MonoBehaviour:
   mp: 0
   energy: 0
   walkSpeed: 0
-  damage: 10
-  attackDelay: -1.5
+  damage: -2
+  attackDelay: -0.2
   criticalRate: 2.5
   itemName: "\uB098\uC774\uD504"
   iconImage: {fileID: 21300000, guid: 5aa109f1b15dcaf49b05c57d9e810b25, type: 3}

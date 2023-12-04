@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c3de4dfb7b27e4ea869ccb19444945, type: 3}
   m_Name: shield
   m_EditorClassIdentifier: 
-  sheild: 20
-  hp: 5
+  sheild: 40
+  hp: 250
   mp: 0
   energy: 0
   walkSpeed: 0

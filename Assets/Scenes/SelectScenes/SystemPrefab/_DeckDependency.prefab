@@ -4253,6 +4253,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -11.879974
       objectReference: {fileID: 0}
+    - target: {fileID: 6400978675343961587, guid: 3ec472c4cb27b0e4e966b4c35cb07bab, type: 3}
+      propertyPath: m_Name
+      value: NickNameInputField
+      objectReference: {fileID: 0}
     - target: {fileID: 6876477389526331844, guid: 3ec472c4cb27b0e4e966b4c35cb07bab, type: 3}
       propertyPath: canvas
       value: 

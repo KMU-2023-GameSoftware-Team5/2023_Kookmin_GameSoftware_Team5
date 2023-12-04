@@ -550,17 +550,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_nowArea
-      value: 
-      objectReference: {fileID: 11400000, guid: f5e55e40a87434341bd2d31b36e4f06b, type: 2}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_bossArea
       value: 
       objectReference: {fileID: 2041472147}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_bossMobSet
-      value: 
-      objectReference: {fileID: 11400000, guid: 5926767df8f388f45a9d3c27cb2650c8, type: 2}
     - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
       propertyPath: m_canditiateGroup
       value: 
@@ -577,14 +569,6 @@ PrefabInstance:
       propertyPath: m_nearbyStandardB
       value: 
       objectReference: {fileID: 1780098226}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_areaData.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2239518028985929815, guid: debf4ed210fdf5d4c9305eb9deb5dc91, type: 3}
-      propertyPath: m_areaData.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 70a0fd97e6548244b9c9bb266b25daa4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

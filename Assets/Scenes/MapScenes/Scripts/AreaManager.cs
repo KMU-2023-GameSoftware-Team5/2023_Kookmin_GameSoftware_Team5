@@ -73,6 +73,7 @@ namespace GameMap
                         //     break;
                         case "Market":
                             MapData.MarketDisableTurn = t_marketTurnLimit;
+                            Debug.Log($"what? {t_marketTurnLimit}");
                             SceneManager.LoadScene("ShopTestScene");
                             break;
                         case "Battle":
@@ -81,6 +82,35 @@ namespace GameMap
                     }
                 });
             }
+            /*** TMP FIX BY JS_LEE ***/
+            // Remove market's onclick if turn has not yet passed after using the market
+            if (MapData.MarketDisableTurn > 0)
+            {
+                for (int i = 0; i < m_areas.Count; i++)
+                {
+                    if (MapData.AreaDatas[i].areaName != "Market")
+                        continue;
+                    Image areaImage = m_areas[i].GetComponent<Image>();
+                    Button areaButton = m_areas[i].GetComponent<Button>();
+                    areaImage.color = new Vector4(0,0,0,0); // just Make store icon transparent
+                    // areaImage.sprite = m_defaultAreaSprite;
+                    areaButton.onClick.RemoveAllListeners();
+
+                    /*
+                        // Use this variable to resolve closure problem
+                        int t_index = i;
+                        areaButton.onClick.AddListener(() =>
+                        {
+                            MapData.AreaVisitCount++;
+                            MapData.AreaIndex = t_index;
+                            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        });
+                    */
+                }
+                MapData.MarketDisableTurn--;
+            }
+            /*** TMP FIX BY JS_LEE ***/
+
 
             // Disable all areas
             m_bossArea.SetActive(false);

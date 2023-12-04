@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c3de4dfb7b27e4ea869ccb19444945, type: 3}
   m_Name: armor1
   m_EditorClassIdentifier: 
-  sheild: 45
-  hp: 60
+  sheild: 50
+  hp: 450
   mp: 0
   energy: 0
   walkSpeed: 0
